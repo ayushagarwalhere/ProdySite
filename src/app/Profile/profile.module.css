@@ -1,0 +1,197 @@
+/* MAIN LAYOUT */
+
+.wrapper{
+  display:flex;
+  background:#d7ad75;
+  min-height:100vh;
+  padding:40px;
+  gap:40px;
+  position:relative;   /* important for absolute sidebar */
+}
+
+/* SIDEBAR */
+
+.sidebar{
+  position: absolute;
+  left: 20px;
+  bottom: 40px;              /* start from bottom */
+
+  writing-mode: vertical-rl; /* vertical text */
+  transform: rotate(180deg); /* makes it read bottom → top */
+
+  display: flex;
+  gap: 30px;
+
+  font-size: 18px;
+  font-weight: bold;
+  color: #5B1F11;
+  margin-right: 10px !important;
+}
+
+/* PROFILE CARD */
+
+.profileCard{
+  width:800px !important;
+  background:#343c6a;
+  border-radius:30px;
+  padding:25px;
+  color:#f3d2a1;
+  text-align:center;
+  margin-left: 20px;
+}
+
+.profileLabel{
+  text-align:left;
+  font-size:14px;
+}
+
+/* PROFILE IMAGE CIRCLE */
+
+.circle{
+  width: 300px;
+  height:300px;
+  border:6px solid #f3d2a1;
+  border-radius:50%;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  margin:20px auto;
+}
+
+.profileImage{
+  border-radius:50%;
+}
+
+/* RIGHT SECTION */
+
+.rightSection{
+  flex:1;
+}
+
+/* TITLE */
+
+.title{
+  font-family:Accia Moderato;
+  font-size:90px;
+  color:#5B1F11;
+}
+
+/* CAROUSEL CONTAINER */
+
+.projects{
+  width:100%;
+  margin-top:20px;
+}
+
+/* PROJECT CARD */
+
+.projectCard{
+  width:380px;
+  height:260px;
+
+  border-radius:24px;
+  padding:24px;
+
+  color:white;
+
+  display:flex;
+  flex-direction:column;
+  justify-content:space-between;
+
+  background-size:cover;
+  background-position:center;
+  background-repeat:no-repeat;
+
+  overflow:hidden;
+  position:relative;
+}
+
+/* CARD DARK OVERLAY */
+
+.projectCard::before{
+  content:"";
+  position:absolute;
+  inset:0;
+  background:linear-gradient(
+    to top,
+    rgba(0,0,0,0.6),
+    rgba(0,0,0,0.2)
+  );
+  border-radius:24px;
+}
+
+.projectCard > *{
+  position:relative;
+  z-index:2;
+}
+
+/* CARD CONTENT */
+
+.cardContent{
+  display:flex;
+  flex-direction:column;
+}
+
+/* CARD FOOTER */
+
+.projectFooter{
+  display:flex;
+  flex-direction:column;
+  gap:8px;
+}
+
+.leaderBtn{
+  width:fit-content;
+  background:#f4d6a0;
+  border:none;
+  padding:6px 14px;
+  border-radius:90px;
+  font-weight:600;
+  color:black;
+}
+
+/* SWIPER FIX */
+
+.swiper-slide{
+  display:flex;
+  justify-content:center;
+  height:auto !important;
+}
+
+/* STATS SECTION */
+
+.stats{
+  display:flex;
+  gap:20px;
+  margin-top:40px;
+}
+
+.points{
+  background:#6c8bb8;
+  padding:20px;
+  border-radius:18px;
+  width:150px;
+}
+
+.points h2{
+  font-size:50px;
+}
+
+.redBox{
+  width:200px;
+  height:120px;
+  background:#7a1d10;
+  border-radius:20px;
+}
+
+.blueBox{
+  width:200px;
+  height:120px;
+  background:#343c6a;
+  border-radius:20px;
+}
+
+.boxes{
+    display: flex;
+    flex-direction: row;
+}
