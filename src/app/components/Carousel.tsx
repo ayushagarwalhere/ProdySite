@@ -41,14 +41,25 @@ export default function EventsCarousel() {
     <div style={{ width: "800px" }}>
       <Swiper
         modules={[Pagination, Autoplay]}
-        spaceBetween={20}
-        slidesPerView={2}
+        spaceBetween={10}
         loop={true}
         autoplay={{
           delay: 2500,
           disableOnInteraction: false,
         }}
         pagination={{ clickable: true }}
+        slidesPerView={1} // default for small screens
+        breakpoints={{
+          640: {
+            slidesPerView: 1, // still 1 card on small screens
+          },
+          768: {
+            slidesPerView: 2, // medium screens show 2
+          },
+          1024: {
+            slidesPerView: 2, // large screens show 2 (same as before)
+          },
+        }}
       >
         {events.map((event, index) => (
           <SwiperSlide key={index}>

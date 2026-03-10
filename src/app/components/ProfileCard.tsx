@@ -1,61 +1,46 @@
 import Image from "next/image";
-import styles from "../Profile/profile.module.css"
+import styles from "./ProfileCard.module.css";
 
-export default function ProfileCard() {
+const ProfileCard = () => {
   return (
-    <div className="flex items-center justify-center min-h-screen bg-[#D4A96C]">
+    <div className={styles.cardWrapper}>
 
-      <div className="relative w-[507px] h-[717px] bg-[#3E4471] rounded-[20px] overflow-hidden">
+      {/* Title */}
+      <h1 className={styles.title}>Profile Page</h1>
 
-        {/* top cut */}
-        <div className="absolute top-0 right-0 w-[200px] h-[120px] bg-[#D4A96C] rounded-bl-[120px]" />
+      {/* Card */}
+      <div className={`${styles.card} grid grid-rows-[auto_auto] gap-4 place-items-center`}>
 
-        {/* Profile Page Text */}
-        <p className="absolute top-[30px] left-[40px] text-[#F4D6A0] text-[22px]">
-          Profile Page
-        </p>
+        {/* Image Section */}
+        <div className="relative flex justify-center items-center">
+          {/* Outer Circle */}
+          <div className={styles.outerCircle}></div>
 
-        {/* Rings Section */}
-        <div className="absolute top-[140px] left-1/2 -translate-x-1/2">
+          {/* Inner Circle */}
+          <div className={styles.innerCircle}></div>
 
-<div className={styles.circleWrapper}>
-
-  {/* Outer Ring */}
-  <div className={styles.outerCircle}></div>
-
-  {/* Inner Ring */}
-  <div className={styles.circleWrapper}>
-
-  <div className={styles.outerCircle}></div>
-  <div className={styles.innerCircle}></div>
-
-  <Image
-    src="/Profile.png"
-    alt="profile"
-    width={240}
-    height={280}
-    className={styles.profileImage}
-  />
-
-</div>
-
-</div>
-
+          {/* Profile Image */}
+          <div className="relative z-10">
+            <Image
+              src="/Profile.png"
+              alt="profile"
+              width={120}
+              height={120}
+              className={styles.profileImage}
+            />
+          </div>
         </div>
 
-        {/* Name */}
-        <div className="absolute bottom-[140px] w-full text-center">
-          <h1 className="text-[56px] leading-[60px] text-[#F4D6A0] font-semibold">
-            PRABHAV <br/> BATRA
-          </h1>
+        {/* Name & ID Section */}
+        <div className="text-center">
+          <h2 className={styles.name}>PRABHAV BATRA</h2>
+          <p className={styles.id}>Player ID: PDITY123455</p>
         </div>
-
-        {/* Player ID */}
-        <p className="absolute bottom-[80px] w-full text-center text-[#F4D6A0] text-[22px]">
-          Player ID: PDTY128458
-        </p>
 
       </div>
+
     </div>
   );
-}
+};
+
+export default ProfileCard;
