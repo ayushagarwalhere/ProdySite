@@ -2,7 +2,7 @@
 
 import EventsCarousel from "../../components/custom/Carousel";
 import ProfileCard from "../../components/custom/ProfileCard";
-import styles from "./profile.module.css";
+import styles from "./page.module.css";
 import Link from "next/link";
 
 export default function ProfilePage() {

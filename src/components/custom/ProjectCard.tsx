@@ -1,4 +1,4 @@
-import styles from "../Profile/profile.module.css";
+import styles from "../../app/profile/page.module.css";
 
 type Props = {
   title: string;
@@ -21,7 +21,7 @@ export default function ProjectCard({ title, description, team, image }: Props) 
 
       <div className={styles.projectFooter}>
         <span>Team Members: {team}</span>
-        <button  className={styles.leaderBtn}>Leader</button>
+        <button className={styles.leaderBtn}>Leader</button>
       </div>
     </div>
   );
