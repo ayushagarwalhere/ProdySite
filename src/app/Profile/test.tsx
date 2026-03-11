@@ -1,7 +1,7 @@
 export default function Test() {
   return (
     <div className="continer">
-      <div className="row"></div>//for upper  margin 
+      <div className="row"></div>//for upper  margin
       <div className="row">
         <div className="col"></div>//nearly 6% of wh
         <div className="col"></div>//nearly 45
@@ -16,8 +16,8 @@ export default function Test() {
 
 
 
-import EventsCarousel from "../components/Carousel";
-import ProfileCard from "../components/ProfileCard";
+import EventsCarousel from "../../components/Carousel";
+import ProfileCard from "../../components/ProfileCard";
 import styles from "./profile.module.css";
 import Link from "next/link";
 
@@ -27,14 +27,14 @@ export default function ProfilePage() {
       className={`${styles.wrapper} grid grid-cols-1 md:grid-cols-2 lg:grid-cols-[220px_400px_1fr] gap-6`}
     >
       {/* Sidebar */}
-<div
-  className={`${styles.sidebar} absolute left-2 sm:left-5 md:left-6 lg:left-8 bottom-2 sm:bottom-5 md:bottom-10 lg:bottom-12 text-base md:text-lg lg:text-xl gap-4 sm:gap-6 md:gap-8`}
->
-  <Link href="/" className="hover:text-red-700 transition-colors">HOME</Link>
-  <Link href="/events" className="hover:text-red-700 transition-colors">EVENTS</Link>
-  <Link href="/about" className="hover:text-red-700 transition-colors">ABOUT US</Link>
-  <Link href="/contact" className="hover:text-red-700 transition-colors">CONTACT</Link>
-</div>
+      <div
+        className={`${styles.sidebar} absolute left-2 sm:left-5 md:left-6 lg:left-8 bottom-2 sm:bottom-5 md:bottom-10 lg:bottom-12 text-base md:text-lg lg:text-xl gap-4 sm:gap-6 md:gap-8`}
+      >
+        <Link href="/" className="hover:text-red-700 transition-colors">HOME</Link>
+        <Link href="/events" className="hover:text-red-700 transition-colors">EVENTS</Link>
+        <Link href="/about" className="hover:text-red-700 transition-colors">ABOUT US</Link>
+        <Link href="/contact" className="hover:text-red-700 transition-colors">CONTACT</Link>
+      </div>
 
       {/* Profile Card */}
       <div className="flex justify-center items-start p-4 md:p-6 lg:p-8">
