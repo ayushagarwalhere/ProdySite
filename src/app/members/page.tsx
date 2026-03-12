@@ -1,7 +1,6 @@
 "use client";
 
 import AutoScrollCarousel from '@/components/Members/AutoScrollCarousel';
-import PillNav from '@/components/Members/PillNav';
 import GooeyNav from '@/components/Members/GooeyNav';
 import { Open_Sans } from 'next/font/google';
 import { useState, useMemo } from 'react';
@@ -107,13 +106,6 @@ const YEAR_OPTIONS = [
   { label: 'Volunteers', href: '#', value: 1 },
 ];
 
-const NAV_ITEMS = [
-  { label: 'Home', href: '/' },
-  { label: 'Events', href: '/events' },
-  { label: 'Gallery', href: '/gallery' },
-  { label: 'Team', href: '/members' },
-  { label: 'Contact', href: '/contact' },
-];
 
 export default function MembersPage() {
   const [activeYear, setActiveYear] = useState<number>(4);
@@ -127,23 +119,8 @@ export default function MembersPage() {
 
   return (
     <main
-      className={`h-screen bg-black text-white ${openSans.className} flex flex-col overflow-hidden`}
+      className={`min-h-[calc(100vh-5rem)] w-full text-white ${openSans.className} flex flex-col relative`}
     >
-      {/* ── Navbar ── */}
-      <div className="flex-shrink-0 flex justify-center px-8 py-5 z-50 bg-black/80 backdrop-blur-sm">
-        <PillNav
-          logo=""
-          logoAlt=""
-          items={NAV_ITEMS}
-          activeHref="/members"
-          baseColor="#000000"
-          pillColor="#ffffff"
-          hoveredPillTextColor="#ffffff"
-          pillTextColor="#000000"
-          initialLoadAnimation={true}
-        />
-      </div>
-
       {/* ── Category Label — absolute, centred, top-20 ── */}
       <div style={{
         position: "absolute",
@@ -205,7 +182,6 @@ export default function MembersPage() {
 
       <style jsx global>{`
         @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Cinzel+Decorative:wght@700&display=swap');
-        body { background: black; margin: 0; padding: 0; overflow: hidden; }
       `}</style>
     </main>
   );
