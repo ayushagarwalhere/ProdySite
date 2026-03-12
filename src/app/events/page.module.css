@@ -55,218 +55,436 @@
   color: #dfba8c; /* Tan/sand color from reference */
 }
 
-/* Bookmark Icon mimicking visual */
-.bookmarkBtn {
-  background-color: #dfba8c;
-  color: #3b2a1a;
-  border: none;
-  padding: 0.5rem 1.25rem;
-  font-size: 0.95rem;
-  font-weight: 600;
-  border-radius: 4px;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  width: fit-content;
-  transition: opacity 0.2s;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.3);
-}
-
-.bookmarkBtn:hover {
-  opacity: 0.9;
-}
-
-.bookmarkIcon {
-  display: inline-block;
-  width: 10px;
-  height: 14px;
-  border: 1.5px solid #3b2a1a;
-  border-bottom: none;
-  position: relative;
-}
-.bookmarkIcon::after {
-  content: '';
-  position: absolute;
-  bottom: -4px;
-  left: -1.5px;
-  border-left: 5px solid transparent;
-  border-right: 5px solid transparent;
-  border-top: 4px solid #3b2a1a;
-  width: 0;
-  height: 0;
-}
-
-/* Right Section */
 .rightMain {
   display: flex;
   flex-direction: column;
   justify-content: center;
   width: 45%;
-  max-width: 550px;
+  max-width: 600px;
   padding-right: 2rem;
-  margin-top: -8%;
+  margin-top: -5%;
+}
+
+.rightContentBox {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
 }
 
 .subtitle {
-  font-size: 2.2rem;
+  font-family: 'Akira_Expanded', sans-serif;
+  font-size: 36px;
   font-weight: 900;
-  color: #dfba8c;
+  color: #E7BA7F;
+  -webkit-text-stroke: 1px black; /* 1px black stroke as requested */
   line-height: 1.1;
-  margin-bottom: 1.5rem;
-  letter-spacing: 2px;
+  width: 465px;
+  height: 82px;
+  margin: 0;
+  display: flex;
+  align-items: center;
 }
 
 .description {
-  font-size: 1rem;
-  line-height: 1.5;
+  font-size: 20px;
+  line-height: 23px;
   color: #ffffff;
-  margin-bottom: 2.5rem;
-  text-shadow: 1px 1px 3px rgba(0,0,0,0.6);
+  width: 467px;
+  height: 137px;
+  margin: 0;
   font-weight: 400;
+  text-shadow: 1px 1px 3px rgba(0,0,0,0.6);
 }
 
 .actions {
   display: flex;
-  gap: 1.5rem;
+  gap: 1.8rem;
+  margin-top: 1rem;
 }
 
 .registerBtn {
-  background-color: #dfba8c;
-  color: #2b1f13;
+  width: 154px;
+  height: 43px;
+  background-color: #E7BA7F;
+  color: #000000;
   border: none;
-  padding: 0.8rem 2.5rem;
-  font-weight: bold;
-  font-size: 1rem;
+  font-size: 20px;
+  font-weight: 400;
   cursor: pointer;
-  transition: background-color 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
 }
 
 .registerBtn:hover {
-  background-color: #ceaa7d;
+  background-color: #d6ab6f;
 }
 
 .abstractBtn {
+  width: 163px;
+  height: 43px;
   background-color: transparent;
-  color: #dfba8c;
-  border: 1px solid #dfba8c;
-  padding: 0.8rem 2.5rem;
-  font-weight: normal;
-  font-size: 1rem;
+  color: #E7BA7F;
+  border: 1px solid #E7BA7F;
+  font-size: 20px;
+  font-weight: 400;
   cursor: pointer;
-  transition: background-color 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
 }
 
 .abstractBtn:hover {
-  background-color: rgba(223, 186, 140, 0.1);
+  background-color: rgba(231, 186, 127, 0.1);
 }
 
-/* Bottom Cards Overlay */
+
+/* Main Section Content Positioning */
+.leftMain {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  margin-top: -10%;
+  padding-left: 2rem;
+}
+
+.rightMain {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  width: 45%;
+  max-width: 600px;
+  padding-right: 2rem;
+  margin-top: -5%;
+}
+#SAME
+
+.dots {
+  display: flex;
+  gap: 0.5rem;
+  justify-content: center;
+  padding: 10px 0;
+}
+
+.dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.2);
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.dotActive {
+  background: #dfba8c;
+  transform: scale(1.3);
+  box-shadow: 0 0 10px rgba(223, 186, 140, 0.5);
+}
+
+/* Close Button Styling - Figma Style */
+.closeCardBtn {
+  position: absolute;
+  top: -24px;
+  right: 24px;
+  width: 44px;
+  height: 44px;
+  background: #dfba8c;
+  color: #2b1b11;
+  border: none;
+  border-radius: 50%;
+  cursor: pointer;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
+  transition: transform 0.3s, background-color 0.3s;
+}
+
+.closeCardBtn:hover {
+  transform: scale(1.1);
+  background-color: #ceaa7d;
+}
+
+.closeCardBtn svg {
+  width: 18px;
+  height: 18px;
+}
+
+/* Figma Accurate Overlay Position and Sizing */
 .bottomCardsOverlay {
   position: absolute;
   bottom: 0;
   right: 0;
-  width: 600px; /* Estimated width */
-  height: 250px;
-  z-index: 3;
+  width: 643px;
+  height: 214px;
+  z-index: 5;
+  padding: 0;
+  background: transparent;
+  overflow: visible;
 }
 
 .cardsContainer {
-  background-color: rgba(69, 44, 27, 0.8);
-  backdrop-filter: blur(10px);
-  width: 100%;
-  height: 100%;
-  border-top-left-radius: 40px;
-  padding: 3rem 2rem 2rem 4rem;
+  background-color: rgba(43, 27, 17, 0.95);
+  backdrop-filter: blur(40px);
+  border-top-left-radius: 48px; /* Figma Radius */
+  padding: 1.5rem 2rem 1rem 2.5rem;
   display: flex;
-  align-items: center;
-  gap: 1.5rem;
-  position: relative;
-  /* Shift it slightly off screen to the right as in visual */
-  transform: translateX(10%);
+  flex-direction: column;
+  height: 100%;
+  width: 100%;
+  justify-content: space-between;
+  box-shadow: -10px -10px 40px rgba(0, 0, 0, 0.5);
+  transition: all 0.5s ease;
 }
 
-.closeCardBtn {
-  position: absolute;
-  top: 1.5rem;
-  left: -1rem;
-  width: 32px;
-  height: 32px;
-  border-radius: 50%;
-  background-color: #dfba8c;
-  color: #3b2a1a;
+.sliderHead {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.8rem;
+}
+
+.sliderHead h2 {
+  font-size: 0.9rem;
+  color: #fff;
+  font-family: var(--oswald-font), 'Oswald', sans-serif;
+  text-transform: uppercase;
+  letter-spacing: 1.2px;
+  opacity: 0.8;
+}
+
+.controls {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.navBtn {
+  width: 1.8rem;
+  height: 1.8rem;
   border: none;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.08);
+  color: #fff;
   font-size: 1rem;
-  font-weight: bold;
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+  transition: all 0.3s;
 }
 
-.cardBox {
-  flex-shrink: 0;
-  width: 200px;
-  height: 140px;
-  background-color: #d2d2d2;
-  border-radius: 16px;
-  box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+.navBtn:hover:not(:disabled) {
+  background: #dfba8c;
+  color: #2b1b11;
 }
 
-.cardBoxCut {
-  width: 280px;
-  border-top-right-radius: 0;
-  border-bottom-right-radius: 0;
+.navBtn:disabled {
+  opacity: 0.15;
+  cursor: default;
 }
 
-/* Responsive Handling */
-@media (max-width: 1200px) {
-  .title {
-    font-size: 6rem;
-  }
-  .content {
-    padding: 6rem 4rem;
-  }
+.slider {
+  width: 100%;
+  overflow: hidden;
 }
 
+.slider:hover .track {
+  animation-play-state: paused;
+}
+
+.wrap {
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+.wrap::-webkit-scrollbar {
+  display: none;
+}
+
+.track {
+  display: flex;
+  gap: 1.5rem;
+  align-items: flex-start;
+  justify-content: flex-start;
+  padding-bottom: 10px;
+  width: max-content;
+  animation: scroll 60s linear infinite;
+}
+
+@keyframes scroll {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+.projectCard {
+  position: relative;
+  flex: 0 0 100px;
+  height: 154px; /* Figma Height */
+  border-radius: 12px;
+  overflow: hidden;
+  cursor: pointer;
+  transition: flex-basis 0.6s cubic-bezier(0.2, 0.8, 0.2, 1), transform 0.4s;
+  background: #1a110a;
+}
+
+.projectCard[data-active="true"] {
+  flex-basis: 550px; /* Increased for detail button visibility */
+  transform: scale(1.01);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.7);
+}
+
+.projectCardBg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: brightness(0.5);
+  transition: filter 0.3s;
+}
+
+.projectCardContent {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 0.5rem;
+  z-index: 2;
+  transition: all 0.4s ease;
+}
+
+.projectCardTitle {
+  color: #fff;
+  font-weight: 700;
+  font-size: 0.8rem;
+  writing-mode: vertical-rl;
+  transform: rotate(180deg);
+  text-transform: uppercase;
+  font-family: var(--oswald-font), 'Oswald', sans-serif;
+  letter-spacing: 1px;
+  white-space: nowrap;
+}
+
+.projectCardThumb,
+.projectCardInfo,
+.projectCardBtn {
+  display: none;
+  opacity: 0;
+  transition: opacity 0.4s ease;
+}
+
+.projectCard[data-active="true"] .projectCardContent {
+  flex-direction: row;
+  align-items: center;
+  padding: 1rem;
+  gap: 1.5rem;
+  justify-content: flex-start;
+}
+
+.projectCard[data-active="true"] .projectCardTitle {
+  writing-mode: horizontal-tb;
+  transform: none;
+  font-size: 1.2rem;
+  min-width: fit-content;
+}
+
+.projectCard[data-active="true"] .projectCardThumb {
+  display: block;
+  opacity: 1;
+  width: 272px; /* Figma Width */
+  height: 154px; /* Figma Height */
+  object-fit: cover;
+  border-radius: 8px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+}
+
+.projectCard[data-active="true"] .projectCardInfo {
+  display: flex !important;
+  flex-direction: column;
+  gap: 0.6rem;
+  opacity: 1;
+}
+
+.projectCard[data-active="true"] .projectCardBtn {
+  display: block !important;
+  opacity: 1;
+}
+
+.projectCardDesc {
+  color: #ddd;
+  font-size: 0.75rem;
+  line-height: 1.4;
+  max-width: 180px;
+  font-weight: 300;
+}
+
+.projectCardBtn {
+  padding: 0.5rem 1.2rem;
+  border: none;
+  border-radius: 4px;
+  background: #dfba8c;
+  color: #2b1b11;
+  font-size: 0.7rem;
+  font-weight: 800;
+  cursor: pointer;
+  width: fit-content;
+  text-transform: uppercase;
+  transition: all 0.3s;
+}
+
+.dots {
+  display: flex;
+  gap: 0.5rem;
+  justify-content: center;
+  padding: 4px 0;
+}
+
+.dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.15);
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.dotActive {
+  background: #dfba8c;
+  transform: scale(1.3);
+}
+
+/* Responsive Overrides - Maintain Relative Scale */
 @media (max-width: 900px) {
-  .content {
-    flex-direction: column;
-    padding: 4rem 2rem;
-  }
-  
-  .leftMain {
-    margin-top: 0;
-    align-items: flex-start;
-  }
-
-  .title {
-    font-size: 5rem;
-  }
-  
-  .rightMain {
-    width: 100%;
-    max-width: none;
-    margin-top: 2rem;
-    padding-right: 0;
-  }
-
   .bottomCardsOverlay {
-    transform: none;
-    position: relative;
     width: 100%;
-    margin-top: 2rem;
+    height: auto;
+    position: relative;
+    max-width: none;
   }
   
   .cardsContainer {
-    border-radius: 20px;
-    padding-left: 2rem;
-    transform: none;
+    border-radius: 24px;
+    padding: 1.5rem;
+    height: auto;
+  }
+
+  .projectCard {
+    height: 140px;
+    flex-basis: 3.5rem;
   }
   
-  .closeCardBtn {
-    left: 1rem;
-    top: -1rem;
+  .projectCard[data-active="true"] {
+    flex-basis: 320px;
+  }
+
+  .projectCard[data-active="true"] .projectCardThumb {
+    width: 180px;
+    height: 120px;
   }
 }
