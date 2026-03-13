@@ -16,7 +16,11 @@ export default function Test() {
 
 
 
+<<<<<<< HEAD
 import EventsCarousel from "../../components/custom/Carousel";
+=======
+import EventsCarousel from "../../components/Carousel";
+>>>>>>> hello
 import ProfileCard from "../../components/ProfileCard";
 import styles from "./profile.module.css";
 import Link from "next/link";
