@@ -3,7 +3,6 @@
 
 import { useRef, useState, MouseEvent, ReactNode } from "react";
 import { motion, useMotionValue, useSpring } from "motion/react";
-import "./TiltedCard.css";
 
 type TiltedCardProps = {
   imageSrc: string;
@@ -96,7 +95,7 @@ export default function TiltedCard({
 
   return (
     <figure
-      className="tilted-card-figure"
+      className="relative w-full h-full flex flex-col items-center justify-center cursor-pointer"
       style={{
         height: containerHeight,
         width: containerWidth,
@@ -106,15 +105,18 @@ export default function TiltedCard({
       onMouseLeave={handleMouseLeave}
       onClick={onClick}
     >
-      <div ref={ref} className="tilted-card-inner-wrapper">
+      <div
+        ref={ref}
+        className="relative w-full h-full perspective-[800px] flex items-center justify-center"
+      >
         {showMobileWarning && (
-          <div className="tilted-card-mobile-alert">
+          <div className="absolute top-4 text-center text-xs text-[#f9fafb] z-10 block sm:hidden">
             This effect is not optimized for mobile. Check on desktop.
           </div>
         )}
 
         <motion.div
-          className="tilted-card-inner"
+          className="relative [transform-style:preserve-3d]"
           style={{
             width: imageWidth,
             height: imageHeight,
@@ -126,7 +128,7 @@ export default function TiltedCard({
           <motion.img
             src={imageSrc}
             alt={altText}
-            className="tilted-card-img"
+            className="absolute top-0 left-0 object-cover rounded-[18px] shadow-[0_25px_50px_-12px_rgba(0,0,0,0.8),0_0_0_1px_rgba(156,163,175,0.25)] will-change-transform translate-z-0"
             style={{
               width: imageWidth,
               height: imageHeight,
@@ -134,7 +136,7 @@ export default function TiltedCard({
           />
 
           {displayOverlayContent && overlayContent && (
-            <motion.div className="tilted-card-overlay">
+            <motion.div className="tilted-card-overlay absolute top-0 left-0 z-[2] will-change-transform translate-z-[30px] p-4 flex items-end justify-start">
               {overlayContent}
             </motion.div>
           )}
@@ -142,7 +144,7 @@ export default function TiltedCard({
 
         {showTooltip && (
           <motion.figcaption
-            className="tilted-card-caption"
+            className="pointer-events-none absolute left-0 top-0 rounded-full bg-[rgba(15,23,42,0.95)] py-[0.35rem] px-[0.9rem] text-[0.65rem] tracking-[0.09em] uppercase text-[#f9fafb] z-[3] shadow-[0_4px_12px_rgba(0,0,0,0.6)] hidden sm:block"
             style={{
               x,
               y,

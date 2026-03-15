@@ -1,50 +1,32 @@
-import styles from "./page.module.css";
+"use client";
+
+import { useState, useCallback } from "react";
+import Preloader from "@/components/Home/Preloader";
+import HeroSection from "@/components/Home/HeroSection";
+import AboutPage from "@/app/about/page";
+import Timeline from "@/app/timeline/page";
+import SponsorsPage from "@/app/sponsors/page";
 
 export default function Home() {
+  const [preloaderDone, setPreloaderDone] = useState(false);
+
+  const handlePreloaderComplete = useCallback(() => {
+    setPreloaderDone(true);
+  }, []);
+
   return (
-    <div className={styles.page}>
-      <main className={styles.main}>
-        <div className={styles.intro}>
-          <h1>To get started, edit the page.tsx file.</h1>
-          <p>
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
-        </div>
-        <div className={styles.ctas}>
-          <a
-            className={styles.primary}
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Deploy Now
-          </a>
-          <a
-            className={styles.secondary}
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
-        </div>
-      </main>
-    </div>
+    <main className="w-full min-h-screen relative">
+      {!preloaderDone && <Preloader onComplete={handlePreloaderComplete} />}
+      <HeroSection />
+      <div id="about">
+        <AboutPage />
+      </div>
+      <div id="timeline">
+        <Timeline/>
+      </div>
+      <div id="sponsors">
+        <SponsorsPage />
+      </div>
+    </main>
   );
 }

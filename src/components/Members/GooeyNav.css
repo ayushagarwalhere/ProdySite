@@ -135,7 +135,6 @@
 
 .gooey-nav-container .effect.filter {
   filter: blur(7px) contrast(15);
-  /* contrast adjusted for smoother goo */
   mix-blend-mode: lighten;
 }
 

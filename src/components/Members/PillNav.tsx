@@ -3,7 +3,6 @@
 import { useEffect, useRef, useState } from 'react';
 import Link from 'next/link';
 import { gsap } from 'gsap';
-import './PillNav.css';
 
 interface NavItem {
   label: string;
@@ -243,11 +242,15 @@ const PillNav = ({
   } as React.CSSProperties;
 
   return (
-    <div className="pill-nav-container">
-      <nav className={`pill-nav ${className}`} aria-label="Primary" style={cssVars}>
+    <div className="absolute top-4 z-[99] w-full left-0 md:w-auto md:left-auto">
+      <nav
+        className={`w-max flex items-center box-border h-[42px] md:w-full md:justify-between md:px-4 ${className}`}
+        aria-label="Primary"
+        style={cssVars}
+      >
         {isRouterLink(items?.[0]?.href) ? (
           <Link
-            className="pill-logo"
+            className="w-[42px] h-[42px] rounded-full bg-[var(--base,#000)] p-2 inline-flex items-center justify-center overflow-hidden"
             href={items[0].href}
             aria-label="Home"
             onMouseEnter={handleLogoEnter}
@@ -260,7 +263,7 @@ const PillNav = ({
           </Link>
         ) : (
           <a
-            className="pill-logo"
+            className="w-[42px] h-[42px] rounded-full bg-[var(--base,#000)] p-2 inline-flex items-center justify-center overflow-hidden"
             href={items?.[0]?.href || '#'}
             aria-label="Home"
             onMouseEnter={handleLogoEnter}
@@ -272,29 +275,29 @@ const PillNav = ({
           </a>
         )}
 
-        <div className="pill-nav-items desktop-only" ref={navItemsRef}>
-          <ul className="pill-list" role="menubar">
+        <div className="relative flex items-center h-[42px] bg-[var(--base,#000)] rounded-full hidden md:flex" ref={navItemsRef}>
+          <ul className="list-none flex items-stretch gap-[3px] m-0 p-[3px] h-full" role="menubar">
             {items.map((item, i) => (
               <li key={item.href || `item-${i}`} role="none">
                 {isRouterLink(item.href) ? (
                   <Link
                     role="menuitem"
                     href={item.href}
-                    className={`pill ${activeHref === item.href ? ' is-active' : ''}`}
+                    className={`inline-flex items-center justify-center h-full px-[18px] bg-[var(--pill-bg,#fff)] text-[var(--pill-text,var(--base,#000))] no-underline rounded-full box-border font-semibold text-base leading-none uppercase tracking-[0.2px] whitespace-nowrap cursor-pointer relative overflow-hidden ${activeHref === item.href ? " is-active" : ""}`}
                     aria-label={item.ariaLabel || item.label}
                     onMouseEnter={() => handleEnter(i)}
                     onMouseLeave={() => handleLeave(i)}
                   >
                     <span
-                      className="hover-circle"
+                      className="hover-circle absolute left-1/2 bottom-0 rounded-full bg-[var(--base,#000)] z-[1] block pointer-events-none will-change-transform"
                       aria-hidden="true"
                       ref={el => {
                         circleRefs.current[i] = el;
                       }}
                     />
-                    <span className="label-stack">
-                      <span className="pill-label">{item.label}</span>
-                      <span className="pill-label-hover" aria-hidden="true">
+                    <span className="label-stack relative inline-block leading-none z-[2]">
+                      <span className="pill-label relative z-[2] inline-block leading-none will-change-transform">{item.label}</span>
+                      <span className="pill-label-hover absolute left-0 top-0 text-[var(--hover-text,#fff)] z-[3] inline-block will-change-[transform,opacity]" aria-hidden="true">
                         {item.label}
                       </span>
                     </span>
@@ -303,21 +306,21 @@ const PillNav = ({
                   <a
                     role="menuitem"
                     href={item.href}
-                    className={`pill ${activeHref === item.href ? ' is-active' : ''}`}
+                    className={`inline-flex items-center justify-center h-full px-[18px] bg-[var(--pill-bg,#fff)] text-[var(--pill-text,var(--base,#000))] no-underline rounded-full box-border font-semibold text-base leading-none uppercase tracking-[0.2px] whitespace-nowrap cursor-pointer relative overflow-hidden ${activeHref === item.href ? " is-active" : ""}`}
                     aria-label={item.ariaLabel || item.label}
                     onMouseEnter={() => handleEnter(i)}
                     onMouseLeave={() => handleLeave(i)}
                   >
                     <span
-                      className="hover-circle"
+                      className="hover-circle absolute left-1/2 bottom-0 rounded-full bg-[var(--base,#000)] z-[1] block pointer-events-none will-change-transform"
                       aria-hidden="true"
                       ref={el => {
                         circleRefs.current[i] = el;
                       }}
                     />
-                    <span className="label-stack">
-                      <span className="pill-label">{item.label}</span>
-                      <span className="pill-label-hover" aria-hidden="true">
+                    <span className="label-stack relative inline-block leading-none z-[2]">
+                      <span className="pill-label relative z-[2] inline-block leading-none will-change-transform">{item.label}</span>
+                      <span className="pill-label-hover absolute left-0 top-0 text-[var(--hover-text,#fff)] z-[3] inline-block will-change-[transform,opacity]" aria-hidden="true">
                         {item.label}
                       </span>
                     </span>
@@ -329,24 +332,24 @@ const PillNav = ({
         </div>
 
         <button
-          className="mobile-menu-button mobile-only"
+          className="mobile-menu-button w-[42px] h-[42px] rounded-full bg-[var(--base,#000)] border-none flex flex-col items-center justify-center gap-1 cursor-pointer p-0 relative md:hidden"
           onClick={toggleMobileMenu}
           aria-label="Toggle menu"
           ref={hamburgerRef}
         >
-          <span className="hamburger-line" />
-          <span className="hamburger-line" />
+          <span className="hamburger-line w-4 h-0.5 bg-[var(--pill-bg,#fff)] rounded-sm transition-all duration-[0.01s] ease-[inherit] origin-center" />
+          <span className="hamburger-line w-4 h-0.5 bg-[var(--pill-bg,#fff)] rounded-sm transition-all duration-[0.01s] ease-[inherit] origin-center" />
         </button>
       </nav>
 
-      <div className="mobile-menu-popover mobile-only" ref={mobileMenuRef} style={cssVars}>
-        <ul className="mobile-menu-list">
+      <div className="mobile-menu-popover absolute top-12 left-4 right-4 bg-[var(--base,#f0f0f0)] rounded-[27px] shadow-[0_8px_32px_rgba(0,0,0,0.12)] z-[998] opacity-0 origin-top invisible" ref={mobileMenuRef} style={cssVars}>
+        <ul className="mobile-menu-list list-none m-0 p-[3px] flex flex-col gap-[3px]">
           {items.map((item, i) => (
             <li key={item.href || `mobile-item-${i}`}>
               {isRouterLink(item.href) ? (
                 <Link
                   href={item.href}
-                  className={`mobile-menu-link ${activeHref === item.href ? ' is-active' : ''}`}
+                  className={`mobile-menu-link block py-3 px-4 text-[var(--pill-text,#fff)] bg-[var(--pill-bg,#fff)] no-underline text-base font-medium rounded-[50px] transition-all duration-200 ${activeHref === item.href ? " is-active" : ""}`}
                   onClick={() => setIsMobileMenuOpen(false)}
                 >
                   {item.label}
@@ -354,7 +357,7 @@ const PillNav = ({
               ) : (
                 <a
                   href={item.href}
-                  className={`mobile-menu-link ${activeHref === item.href ? ' is-active' : ''}`}
+                  className={`mobile-menu-link block py-3 px-4 text-[var(--pill-text,#fff)] bg-[var(--pill-bg,#fff)] no-underline text-base font-medium rounded-[50px] transition-all duration-200 ${activeHref === item.href ? " is-active" : ""}`}
                   onClick={() => setIsMobileMenuOpen(false)}
                 >
                   {item.label}

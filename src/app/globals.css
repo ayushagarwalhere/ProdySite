@@ -1,17 +1,17 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
 
+/* ═══ Alchemy Theme Tokens ═══ */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+  --bg-primary: #0a0a0a;
+  --bg-secondary: #111111;
+  --gold: #d4af37;
+  --gold-light: #e8c94a;
+  --gold-dark: #8b6914;
+  --sand: #e8d5b7;
+  --papyrus: #c9b896;
+  --emerald: #2d6b4f;
+  --foreground: #ededed;
+  --muted: #888;
 }
 
 html,
@@ -22,8 +22,8 @@ body {
 
 body {
   color: var(--foreground);
-  background: var(--background);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--bg-primary);
+  font-family: "Inter", "Geist", system-ui, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
@@ -39,14 +39,107 @@ a {
   text-decoration: none;
 }
 
-@media (prefers-color-scheme: dark) {
-  html {
-    color-scheme: dark;
-  }
+/* ═══ Selection ═══ */
+::selection {
+  background: var(--gold);
+  color: var(--bg-primary);
 }
 
+/* ═══ Scrollbar ═══ */
+::-webkit-scrollbar {
+  width: 6px;
+}
+::-webkit-scrollbar-track {
+  background: var(--bg-primary);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--gold-dark);
+  border-radius: 3px;
+}
 
+/* ═══ Preloader Animations ═══ */
+@keyframes preloader-fade-out {
+  0% { opacity: 1; }
+  100% { opacity: 0; pointer-events: none; }
+}
 
+@keyframes eye-of-horus-draw {
+  0% { stroke-dashoffset: 800; }
+  100% { stroke-dashoffset: 0; }
+}
+
+@keyframes logo-reveal {
+  0% { opacity: 0; transform: scale(0.7); filter: blur(10px); }
+  50% { opacity: 1; transform: scale(1.05); filter: blur(0px); }
+  100% { opacity: 1; transform: scale(1); filter: blur(0px); }
+}
+
+@keyframes glow-pulse {
+  0%, 100% { box-shadow: 0 0 20px rgba(212, 175, 55, 0.3), 0 0 60px rgba(212, 175, 55, 0.1); }
+  50% { box-shadow: 0 0 40px rgba(212, 175, 55, 0.6), 0 0 100px rgba(212, 175, 55, 0.2); }
+}
+
+@keyframes hieroglyph-float {
+  0% { transform: translateY(20px); opacity: 0; }
+  50% { opacity: 0.3; }
+  100% { transform: translateY(-20px); opacity: 0; }
+}
+
+@keyframes text-reveal {
+  0% { clip-path: inset(0 100% 0 0); }
+  100% { clip-path: inset(0 0% 0 0); }
+}
+
+@keyframes particle-float {
+  0% { transform: translateY(0) translateX(0); opacity: 0; }
+  20% { opacity: 1; }
+  100% { transform: translateY(-100vh) translateX(30px); opacity: 0; }
+}
+
+@keyframes ankh-spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* ═══ Hero Animations ═══ */
+@keyframes hero-title-in {
+  0% { opacity: 0; transform: translateY(60px); letter-spacing: 0.5em; }
+  100% { opacity: 1; transform: translateY(0); letter-spacing: 0.3em; }
+}
+
+@keyframes hero-subtitle-in {
+  0% { opacity: 0; transform: translateY(30px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes hero-line-expand {
+  0% { width: 0; }
+  100% { width: 120px; }
+}
+
+@keyframes float-gentle {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-15px); }
+}
+
+/* ═══ Navbar ═══ */
+@keyframes menu-slide-in {
+  0% { transform: translateX(100%); }
+  100% { transform: translateX(0); }
+}
+
+@keyframes menu-item-in {
+  0% { opacity: 0; transform: translateX(40px); }
+  100% { opacity: 1; transform: translateX(0); }
+}
+
+/* Events page slider */
+@keyframes scroll {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+/* ═══ Utility ═══ */
 nextjs-portal {
   display: none;
 }

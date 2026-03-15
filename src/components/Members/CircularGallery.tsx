@@ -1,7 +1,6 @@
 import { Camera, Mesh, Plane, Program, Renderer, Texture, Transform } from 'ogl';
 import { useEffect, useRef } from 'react';
 
-import './CircularGallery.css';
 
 function debounce(func: Function, wait: number) {
   let timeout: NodeJS.Timeout;
@@ -557,5 +556,5 @@ export default function CircularGallery({
     return () => cancelAnimationFrame(requestRef.current);
   }, [autoPlaySpeed]);
 
-  return <div className="circular-gallery" ref={containerRef} />;
+  return <div className="w-full h-full overflow-hidden cursor-grab active:cursor-grabbing" ref={containerRef} />;
 }
