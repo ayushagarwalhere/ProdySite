@@ -2,152 +2,205 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { FormEvent, useState } from "react";
 import { register } from "@/lib/api/auth";
+import { FormEvent, useState } from "react";
 import { useRouter } from "next/navigation";
 
 export default function SignupPage() {
   const router = useRouter();
-  const [firstName, setFirstName] = useState("");
-  const [lastName, setLastName] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [form, setForm] = useState({ username: "", name: "", email: "", password: "" });
   const [loading, setLoading] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
+  const [agreed, setAgreed] = useState(false);
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setForm(f => ({ ...f, [e.target.name]: e.target.value }));
+  };
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    if (!agreed) { alert("Please agree to the Terms and Conditions."); return; }
     setLoading(true);
     try {
-      await register(email, password);
-      alert("Account created. Please check your email to verify your account.");
-      router.push("/login");
-    } catch (error: unknown) {
-      console.error("Signup error:", error);
-      const axiosError = error as {
-        response?: { data?: { message?: string }; status?: number };
-      };
-      const msg =
-        axiosError.response?.data?.message ??
-        (axiosError.response
-          ? `Request failed (${axiosError.response.status})`
-          : "Cannot reach server. Is the backend running on port 3000?");
-      alert(msg);
+      await register(form.username, form.name, form.email, form.password);
+      router.push("/Profile");
+    } catch {
+      alert("Sign up failed. Please try again.");
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <div className="min-h-screen w-full bg-[#E8C697] flex flex-col md:flex-row items-stretch font-sans overflow-auto">
-      <div className="flex flex-col md:flex-row w-full flex-1 min-h-0">
-        {/* Image section */}
-        <div className="relative flex-shrink-0 w-full md:w-[45%] min-h-[280px] md:min-h-screen md:max-w-[673px] rounded-none md:rounded-[15px] overflow-hidden md:mt-8 md:ml-8 md:mb-8 md:mr-0">
-          <Image
-            src="/Rectangle 1.png"
-            alt="Egyptian thematic image"
-            fill
-            sizes="(max-width: 768px) 100vw, 45vw"
-            className="object-cover object-center"
-            priority
-          />
-        </div>
+    <>
+      <style>{`
+        @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400&family=DM+Sans:wght@300;400;500&display=swap');
 
-        {/* Form section */}
-        <div className="flex-1 flex flex-col justify-center px-4 sm:px-6 md:px-[8%] md:pr-[5%] py-8 md:py-12">
-          <div className="w-full max-w-[480px] mx-auto md:mx-0">
-            <h1 className="text-[#4A2B1C] font-semibold tracking-tight leading-tight text-2xl sm:text-3xl md:text-4xl mb-3 md:mb-5">
+        .auth-page {
+          min-height: 100vh;
+          width: 100%;
+          background: #0a0a0a;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          padding: 80px 24px 40px;
+          box-sizing: border-box;
+        }
+        .auth-inner {
+          display: grid;
+          grid-template-columns: 420px 1fr;
+          gap: 3rem;
+          width: 100%;
+          max-width: 1000px;
+          align-items: center;
+        }
+        .auth-img-wrap {
+          width: 420px;
+          height: 600px;
+          border-radius: 12px;
+          overflow: hidden;
+          border: 1px solid rgba(180,124,60,0.2);
+          position: relative;
+          flex-shrink: 0;
+        }
+        .auth-form-wrap {
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+          min-width: 0;
+        }
+        .auth-input {
+          width: 100%;
+          padding: 0.9rem 1rem;
+          background: rgba(180,124,60,0.08);
+          border: 1px solid rgba(180,124,60,0.25);
+          border-radius: 4px;
+          color: #f0e8d6;
+          font-size: 0.95rem;
+          font-family: 'DM Sans', sans-serif;
+          letter-spacing: 0.03em;
+          outline: none;
+          transition: border-color 0.2s;
+          box-sizing: border-box;
+        }
+        .auth-input:focus { border-color: rgba(180,124,60,0.7); }
+        .auth-input::placeholder { color: rgba(180,124,60,0.45); }
+        .auth-btn {
+          width: 100%;
+          padding: 0.95rem;
+          background: #b47c3c;
+          border: 1px solid #b47c3c;
+          border-radius: 4px;
+          color: #0a0703;
+          font-size: 0.875rem;
+          font-family: 'DM Sans', sans-serif;
+          font-weight: 500;
+          text-transform: uppercase;
+          letter-spacing: 0.18em;
+          cursor: pointer;
+          transition: background 0.2s;
+          clip-path: polygon(6px 0%, 100% 0%, calc(100% - 6px) 100%, 0% 100%);
+        }
+        .auth-btn:hover { background: #c98e4a; }
+        .auth-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+        .ornament { display: flex; align-items: center; gap: 8px; opacity: 0.5; margin-bottom: 2rem; }
+        .ornament-line-l { flex: 1; height: 1px; background: linear-gradient(to right, transparent, rgba(180,124,60,0.5)); }
+        .ornament-line-r { flex: 1; height: 1px; background: linear-gradient(to left, transparent, rgba(180,124,60,0.5)); }
+        .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; }
+
+        @media (max-width: 768px) {
+          .auth-inner { grid-template-columns: 1fr; }
+          .auth-img-wrap { width: 100%; height: 260px; }
+        }
+        @media (max-width: 480px) {
+          .two-col { grid-template-columns: 1fr; }
+        }
+      `}</style>
+
+      <div className="auth-page">
+
+        <div style={{
+          position: "fixed", top: "40%", left: "50%",
+          transform: "translate(-50%, -50%)",
+          width: 500, height: 500, borderRadius: "50%",
+          background: "radial-gradient(circle, rgba(180,124,60,0.07) 0%, transparent 70%)",
+          filter: "blur(80px)", pointerEvents: "none", zIndex: 0,
+        }} />
+
+        <div className="auth-inner" style={{ position: "relative", zIndex: 1 }}>
+
+          {/* Image */}
+          <div className="auth-img-wrap">
+            <Image
+              src="/Rectangle 1.png"
+              alt="Egyptian thematic image"
+              width={420}
+              height={600}
+              style={{ width: "100%", height: "100%", objectFit: "cover", objectPosition: "center", display: "block" }}
+              priority
+            />
+            <div style={{ position: "absolute", inset: 0, background: "linear-gradient(180deg, transparent 50%, rgba(8,6,3,0.6) 100%)" }} />
+          </div>
+
+          {/* Form */}
+          <div className="auth-form-wrap">
+            <div className="ornament">
+              <div className="ornament-line-l" />
+              <svg width="10" height="10" viewBox="0 0 10 10" fill="none"><polygon points="5,0 10,5 5,10 0,5" fill="#b47c3c" opacity="0.8" /><circle cx="5" cy="5" r="1.5" fill="#0a0703" /></svg>
+              <div className="ornament-line-r" />
+            </div>
+
+            <h1 style={{ fontFamily: "'Cormorant Garamond', serif", fontWeight: 300, letterSpacing: "0.08em", textTransform: "uppercase", color: "#f0e8d6", fontSize: "clamp(2rem, 4vw, 3rem)", margin: "0 0 0.5rem" }}>
               Create an account
             </h1>
-            <p className="text-[#2b2b2b] text-base md:text-[1.1rem] mb-6 md:mb-8">
-              Already have an account ?{" "}
-              <Link
-                href="/login"
-                className="text-[#B36633] no-underline font-semibold hover:underline"
-              >
+            <p style={{ fontFamily: "'DM Sans', sans-serif", fontSize: "0.9rem", color: "rgba(180,124,60,0.7)", marginBottom: "2rem" }}>
+              Already have an account?{" "}
+              <Link href="/login" style={{ color: "#b47c3c", fontWeight: 500, borderBottom: "1px solid rgba(180,124,60,0.4)", paddingBottom: 1 }}>
                 Log in
               </Link>
             </p>
 
-            <form className="flex flex-col gap-4 md:gap-5" onSubmit={handleSubmit}>
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <div className="relative w-full">
-                  <input
-                    type="text"
-                    placeholder="First Name"
-                    className="w-full px-4 py-3 md:py-4 text-base rounded-xl border-0 bg-[#bd865a] text-[#3b2a1a] outline-none transition-colors placeholder:text-[#4A2B1C]/70 focus:bg-[#c48c5c] focus:outline-2 focus:outline-[#4e2f1d] focus:outline"
-                    value={firstName}
-                    onChange={(e) => setFirstName(e.target.value)}
-                    required
-                  />
-                </div>
-                <div className="relative w-full">
-                  <input
-                    type="text"
-                    placeholder="Last Name"
-                    className="w-full px-4 py-3 md:py-4 text-base rounded-xl border-0 bg-[#bd865a] text-[#3b2a1a] outline-none transition-colors placeholder:text-[#4A2B1C]/70 focus:bg-[#c48c5c] focus:outline-2 focus:outline-[#4e2f1d] focus:outline"
-                    value={lastName}
-                    onChange={(e) => setLastName(e.target.value)}
-                    required
-                  />
-                </div>
+            <form style={{ display: "flex", flexDirection: "column", gap: "1rem" }} onSubmit={handleSubmit}>
+              <div className="two-col">
+                <input type="text" name="username" placeholder="Username" value={form.username} onChange={handleChange} required className="auth-input" />
+                <input type="text" name="name" placeholder="Full Name" value={form.name} onChange={handleChange} required className="auth-input" />
               </div>
 
-              <div className="relative w-full">
-                <input
-                  type="email"
-                  placeholder="College Email"
-                  className="w-full px-4 py-3 md:py-4 text-base rounded-xl border-0 bg-[#bd865a] text-[#3b2a1a] outline-none transition-colors placeholder:text-[#4A2B1C]/70 focus:bg-[#c48c5c] focus:outline-2 focus:outline-[#4e2f1d] focus:outline"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  required
-                />
-              </div>
+              <input type="email" name="email" placeholder="College Email" value={form.email} onChange={handleChange} required className="auth-input" />
 
-              <div className="relative w-full">
+              <div style={{ position: "relative" }}>
                 <input
-                  type="password"
-                  placeholder="Enter your password"
-                  className="w-full px-4 py-3 md:py-4 pr-12 text-base rounded-xl border-0 bg-[#bd865a] text-[#3b2a1a] outline-none transition-colors placeholder:text-[#4A2B1C]/70 focus:bg-[#c48c5c] focus:outline-2 focus:outline-[#4e2f1d] focus:outline"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  required
+                  type={showPassword ? "text" : "password"}
+                  name="password" placeholder="Enter your password"
+                  value={form.password} onChange={handleChange}
+                  required className="auth-input" style={{ paddingRight: "3rem" }}
                 />
                 <button
-                  type="button"
-                  className="absolute right-4 top-1/2 -translate-y-1/2 p-0 w-10 h-10 flex items-center justify-center bg-transparent border-0 text-white/90 hover:text-white cursor-pointer rounded-lg"
-                  aria-label="Toggle password visibility"
+                  type="button" onClick={() => setShowPassword(v => !v)}
+                  style={{ position: "absolute", right: 12, top: "50%", transform: "translateY(-50%)", background: "transparent", border: "none", cursor: "pointer", color: "rgba(180,124,60,0.6)", display: "flex", alignItems: "center", padding: 0 }}
                 >
-                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M12 4.5C7 4.5 2.73 7.61 1 12C2.73 16.39 7 19.5 12 19.5C17 19.5 21.27 16.39 23 12C21.27 7.61 17 4.5 12 4.5ZM12 17C9.24 17 7 14.76 7 12C7 9.24 9.24 7 12 7C14.76 7 17 9.24 17 12C17 14.76 14.76 17 12 17ZM12 9C10.34 9 9 10.34 9 12C9 13.66 10.34 15 12 15C13.66 15 15 13.66 15 12C15 10.34 13.66 9 12 9Z" fill="currentColor" />
-                  </svg>
+                  {showPassword ? (
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+                      <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                      <line x1="1" y1="1" x2="23" y2="23" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+                    </svg>
+                  ) : (
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+                      <path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5z" stroke="currentColor" strokeWidth="1.5" strokeLinejoin="round" />
+                      <circle cx="12" cy="12" r="3" stroke="currentColor" strokeWidth="1.5" />
+                    </svg>
+                  )}
                 </button>
               </div>
 
-              <label className="flex items-center gap-3 cursor-pointer select-none">
-                <input
-                  type="checkbox"
-                  className="w-4 h-4 cursor-pointer accent-[#4A2B1C] border-0 rounded"
-                  required
-                />
-                <span className="text-[#2b2b2b] text-sm md:text-base">
-                  I agree to the{" "}
-                  <Link href="#" className="text-[#B36633] no-underline hover:underline">
-                    Terms and conditions
-                  </Link>
-                </span>
-              </label>
 
-              <button
-                type="submit"
-                className="w-full py-4 md:py-5 rounded-xl text-base md:text-[1.1rem] font-semibold border-0 cursor-pointer transition-colors bg-[#4A2B1C] text-white/90 hover:bg-[#3A2014] hover:text-white mt-1 disabled:opacity-70 disabled:cursor-not-allowed"
-                disabled={loading}
-              >
-                {loading ? "Creating..." : "Create account"}
+              <button type="submit" disabled={loading} className="auth-btn" style={{ marginTop: "0.5rem" }}>
+                {loading ? "Creating account..." : "Create account"}
               </button>
             </form>
           </div>
         </div>
       </div>
-    </div>
+    </>
   );
 }

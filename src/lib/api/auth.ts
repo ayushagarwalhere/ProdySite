@@ -1,7 +1,7 @@
 import { api } from "./client"
 
-export const register = async (email: string, password: string) => {
-  const res = await api.post("/auth/register", { email, password })
+export const register = async (username: string, name: string, email: string, password: string) => {
+  const res = await api.post("/auth/register", { username, name, email, password })
   return res.data
 }
 
@@ -31,4 +31,8 @@ export const resetPassword = async (token: string, password: string) => {
     password,
   })
   return res.data
+}
+
+export const verifyEmail = async (token: string) => {
+  await api.get(`/auth/verify-email?token=${token}`);
 }

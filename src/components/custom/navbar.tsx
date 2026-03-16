@@ -4,27 +4,27 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 
 const navLinks = [
-  { label: "Events",   href: "/events",   num: "01" },
-  { label: "Members",  href: "/members",  num: "02" },
-  { label: "Profile",  href: "/Profile",  num: "03" },
+  { label: "Events", href: "/events", num: "01" },
+  { label: "Members", href: "/members", num: "02" },
+  { label: "Profile", href: "/Profile", num: "03" },
   { label: "Timeline", href: "/timeline", num: "04" },
 ];
 
 const authLinks = [
-  { label: "Login",   href: "/login" },
+  { label: "Login", href: "/login" },
   { label: "Sign Up", href: "/signup" },
 ];
 
 // ── palette (mirrors site-wide alchemy theme) ────────────────────────────
-const GOLD     = "#b47c3c";
+const GOLD = "#b47c3c";
 const GOLD_DIM = "rgba(180,124,60,0.18)";
 const GOLD_MID = "rgba(180,124,60,0.35)";
-const BG       = "#0a0703";
+const BG = "#0a0703";
 
 export default function Navbar() {
-  const [isOpen,   setIsOpen]   = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
-  const [active,   setActive]   = useState<string | null>(null);
+  const [active, setActive] = useState<string | null>(null);
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 50);
@@ -41,6 +41,7 @@ export default function Navbar() {
     <>
       <style>{`
         @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300&family=DM+Sans:wght@300;400;500&family=Syne:wght@700;800&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300&family=DM+Sans:wght@300;400;500&family=Syne:wght@700;800&display=swap');
 
         /* ── scan line that sweeps the nav bar on scroll ── */
         @keyframes scanLine {
@@ -137,10 +138,10 @@ export default function Navbar() {
 
       {/* ════════════ TOP BAR ════════════════════════════════════════════ */}
       <nav style={{
-        position:"fixed", top:0, left:0, right:0, zIndex:1000,
-        display:"flex", alignItems:"center", justifyContent:"space-between",
-        padding:"0 2.5rem",
-        height:64,
+        position: "fixed", top: 0, left: 0, right: 0, zIndex: 1000,
+        display: "flex", alignItems: "center", justifyContent: "space-between",
+        padding: "0 2.5rem",
+        height: 64,
         background: scrolled
           ? "rgba(8,6,3,0.88)"
           : "transparent",
@@ -148,47 +149,47 @@ export default function Navbar() {
         borderBottom: scrolled
           ? `1px solid ${GOLD_DIM}`
           : "1px solid transparent",
-        transition:"background 0.5s ease, border-color 0.5s ease, backdrop-filter 0.5s ease",
+        transition: "background 0.5s ease, border-color 0.5s ease, backdrop-filter 0.5s ease",
       }}>
 
         {/* scan line — appears on scroll */}
         {scrolled && (
           <div style={{
-            position:"absolute", bottom:0, left:0, right:0, height:1,
-            background:`linear-gradient(to right,transparent,${GOLD},transparent)`,
-            animation:"scanLine 3s ease 0.2s both",
-            pointerEvents:"none",
-          }}/>
+            position: "absolute", bottom: 0, left: 0, right: 0, height: 1,
+            background: `linear-gradient(to right,transparent,${GOLD},transparent)`,
+            animation: "scanLine 3s ease 0.2s both",
+            pointerEvents: "none",
+          }} />
         )}
 
         {/* ── Logo ── */}
-        <Link href="/" style={{display:"flex",alignItems:"center",gap:10,textDecoration:"none"}}>
+        <Link href="/" style={{ display: "flex", alignItems: "center", gap: 10, textDecoration: "none" }}>
           {/* mini eye glyph */}
           <svg width="22" height="16" viewBox="0 0 22 16" fill="none"
-            style={{flexShrink:0,opacity:0.8}}>
-            <path d="M1 8 Q11 1 21 8 Q11 15 1 8Z" stroke={GOLD} strokeWidth="0.9" fill="none"/>
-            <circle cx="11" cy="8" r="3.5" stroke={GOLD} strokeWidth="0.8" fill="none"/>
-            <circle cx="11" cy="8" r="1.4" fill={GOLD} opacity="0.9"/>
+            style={{ flexShrink: 0, opacity: 0.8 }}>
+            <path d="M1 8 Q11 1 21 8 Q11 15 1 8Z" stroke={GOLD} strokeWidth="0.9" fill="none" />
+            <circle cx="11" cy="8" r="3.5" stroke={GOLD} strokeWidth="0.8" fill="none" />
+            <circle cx="11" cy="8" r="1.4" fill={GOLD} opacity="0.9" />
             {/* tear */}
             <path d="M11 11.5 Q8.5 15 11 17 Q13.5 15 11 11.5Z"
-              stroke={GOLD} strokeWidth="0.6" fill="none" opacity="0.6"/>
+              stroke={GOLD} strokeWidth="0.6" fill="none" opacity="0.6" />
           </svg>
           <span className="logo-shimmer" style={{
-            fontFamily:"'Syne',sans-serif",
-            fontSize:"0.95rem", fontWeight:800,
-            letterSpacing:"0.28em", textTransform:"uppercase",
+            fontFamily: "'Barlow Condensed',sans-serif",
+            fontSize: "2rem", fontWeight: 800,
+            letterSpacing: "0.28em", textTransform: "uppercase",
           }}>
             Prodyogiki&rsquo;26
           </span>
         </Link>
 
         {/* ── right side: subtle label + burger ── */}
-        <div style={{display:"flex",alignItems:"center",gap:20}}>
+        <div style={{ display: "flex", alignItems: "center", gap: 20 }}>
           {/* current section hint (hidden on mobile) */}
           <span style={{
-            fontFamily:"'DM Sans',sans-serif",
-            fontSize:10, letterSpacing:"0.22em",
-            textTransform:"uppercase", color:"rgba(180,124,60,0.45)",
+            fontFamily: "'DM Sans',sans-serif",
+            fontSize: 10, letterSpacing: "0.22em",
+            textTransform: "uppercase", color: "rgba(180,124,60,0.45)",
             display: isOpen ? "none" : "block",
           }}>
             Menu
@@ -199,38 +200,38 @@ export default function Navbar() {
             onClick={() => setIsOpen(!isOpen)}
             aria-label="Toggle menu"
             style={{
-              position:"relative", zIndex:1100,
-              width:44, height:44,
-              display:"flex", flexDirection:"column",
-              alignItems:"center", justifyContent:"center",
-              gap:5, cursor:"pointer",
-              background:"transparent", border:"none", padding:0,
+              position: "relative", zIndex: 1100,
+              width: 44, height: 44,
+              display: "flex", flexDirection: "column",
+              alignItems: "center", justifyContent: "center",
+              gap: 5, cursor: "pointer",
+              background: "transparent", border: "none", padding: 0,
             }}
           >
             {/* animated burger lines */}
             {[
-              { w:24, delay:0, rotate: isOpen ? "translateY(7px) rotate(45deg)"  : "none" },
-              { w:16, delay:0, rotate: isOpen ? "translateX(20px)"               : "none", op: isOpen ? 0 : 1 },
-              { w:24, delay:0, rotate: isOpen ? "translateY(-7px) rotate(-45deg)" : "none" },
-            ].map(({w,rotate,op},i) => (
+              { w: 24, delay: 0, rotate: isOpen ? "translateY(7px) rotate(45deg)" : "none" },
+              { w: 16, delay: 0, rotate: isOpen ? "translateX(20px)" : "none", op: isOpen ? 0 : 1 },
+              { w: 24, delay: 0, rotate: isOpen ? "translateY(-7px) rotate(-45deg)" : "none" },
+            ].map(({ w, rotate, op }, i) => (
               <span key={i} style={{
-                display:"block", width:w, height:"1.5px",
-                background:GOLD,
-                transition:"all 0.35s cubic-bezier(.22,1,.36,1)",
-                transformOrigin:"center",
+                display: "block", width: w, height: "1.5px",
+                background: GOLD,
+                transition: "all 0.35s cubic-bezier(.22,1,.36,1)",
+                transformOrigin: "center",
                 transform: rotate,
                 opacity: op ?? 1,
-              }}/>
+              }} />
             ))}
 
             {/* hover ring */}
             <span style={{
-              position:"absolute", inset:0, borderRadius:"50%",
-              border:`1px solid ${GOLD_DIM}`,
-              transition:"border-color 0.25s, transform 0.25s",
+              position: "absolute", inset: 0, borderRadius: "50%",
+              border: `1px solid ${GOLD_DIM}`,
+              transition: "border-color 0.25s, transform 0.25s",
             }}
-              onMouseEnter={e=>(e.currentTarget.style.borderColor=GOLD_MID)}
-              onMouseLeave={e=>(e.currentTarget.style.borderColor=GOLD_DIM)}
+              onMouseEnter={e => (e.currentTarget.style.borderColor = GOLD_MID)}
+              onMouseLeave={e => (e.currentTarget.style.borderColor = GOLD_DIM)}
             />
           </button>
         </div>
@@ -238,86 +239,86 @@ export default function Navbar() {
 
       {/* ════════════ OVERLAY ════════════════════════════════════════════ */}
       <div style={{
-        position:"fixed", inset:0, zIndex:1050,
-        display:"flex",
+        position: "fixed", inset: 0, zIndex: 1050,
+        display: "flex",
         pointerEvents: isOpen ? "auto" : "none",
       }}>
         {/* Backdrop */}
-        <div onClick={()=>setIsOpen(false)} style={{
-          position:"absolute", inset:0,
-          background:"rgba(4,3,2,0.75)",
+        <div onClick={() => setIsOpen(false)} style={{
+          position: "absolute", inset: 0,
+          background: "rgba(4,3,2,0.75)",
           opacity: isOpen ? 1 : 0,
-          transition:"opacity 0.45s ease",
-        }}/>
+          transition: "opacity 0.45s ease",
+        }} />
 
         {/* ── Slide panel ── */}
         <div style={{
-          position:"absolute", right:0, top:0,
-          height:"100%", width:"100%", maxWidth:460,
-          display:"flex", flexDirection:"column",
-          justifyContent:"center",
-          padding:"0 3rem",
-          background:`linear-gradient(160deg,${BG} 0%,#110d07 60%,${BG} 100%)`,
-          borderLeft:`1px solid ${GOLD_DIM}`,
+          position: "absolute", right: 0, top: 0,
+          height: "100%", width: "100%", maxWidth: 460,
+          display: "flex", flexDirection: "column",
+          justifyContent: "center",
+          padding: "0 3rem",
+          background: `linear-gradient(160deg,${BG} 0%,#110d07 60%,${BG} 100%)`,
+          borderLeft: `1px solid ${GOLD_DIM}`,
           transform: isOpen ? "translateX(0)" : "translateX(100%)",
-          transition:"transform 0.5s cubic-bezier(0.22,1,0.36,1)",
-          overflow:"hidden",
+          transition: "transform 0.5s cubic-bezier(0.22,1,0.36,1)",
+          overflow: "hidden",
         }}>
 
           {/* cartouche tick strip on left edge */}
           <div className="panel-ticks">
-            {Array.from({length:16}).map((_,i)=>(
-              <div key={i} className={`panel-tick ${i%4===0?"lg":""}`}/>
+            {Array.from({ length: 16 }).map((_, i) => (
+              <div key={i} className={`panel-tick ${i % 4 === 0 ? "lg" : ""}`} />
             ))}
           </div>
 
           {/* ambient inner glow */}
           <div style={{
-            position:"absolute", width:300, height:300,
-            top:"10%", right:"-80px", borderRadius:"50%",
-            background:`radial-gradient(circle,rgba(180,124,60,0.07) 0%,transparent 65%)`,
-            pointerEvents:"none",
-          }}/>
+            position: "absolute", width: 300, height: 300,
+            top: "10%", right: "-80px", borderRadius: "50%",
+            background: `radial-gradient(circle,rgba(180,124,60,0.07) 0%,transparent 65%)`,
+            pointerEvents: "none",
+          }} />
           <div style={{
-            position:"absolute", width:200, height:200,
-            bottom:"15%", left:"-40px", borderRadius:"50%",
-            background:`radial-gradient(circle,rgba(140,80,20,0.06) 0%,transparent 65%)`,
-            pointerEvents:"none",
-          }}/>
+            position: "absolute", width: 200, height: 200,
+            bottom: "15%", left: "-40px", borderRadius: "50%",
+            background: `radial-gradient(circle,rgba(140,80,20,0.06) 0%,transparent 65%)`,
+            pointerEvents: "none",
+          }} />
 
           {/* ── top ornament ── */}
           <div style={{
-            position:"absolute", top:"2.5rem", left:"3rem",
-            display:"flex", alignItems:"center", gap:10,
+            position: "absolute", top: "2.5rem", left: "3rem",
+            display: "flex", alignItems: "center", gap: 10,
             opacity: isOpen ? 1 : 0,
             transform: isOpen ? "translateY(0)" : "translateY(-8px)",
-            transition:"all 0.4s ease 0.1s",
+            transition: "all 0.4s ease 0.1s",
           }}>
             <svg width="18" height="14" viewBox="0 0 18 14" fill="none">
               <path d="M0.5 7 Q9 0.5 17.5 7 Q9 13.5 0.5 7Z"
-                stroke={GOLD} strokeWidth="0.8" fill="none" opacity="0.5"/>
-              <circle cx="9" cy="7" r="2.5" stroke={GOLD} strokeWidth="0.7" fill="none" opacity="0.5"/>
-              <circle cx="9" cy="7" r="1" fill={GOLD} opacity="0.5"/>
+                stroke={GOLD} strokeWidth="0.8" fill="none" opacity="0.5" />
+              <circle cx="9" cy="7" r="2.5" stroke={GOLD} strokeWidth="0.7" fill="none" opacity="0.5" />
+              <circle cx="9" cy="7" r="1" fill={GOLD} opacity="0.5" />
             </svg>
             <span style={{
-              fontFamily:"'Syne',sans-serif",
-              fontSize:9, letterSpacing:"0.28em",
-              textTransform:"uppercase", color:GOLD, fontWeight:700, opacity:0.5,
+              fontFamily: "'Syne',sans-serif",
+              fontSize: 9, letterSpacing: "0.28em",
+              textTransform: "uppercase", color: GOLD, fontWeight: 700, opacity: 0.5,
             }}>Navigation</span>
           </div>
 
           {/* ── Nav links ── */}
-          <div style={{display:"flex",flexDirection:"column",marginBottom:32}}>
-            {navLinks.map((link,i)=>(
+          <div style={{ display: "flex", flexDirection: "column", marginBottom: 32 }}>
+            {navLinks.map((link, i) => (
               <Link
                 key={link.href}
                 href={link.href}
-                onClick={()=>setIsOpen(false)}
+                onClick={() => setIsOpen(false)}
                 className="menu-link"
                 style={{
                   opacity: isOpen ? 1 : 0,
                   transform: isOpen ? "translateX(0)" : "translateX(36px)",
-                  transition:`opacity 0.4s ease ${0.12+i*0.07}s, transform 0.4s cubic-bezier(.22,1,.36,1) ${0.12+i*0.07}s, border-color 0.25s`,
+                  transition: `opacity 0.4s ease ${0.12 + i * 0.07}s, transform 0.4s cubic-bezier(.22,1,.36,1) ${0.12 + i * 0.07}s, border-color 0.25s`,
                 }}
               >
                 <span className="menu-link-num">{link.num}</span>
@@ -326,17 +327,17 @@ export default function Navbar() {
                 {/* arrow that slides in on hover */}
                 <svg width="16" height="10" viewBox="0 0 16 10" fill="none"
                   style={{
-                    position:"absolute", right:4, opacity:0,
-                    transition:"opacity 0.25s, transform 0.3s cubic-bezier(.22,1,.36,1)",
+                    position: "absolute", right: 4, opacity: 0,
+                    transition: "opacity 0.25s, transform 0.3s cubic-bezier(.22,1,.36,1)",
                   }}
-                  onMouseEnter={e=>{
-                    const svg=e.currentTarget;
-                    svg.style.opacity="1";
-                    svg.style.transform="translateX(0)";
+                  onMouseEnter={e => {
+                    const svg = e.currentTarget;
+                    svg.style.opacity = "1";
+                    svg.style.transform = "translateX(0)";
                   }}
                 >
                   <path d="M1 5h12M8 1l4 4-4 4" stroke={GOLD} strokeWidth="1.2"
-                    strokeLinecap="round" strokeLinejoin="round"/>
+                    strokeLinecap="round" strokeLinejoin="round" />
                 </svg>
               </Link>
             ))}
@@ -344,78 +345,78 @@ export default function Navbar() {
 
           {/* ── divider with diamond ── */}
           <div style={{
-            display:"flex", alignItems:"center", gap:10,
-            marginBottom:28,
+            display: "flex", alignItems: "center", gap: 10,
+            marginBottom: 28,
             opacity: isOpen ? 1 : 0,
-            transition:"opacity 0.4s ease 0.48s",
+            transition: "opacity 0.4s ease 0.48s",
           }}>
-            <div style={{flex:1,height:1,background:`linear-gradient(to right,transparent,${GOLD_MID})`}}/>
+            <div style={{ flex: 1, height: 1, background: `linear-gradient(to right,transparent,${GOLD_MID})` }} />
             <svg width="10" height="10" viewBox="0 0 10 10" fill="none">
-              <polygon points="5,0 10,5 5,10 0,5" fill={GOLD} opacity="0.6"/>
-              <polygon points="5,2.5 7.5,5 5,7.5 2.5,5" fill={BG}/>
-              <circle cx="5" cy="5" r="1.2" fill={GOLD} opacity="0.8"/>
+              <polygon points="5,0 10,5 5,10 0,5" fill={GOLD} opacity="0.6" />
+              <polygon points="5,2.5 7.5,5 5,7.5 2.5,5" fill={BG} />
+              <circle cx="5" cy="5" r="1.2" fill={GOLD} opacity="0.8" />
             </svg>
-            <div style={{flex:1,height:1,background:`linear-gradient(to left,transparent,${GOLD_MID})`}}/>
+            <div style={{ flex: 1, height: 1, background: `linear-gradient(to left,transparent,${GOLD_MID})` }} />
           </div>
 
           {/* ── Auth buttons ── */}
           <div style={{
-            display:"flex", gap:12,
+            display: "flex", gap: 12,
             opacity: isOpen ? 1 : 0,
             transform: isOpen ? "translateY(0)" : "translateY(14px)",
-            transition:"all 0.4s ease 0.52s",
+            transition: "all 0.4s ease 0.52s",
           }}>
-            <Link href="/login" onClick={()=>setIsOpen(false)}
+            <Link href="/login" onClick={() => setIsOpen(false)}
               style={{
-                flex:1, textAlign:"center",
-                padding:"11px 20px",
-                fontFamily:"'DM Sans',sans-serif",
-                fontSize:11, fontWeight:500,
-                textTransform:"uppercase", letterSpacing:"0.18em",
-                textDecoration:"none",
-                color:GOLD,
-                border:`1px solid ${GOLD_DIM}`,
-                borderRadius:2,
-                clipPath:"polygon(5px 0%,100% 0%,calc(100% - 5px) 100%,0% 100%)",
-                transition:"border-color 0.22s, background 0.22s, color 0.22s",
+                flex: 1, textAlign: "center",
+                padding: "11px 20px",
+                fontFamily: "'DM Sans',sans-serif",
+                fontSize: 11, fontWeight: 500,
+                textTransform: "uppercase", letterSpacing: "0.18em",
+                textDecoration: "none",
+                color: GOLD,
+                border: `1px solid ${GOLD_DIM}`,
+                borderRadius: 2,
+                clipPath: "polygon(5px 0%,100% 0%,calc(100% - 5px) 100%,0% 100%)",
+                transition: "border-color 0.22s, background 0.22s, color 0.22s",
               }}
-              onMouseEnter={e=>{
-                const a=e.currentTarget as HTMLAnchorElement;
-                a.style.borderColor=GOLD;
-                a.style.background="rgba(180,124,60,0.08)";
+              onMouseEnter={e => {
+                const a = e.currentTarget as HTMLAnchorElement;
+                a.style.borderColor = GOLD;
+                a.style.background = "rgba(180,124,60,0.08)";
               }}
-              onMouseLeave={e=>{
-                const a=e.currentTarget as HTMLAnchorElement;
-                a.style.borderColor=GOLD_DIM;
-                a.style.background="transparent";
+              onMouseLeave={e => {
+                const a = e.currentTarget as HTMLAnchorElement;
+                a.style.borderColor = GOLD_DIM;
+                a.style.background = "transparent";
               }}
             >
               Login
             </Link>
-            <Link href="/signup" onClick={()=>setIsOpen(false)}
+            <Link href="/signup" onClick={() => setIsOpen(false)}
               style={{
-                flex:1, textAlign:"center",
-                padding:"11px 20px",
-                fontFamily:"'DM Sans',sans-serif",
-                fontSize:11, fontWeight:500,
-                textTransform:"uppercase", letterSpacing:"0.18em",
-                textDecoration:"none",
-                color:BG,
-                background:GOLD,
-                border:`1px solid ${GOLD}`,
-                borderRadius:2,
-                clipPath:"polygon(5px 0%,100% 0%,calc(100% - 5px) 100%,0% 100%)",
-                transition:"background 0.22s, transform 0.18s",
+                flex: 1, textAlign: "center",
+                padding: "11px 20px",
+                fontFamily: "'DM Sans',sans-serif",
+                fontSize: 11, fontWeight: 500,
+                textTransform: "uppercase", letterSpacing: "0.18em",
+                textDecoration: "none",
+                color: BG,
+                background: GOLD,
+                border: `1px solid ${GOLD}`,
+                borderRadius: 2,
+                clipPath: "polygon(5px 0%,100% 0%,calc(100% - 5px) 100%,0% 100%)",
+                transition: "background 0.22s, transform 0.18s",
               }}
-              onMouseEnter={e=>{
-                const a=e.currentTarget as HTMLAnchorElement;
-                a.style.background="#c98e4a";
-                a.style.transform="translateY(-1px)";
+              onMouseEnter={e => {
+                const a = e.currentTarget as HTMLAnchorElement;
+                a.style.background = "#c98e4a";
+                a.style.transform = "translateY(-1px)";
               }}
-              onMouseLeave={e=>{
-                const a=e.currentTarget as HTMLAnchorElement;
-                a.style.background=GOLD;
-                a.style.transform="translateY(0)";
+              onMouseLeave={e => {
+                const a = e.currentTarget as HTMLAnchorElement;
+                a.style.background = GOLD;
+                a.style.transform = "translateY(0)";
               }}
             >
               Sign Up
@@ -424,21 +425,21 @@ export default function Navbar() {
 
           {/* ── bottom cartouche rule ── */}
           <div style={{
-            position:"absolute", bottom:"2.5rem",
-            left:"3rem", right:"3rem",
+            position: "absolute", bottom: "2.5rem",
+            left: "3rem", right: "3rem",
             opacity: isOpen ? 0.22 : 0,
-            transition:"opacity 0.4s ease 0.6s",
+            transition: "opacity 0.4s ease 0.6s",
           }}>
             {/* mini cartouche border */}
             <svg width="100%" height="14" viewBox="0 0 300 14"
-              preserveAspectRatio="xMidYMid slice" style={{display:"block"}}>
-              {Array.from({length:16}).map((_,i)=>(
-                <g key={i} transform={`translate(${i*20-5},0)`}>
+              preserveAspectRatio="xMidYMid slice" style={{ display: "block" }}>
+              {Array.from({ length: 16 }).map((_, i) => (
+                <g key={i} transform={`translate(${i * 20 - 5},0)`}>
                   <rect x="1" y="4" width="18" height="6" rx="1"
-                    fill="none" stroke={GOLD} strokeWidth="0.6"/>
-                  <line x1="7"  y1="4" x2="7"  y2="10" stroke={GOLD} strokeWidth="0.5"/>
-                  <line x1="13" y1="4" x2="13" y2="10" stroke={GOLD} strokeWidth="0.5"/>
-                  <circle cx="10" cy="2" r="1" fill={GOLD} opacity="0.7"/>
+                    fill="none" stroke={GOLD} strokeWidth="0.6" />
+                  <line x1="7" y1="4" x2="7" y2="10" stroke={GOLD} strokeWidth="0.5" />
+                  <line x1="13" y1="4" x2="13" y2="10" stroke={GOLD} strokeWidth="0.5" />
+                  <circle cx="10" cy="2" r="1" fill={GOLD} opacity="0.7" />
                 </g>
               ))}
             </svg>
