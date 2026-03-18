@@ -329,7 +329,9 @@ export default function Home() {
         <div className="content">
 
           {/* hero — untouched */}
-          <HeroScene />
+          <div style={{ position: 'relative', zIndex: 3 }}>
+  <HeroScene />
+</div>
 
           {/* about */}
           <section id="about" className="section">
@@ -386,12 +388,14 @@ body { background: #080400; color: #f5ead8; overflow-x: hidden; }
   background: radial-gradient(ellipse 130% 80% at 50% -10%, #1e0f00 0%, #0d0700 50%, #000 100%);
 }
 .bg-noise {
-  position: fixed; inset: 0; z-index: 1; pointer-events: none; opacity: .5; mix-blend-mode: overlay;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='0.07'/%3E%3C/svg%3E");
+  position: fixed; inset: 0; z-index: 1; pointer-events: none; opacity: .45; mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 300 300' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.68' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='matrix' values='0.55 0.35 0.05 0 0.08 0.45 0.30 0.05 0 0.05 0.10 0.08 0.02 0 0.01 0 0 0 1 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.2'/%3E%3C/svg%3E");
+  background-size: 300px 300px;
 }
 .bg-scanlines {
   position: fixed; inset: 0; z-index: 2; pointer-events: none;
-  background-image: repeating-linear-gradient(0deg, transparent, transparent 3px, rgba(180,120,40,.025) 3px, rgba(180,120,40,.025) 4px);
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='matrix' values='0.6 0.4 0.1 0 0.1 0.5 0.35 0.08 0 0.06 0.15 0.1 0.03 0 0.02 0 0 0 1 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.2'/%3E%3C/svg%3E");
+  background-size: 200px 200px; opacity: 0.5;
 }
 .bg-vignette {
   position: fixed; inset: 0; z-index: 6; pointer-events: none;
@@ -427,7 +431,7 @@ body { background: #080400; color: #f5ead8; overflow-x: hidden; }
 }
 
 /* ── content wrapper ── */
-.content { position: relative; z-index: 10; }
+.content { position: relative; z-index: 2; } 
 
 /* ── sections ── */
 .section {

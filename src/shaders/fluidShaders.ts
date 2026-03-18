@@ -88,6 +88,24 @@ export const fluidFragmentShader = `
     vec3 color = mix(base.rgb, reveal.rgb, mask);
     color += goldTint * rim * 0.4;
     
-    gl_FragColor = vec4(color, 1.0);
+    float alpha = base.a;// ── sample textures ──
+   // ── sample textures ──
+    vec4 face = texture2D(u_faceTexture, distortedUv);
+    vec4 tomb = texture2D(u_tombTexture, vUv);
+
+    // ── gold rim at blob edge ──
+    float rimWidth = 0.018 + speed * 0.04;
+    float rim = smoothstep(rimWidth, 0.0, abs(dist - maskRadius - noiseTotal * 0.5))
+                * (0.4 + speed * 4.0);
+    vec3 goldRim = vec3(0.9, 0.72, 0.3);
+
+    // ── composite: tomb default, face revealed at cursor ──
+    vec3 color = mix(tomb.rgb, face.rgb, reveal * face.a);
+    color += goldRim * rim * tomb.a;
+
+    // tomb shows by default, face bleeds through inside reveal
+    float alpha = max(tomb.a, reveal * face.a);
+
+    gl_FragColor = vec4(color, alpha);
   }
 `;
