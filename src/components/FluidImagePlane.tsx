@@ -1,3 +1,5 @@
+"use client"
+
 import { useRef, useMemo } from 'react';
 import { useFrame, useThree } from '@react-three/fiber';
 import { useTexture } from '@react-three/drei';
@@ -16,8 +18,8 @@ export default function FluidImagePlane({ scrollProgress }: FluidImagePlaneProps
   const { update } = useFluidCursor();
 
   const [baseTexture, revealTexture, depthTexture] = useTexture([
-    '/images/darken.png',
     '/images/reveal.png',
+    '/images/darken.png',
     '/images/depth-image.png',
   ]);
 
@@ -46,7 +48,7 @@ export default function FluidImagePlane({ scrollProgress }: FluidImagePlaneProps
 
   // Portrait image: maintain aspect ratio, fit to viewport height, center
   const imageAspect = 9 / 16; // width/height for portrait
-  const planeH = viewport.height;
+  const planeH = viewport.height * 1.2; // Make it slightly larger
   const planeW = planeH * imageAspect;
 
   return (
