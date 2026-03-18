@@ -21,9 +21,6 @@ export default function Home() {
       <div id="about">
         <AboutPage />
       </div>
-      <div id="timeline">
-        <Timeline/>
-      </div>
       <div id="sponsors">
         <SponsorsPage />
       </div>

@@ -193,6 +193,16 @@ export default function SignupPage() {
                 </button>
               </div>
 
+              <label style={{ display: "flex", alignItems: "center", gap: "0.75rem", cursor: "pointer", fontFamily: "'DM Sans', sans-serif", fontSize: "0.875rem", color: "rgba(240,232,214,0.7)", userSelect: "none" }}>
+                <input
+                  type="checkbox" checked={agreed} onChange={e => setAgreed(e.target.checked)}
+                  style={{ width: 16, height: 16, accentColor: "#b47c3c", cursor: "pointer", flexShrink: 0 }}
+                />
+                I agree to the{" "}
+                <Link href="/terms" style={{ color: "#b47c3c", borderBottom: "1px solid rgba(180,124,60,0.4)", paddingBottom: 1 }}>
+                  Terms and conditions
+                </Link>
+              </label>
 
               <button type="submit" disabled={loading} className="auth-btn" style={{ marginTop: "0.5rem" }}>
                 {loading ? "Creating account..." : "Create account"}

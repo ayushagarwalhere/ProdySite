@@ -1,9 +1,10 @@
 "use client";
 
-import { useEffect, useCallback, useState } from "react";
+import { useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import Link from "next/link";
-import api from "@/lib/api/axios";
+import { verifyEmail } from "@/lib/api/auth";
+import { AxiosError } from "axios";
 
 type Status = "idle" | "loading" | "success" | "error";
 
@@ -14,35 +15,36 @@ export default function VerifyEmailPage() {
   const [status, setStatus] = useState<Status>("idle");
   const [message, setMessage] = useState("");
 
-  const handleVerify = useCallback(async () => {
+  useEffect(() => {
     if (!token) {
       setStatus("error");
       setMessage("Invalid or missing verification token.");
       return;
     }
-    setStatus("loading");
-    try {
-      await api.get(`/auth/verify-email?token=${token}`);
-      setStatus("success");
-      setMessage("Your email has been verified successfully.");
-    } catch (err: unknown) {
-      setStatus("error");
-      setMessage(
-        (err as { response?: { data?: { message?: string } } })?.response?.data?.message ||
-        "Verification failed. The link may have expired."
-      );
-    }
+
+    const verify = async () => {
+      setStatus("loading");
+
+      try {
+        await verifyEmail(token);
+        setStatus("success");
+        setMessage("Your email has been verified successfully.");
+      } catch (err: unknown) {
+        setStatus("error");
+
+        if (err instanceof AxiosError) {
+          setMessage(
+            err.response?.data?.message ||
+            "Verification failed. The link may have expired."
+          );
+        } else {
+          setMessage("An unexpected error occurred.");
+        }
+      }
+    };
+
+    verify();
   }, [token]);
-
-  useEffect(() => {
-    if (token) {
-      handleVerify();
-    } else {
-      setStatus("error");
-      setMessage("Invalid or missing verification token.");
-    }
-  }, [token, handleVerify]);
-
   return (
     <>
       <style>{`
@@ -186,7 +188,7 @@ export default function VerifyEmailPage() {
           )}
 
           {status === "idle" && (
-            <button onClick={handleVerify} className="auth-btn">Verify Email</button>
+            <p>Verifying your email...</p>
           )}
 
           {status === "success" && (

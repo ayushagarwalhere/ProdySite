@@ -125,7 +125,8 @@ function MemberCard({ member, index, flipped, onFlip }: {
         transform: `rotate(${tilt}deg) translateX(${offsetX}px) translateY(${offsetY}px)`,
         display: "inline-block",
       }}
-      onClick={onFlip}
+      onMouseEnter={onFlip}
+      onMouseLeave={onFlip}
     >
       <div className={`member-card-inner ${flipped ? "flipped" : ""}`}>
 

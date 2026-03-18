@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { useSearchParams, useRouter } from "next/navigation";
+import { useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { resetPassword } from "@/lib/api/auth";
 
@@ -9,7 +9,6 @@ type Status = "idle" | "loading" | "success" | "error";
 
 export default function ResetPasswordPage() {
   const searchParams = useSearchParams();
-  const router = useRouter();
   const token = searchParams.get("token");
 
   const [password, setPassword] = useState("");
@@ -170,10 +169,10 @@ export default function ResetPasswordPage() {
                     onChange={e => setConfirm(e.target.value)}
                     required
                     className={`${inputCls} pr-12 ${confirm && confirm !== password
-                        ? "border-[rgba(220,80,80,0.5)]"
-                        : confirm && confirm === password
-                          ? "border-[rgba(180,124,60,0.7)]"
-                          : ""
+                      ? "border-[rgba(220,80,80,0.5)]"
+                      : confirm && confirm === password
+                        ? "border-[rgba(180,124,60,0.7)]"
+                        : ""
                       }`}
                     style={{ fontFamily: "'DM Sans', sans-serif" }}
                   />

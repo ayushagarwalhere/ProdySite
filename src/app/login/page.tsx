@@ -8,7 +8,7 @@ import { useRouter } from "next/navigation";
 
 export default function LoginPage() {
   const router = useRouter();
-  const [email, setEmail] = useState("");
+  const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
@@ -21,7 +21,7 @@ export default function LoginPage() {
     e.preventDefault();
     setLoading(true);
     try {
-      await login(email, password);
+      await login(username, password);
       router.push("/Profile");
     } catch {
       alert("Login failed. Please check your credentials and try again.");
@@ -31,8 +31,8 @@ export default function LoginPage() {
   };
 
   const handleOpenForgot = () => {
-    setResetEmail(email);
     setResetSent(false);
+    setResetEmail("");
     setShowForgotModal(true);
   };
 
@@ -144,13 +144,8 @@ export default function LoginPage() {
         .ornament-line-r { flex: 1; height: 1px; background: linear-gradient(to left, transparent, rgba(180,124,60,0.5)); }
 
         @media (max-width: 768px) {
-          .auth-inner {
-            grid-template-columns: 1fr;
-          }
-          .auth-img-wrap {
-            width: 100%;
-            height: 260px;
-          }
+          .auth-inner { grid-template-columns: 1fr; }
+          .auth-img-wrap { width: 100%; height: 260px; }
         }
       `}</style>
 
@@ -165,7 +160,7 @@ export default function LoginPage() {
           filter: "blur(80px)", pointerEvents: "none", zIndex: 0,
         }} />
 
-        {/* Forgot password modal */}
+        {/* ── Forgot Password Modal ── */}
         {showForgotModal && (
           <div
             style={{
@@ -193,7 +188,10 @@ export default function LoginPage() {
 
               <div className="ornament">
                 <div className="ornament-line-l" />
-                <svg width="8" height="8" viewBox="0 0 10 10" fill="none"><polygon points="5,0 10,5 5,10 0,5" fill="#b47c3c" opacity="0.8" /><circle cx="5" cy="5" r="1.5" fill="#0a0703" /></svg>
+                <svg width="8" height="8" viewBox="0 0 10 10" fill="none">
+                  <polygon points="5,0 10,5 5,10 0,5" fill="#b47c3c" opacity="0.8" />
+                  <circle cx="5" cy="5" r="1.5" fill="#0a0703" />
+                </svg>
                 <div className="ornament-line-r" />
               </div>
 
@@ -210,16 +208,20 @@ export default function LoginPage() {
                     Reset Password
                   </h2>
                   <p style={{ fontFamily: "'DM Sans', sans-serif", fontSize: "0.875rem", color: "rgba(180,124,60,0.6)", textAlign: "center", marginBottom: "1.5rem", lineHeight: 1.6 }}>
-                    Enter your college email and we&apos;ll send you a verification link.
+                    Enter your email and we&apos;ll send you a reset link.
                   </p>
                   <form onSubmit={handleResetSubmit} style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
+                    {/* Email only — not pre-filled from username */}
                     <input
-                      type="email" placeholder="College Email"
-                      value={resetEmail} onChange={(e) => setResetEmail(e.target.value)}
-                      required className="auth-input"
+                      type="email"
+                      placeholder="Email"
+                      value={resetEmail}
+                      onChange={(e) => setResetEmail(e.target.value)}
+                      required
+                      className="auth-input"
                     />
                     <button type="submit" disabled={resetLoading} className="auth-btn">
-                      {resetLoading ? "Sending..." : "Send Verification Link"}
+                      {resetLoading ? "Sending..." : "Send Reset Link"}
                     </button>
                   </form>
                 </>
@@ -230,18 +232,22 @@ export default function LoginPage() {
                       <path d="M20 6L9 17l-5-5" stroke="#b47c3c" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
                     </svg>
                   </div>
-                  <h2 style={{ fontFamily: "'Cormorant Garamond', serif", fontWeight: 300, letterSpacing: "0.08em", textTransform: "uppercase", color: "#f0e8d6", fontSize: "1.5rem" }}>Link Sent</h2>
+                  <h2 style={{ fontFamily: "'Cormorant Garamond', serif", fontWeight: 300, letterSpacing: "0.08em", textTransform: "uppercase", color: "#f0e8d6", fontSize: "1.5rem" }}>
+                    Link Sent
+                  </h2>
                   <p style={{ fontFamily: "'DM Sans', sans-serif", fontSize: "0.875rem", color: "rgba(180,124,60,0.6)", lineHeight: 1.6 }}>
-                    If an account exists for <span style={{ color: "#b47c3c" }}>{resetEmail}</span>, a verification link has been sent.
+                    If an account exists for <span style={{ color: "#b47c3c" }}>{resetEmail}</span>, a reset link has been sent. Check your inbox.
                   </p>
-                  <button onClick={closeModal} className="auth-btn" style={{ marginTop: "0.5rem" }}>Back to Login</button>
+                  <button onClick={closeModal} className="auth-btn" style={{ marginTop: "0.5rem" }}>
+                    Back to Login
+                  </button>
                 </div>
               )}
             </div>
           </div>
         )}
 
-        {/* Main layout */}
+        {/* ── Main layout ── */}
         <div className="auth-inner" style={{ position: "relative", zIndex: 1 }}>
 
           {/* Image */}
@@ -261,7 +267,10 @@ export default function LoginPage() {
           <div className="auth-form-wrap">
             <div className="ornament">
               <div className="ornament-line-l" />
-              <svg width="10" height="10" viewBox="0 0 10 10" fill="none"><polygon points="5,0 10,5 5,10 0,5" fill="#b47c3c" opacity="0.8" /><circle cx="5" cy="5" r="1.5" fill="#0a0703" /></svg>
+              <svg width="10" height="10" viewBox="0 0 10 10" fill="none">
+                <polygon points="5,0 10,5 5,10 0,5" fill="#b47c3c" opacity="0.8" />
+                <circle cx="5" cy="5" r="1.5" fill="#0a0703" />
+              </svg>
               <div className="ornament-line-r" />
             </div>
 
@@ -276,21 +285,33 @@ export default function LoginPage() {
             </p>
 
             <form style={{ display: "flex", flexDirection: "column", gap: "1rem" }} onSubmit={handleSubmit}>
+
+              {/* Username field */}
               <input
-                type="email" placeholder="College Email"
-                value={email} onChange={(e) => setEmail(e.target.value)}
-                required className="auth-input"
+                type="text"
+                placeholder="Username"
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
+                required
+                autoComplete="username"
+                className="auth-input"
               />
 
+              {/* Password field */}
               <div style={{ position: "relative" }}>
                 <input
                   type={showPassword ? "text" : "password"}
                   placeholder="Enter your password"
-                  value={password} onChange={(e) => setPassword(e.target.value)}
-                  required className="auth-input" style={{ paddingRight: "3rem" }}
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  required
+                  autoComplete="current-password"
+                  className="auth-input"
+                  style={{ paddingRight: "3rem" }}
                 />
                 <button
-                  type="button" onClick={() => setShowPassword(v => !v)}
+                  type="button"
+                  onClick={() => setShowPassword(v => !v)}
                   style={{ position: "absolute", right: 12, top: "50%", transform: "translateY(-50%)", background: "transparent", border: "none", cursor: "pointer", color: "rgba(180,124,60,0.6)", display: "flex", alignItems: "center", padding: 0 }}
                 >
                   {showPassword ? (
@@ -307,8 +328,10 @@ export default function LoginPage() {
                 </button>
               </div>
 
+              {/* Forgot password — opens modal, does NOT pre-fill email */}
               <button
-                type="button" onClick={handleOpenForgot}
+                type="button"
+                onClick={handleOpenForgot}
                 style={{ background: "transparent", border: "none", cursor: "pointer", color: "rgba(180,124,60,0.6)", fontSize: "0.875rem", fontFamily: "'DM Sans', sans-serif", textAlign: "left", padding: 0, marginTop: "-0.25rem" }}
               >
                 Forgot Password?
