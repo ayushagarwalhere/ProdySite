@@ -1,129 +1,101 @@
 "use client";
 
-import Preloader from "@/components/Home/Preloader";
 import { useEffect, useRef, useState, useCallback } from "react";
+import HeroScene from "@/components/HeroScene";
 
-/* ─────────────────────────────────────────────────────────────────────────────
-   SPONSORS DATA  (swap with real logos/names)
-───────────────────────────────────────────────────────────────────────────── */
+/* ─── sponsors data ─── */
 const SPONSORS = {
-  gold: [
-    { name: "Nexus Corp",     domain: "nexuscorp.in",  glyph: "𓇳" },
-    { name: "Arcadia Tech",   domain: "arcadia.io",    glyph: "𓂀" },
-    { name: "Helios Labs",    domain: "helios.dev",    glyph: "𓊹" },
-  ],
-  silver: [
-    { name: "Iris Dynamics",  domain: "iris.co",       glyph: "𓅓" },
-    { name: "Phaedra AI",     domain: "phaedra.ai",    glyph: "𓋴" },
-    { name: "Olympus Cloud",  domain: "olympus.cloud", glyph: "𓆑" },
-    { name: "Aether Systems", domain: "aether.tech",   glyph: "𓏛" },
-  ],
-  bronze: [
-    { name: "Cadmus Media",   domain: "cadmus.in",     glyph: "𓇯" },
-    { name: "Pythia Tools",   domain: "pythia.dev",    glyph: "𓆓" },
-    { name: "Delphi Works",   domain: "delphi.co",     glyph: "𓂃" },
-    { name: "Logos Studio",   domain: "logos.design",  glyph: "𓇋" },
-    { name: "Eris Finance",   domain: "eris.fin",      glyph: "𓂋" },
-  ],
+  gold: [{ name: "Nexus Corp", glyph: "𓇳" }, { name: "Arcadia Tech", glyph: "𓂀" }, { name: "Helios Labs", glyph: "𓊹" }],
+  silver: [{ name: "Iris Dynamics", glyph: "𓅓" }, { name: "Phaedra AI", glyph: "𓋴" }, { name: "Olympus Cloud", glyph: "𓆑" }, { name: "Aether Systems", glyph: "𓏛" }],
+  bronze: [{ name: "Cadmus Media", glyph: "𓇯" }, { name: "Pythia Tools", glyph: "𓆓" }, { name: "Delphi Works", glyph: "𓂃" }, { name: "Logos Studio", glyph: "𓇋" }, { name: "Eris Finance", glyph: "𓂋" }],
 };
 
-/* ─────────────────────────────────────────────────────────────────────────────
-   GREEK LETTERS FOR PRELOADER
-───────────────────────────────────────────────────────────────────────────── */
-const GREEK = ["Α","Β","Γ","Δ","Ε","Ζ","Η","Θ","Ι","Κ","Λ","Μ","Ν","Ξ","Ο","Π","Ρ","Σ","Τ","Υ","Φ","Χ","Ψ","Ω"];
-const GOLD_SHADES = ["#E7BA80","#C9922A","#F0C97A","#A87230","#FAD98B","#D4A853"];
+const GREEK = ["Α", "Β", "Γ", "Δ", "Ε", "Ζ", "Η", "Θ", "Ι", "Κ", "Λ", "Μ", "Ν", "Ξ", "Ο", "Π", "Ρ", "Σ", "Τ", "Υ", "Φ", "Χ", "Ψ", "Ω"];
+const GOLD = ["#E7BA80", "#C9922A", "#F0C97A", "#A87230", "#FAD98B", "#D4A853"];
 
-/* ─────────────────────────────────────────────────────────────────────────────
-   EGYPTIAN BACKGROUND COMPONENTS
-───────────────────────────────────────────────────────────────────────────── */
+/* ─── hieroglyph strip ─── */
 function HieroglyphStrip({ offset = 0 }: { offset?: number }) {
-  return (
-    <>
-      <g transform="translate(4,0)">
-        <ellipse cx="14" cy="8" rx="10" ry="6" stroke="#E7BA80" strokeWidth="1.2" fill="none" />
-        <circle cx="14" cy="8" r="2.5" fill="#E7BA80" />
-        <path d="M4 11 Q8 16 14 14 Q20 16 24 11" stroke="#E7BA80" strokeWidth="1" fill="none" />
-        <path d="M14 14 L12 20" stroke="#E7BA80" strokeWidth="1" />
-        <path d="M14 14 L16 20" stroke="#E7BA80" strokeWidth="1" />
-      </g>
-      <g transform="translate(8,35)">
-        <ellipse cx="10" cy="6" rx="5" ry="4" stroke="#E7BA80" strokeWidth="1.2" fill="none" />
-        <line x1="10" y1="10" x2="10" y2="26" stroke="#E7BA80" strokeWidth="1.2" />
-        <line x1="4" y1="16" x2="16" y2="16" stroke="#E7BA80" strokeWidth="1.2" />
-      </g>
-      <g transform="translate(6,70)">
-        <rect x="6" y="0" width="12" height="2" fill="#E7BA80" rx="1" />
-        <rect x="5" y="4" width="14" height="2" fill="#E7BA80" rx="1" />
-        <rect x="4" y="8" width="16" height="2" fill="#E7BA80" rx="1" />
-        <rect x="3" y="12" width="18" height="2" fill="#E7BA80" rx="1" />
-        <rect x="5" y="16" width="14" height="8" fill="none" stroke="#E7BA80" strokeWidth="1" />
-      </g>
-      <g transform="translate(10,105)">
-        <line x1="9" y1="0" x2="9" y2="28" stroke="#E7BA80" strokeWidth="1.2" />
-        <path d="M4 4 Q9 0 14 4" stroke="#E7BA80" strokeWidth="1.2" fill="none" />
-        <path d="M7 28 L4 34 M11 28 L14 34" stroke="#E7BA80" strokeWidth="1.2" />
-      </g>
-      <g transform="translate(6,182)">
-        <circle cx="12" cy="12" r="7" stroke="#E7BA80" strokeWidth="1.2" fill="none" />
-        <circle cx="12" cy="12" r="3" fill="#E7BA80" />
-        {[0,45,90,135,180,225,270,315].map((a,i) => (
-          <line key={i}
-            x1={12+8*Math.cos(a*Math.PI/180)} y1={12+8*Math.sin(a*Math.PI/180)}
-            x2={12+11*Math.cos(a*Math.PI/180)} y2={12+11*Math.sin(a*Math.PI/180)}
-            stroke="#E7BA80" strokeWidth="1" />
-        ))}
-      </g>
-      <g transform="translate(4,300)">
-        <path d="M14 24 Q14 12 14 8" stroke="#E7BA80" strokeWidth="1.2" />
-        <path d="M14 8 Q10 0 6 4 Q8 10 14 12" fill="#E7BA80" opacity="0.7" />
-        <path d="M14 8 Q18 0 22 4 Q20 10 14 12" fill="#E7BA80" opacity="0.7" />
-        <line x1="8" y1="24" x2="20" y2="24" stroke="#E7BA80" strokeWidth="1.2" />
-      </g>
-      <g transform={`translate(4,${380+offset})`}>
-        <ellipse cx="14" cy="8" rx="10" ry="6" stroke="#E7BA80" strokeWidth="1.2" fill="none" />
-        <circle cx="14" cy="8" r="2.5" fill="#E7BA80" />
-        <path d="M4 11 Q8 16 14 14 Q20 16 24 11" stroke="#E7BA80" strokeWidth="1" fill="none" />
-      </g>
-      <g transform="translate(2,500)">
-        <path d="M14 2 L28 28 L0 28 Z" stroke="#E7BA80" strokeWidth="1.2" fill="none" />
-        <line x1="14" y1="10" x2="22" y2="28" stroke="#E7BA80" strokeWidth="0.6" opacity="0.5" />
-        <line x1="14" y1="10" x2="6"  y2="28" stroke="#E7BA80" strokeWidth="0.6" opacity="0.5" />
-      </g>
-      <g transform="translate(4,580)">
-        <path d="M4 20 Q2 8 10 4 Q8 12 14 14 Q20 12 18 4 Q26 8 24 20" stroke="#E7BA80" strokeWidth="1.2" fill="none" />
-        <circle cx="14" cy="24" r="4" stroke="#E7BA80" strokeWidth="1.2" fill="none" />
-      </g>
-      <g transform="translate(0,680)">
-        <line x1="4" y1="0" x2="32" y2="0" stroke="#E7BA80" strokeWidth="0.8" />
-        <circle cx="18" cy="0" r="2" fill="#E7BA80" />
-        <circle cx="8"  cy="0" r="1" fill="#E7BA80" />
-        <circle cx="28" cy="0" r="1" fill="#E7BA80" />
-      </g>
-    </>
-  );
+  return (<>
+    <g transform="translate(4,0)">
+      <ellipse cx="14" cy="8" rx="10" ry="6" stroke="#E7BA80" strokeWidth="1.2" fill="none" />
+      <circle cx="14" cy="8" r="2.5" fill="#E7BA80" />
+      <path d="M4 11 Q8 16 14 14 Q20 16 24 11" stroke="#E7BA80" strokeWidth="1" fill="none" />
+      <path d="M14 14 L12 20" stroke="#E7BA80" strokeWidth="1" />
+      <path d="M14 14 L16 20" stroke="#E7BA80" strokeWidth="1" />
+    </g>
+    <g transform="translate(8,35)">
+      <ellipse cx="10" cy="6" rx="5" ry="4" stroke="#E7BA80" strokeWidth="1.2" fill="none" />
+      <line x1="10" y1="10" x2="10" y2="26" stroke="#E7BA80" strokeWidth="1.2" />
+      <line x1="4" y1="16" x2="16" y2="16" stroke="#E7BA80" strokeWidth="1.2" />
+    </g>
+    <g transform="translate(6,70)">
+      <rect x="6" y="0" width="12" height="2" fill="#E7BA80" rx="1" />
+      <rect x="5" y="4" width="14" height="2" fill="#E7BA80" rx="1" />
+      <rect x="4" y="8" width="16" height="2" fill="#E7BA80" rx="1" />
+      <rect x="3" y="12" width="18" height="2" fill="#E7BA80" rx="1" />
+      <rect x="5" y="16" width="14" height="8" fill="none" stroke="#E7BA80" strokeWidth="1" />
+    </g>
+    <g transform="translate(10,105)">
+      <line x1="9" y1="0" x2="9" y2="28" stroke="#E7BA80" strokeWidth="1.2" />
+      <path d="M4 4 Q9 0 14 4" stroke="#E7BA80" strokeWidth="1.2" fill="none" />
+      <path d="M7 28 L4 34 M11 28 L14 34" stroke="#E7BA80" strokeWidth="1.2" />
+    </g>
+    <g transform="translate(6,182)">
+      <circle cx="12" cy="12" r="7" stroke="#E7BA80" strokeWidth="1.2" fill="none" />
+      <circle cx="12" cy="12" r="3" fill="#E7BA80" />
+      {[0, 45, 90, 135, 180, 225, 270, 315].map((a, i) => (
+        <line key={i}
+          x1={12 + 8 * Math.cos(a * Math.PI / 180)} y1={12 + 8 * Math.sin(a * Math.PI / 180)}
+          x2={12 + 11 * Math.cos(a * Math.PI / 180)} y2={12 + 11 * Math.sin(a * Math.PI / 180)}
+          stroke="#E7BA80" strokeWidth="1" />
+      ))}
+    </g>
+    <g transform="translate(4,300)">
+      <path d="M14 24 Q14 12 14 8" stroke="#E7BA80" strokeWidth="1.2" />
+      <path d="M14 8 Q10 0 6 4 Q8 10 14 12" fill="#E7BA80" opacity="0.7" />
+      <path d="M14 8 Q18 0 22 4 Q20 10 14 12" fill="#E7BA80" opacity="0.7" />
+      <line x1="8" y1="24" x2="20" y2="24" stroke="#E7BA80" strokeWidth="1.2" />
+    </g>
+    <g transform={`translate(4,${380 + offset})`}>
+      <ellipse cx="14" cy="8" rx="10" ry="6" stroke="#E7BA80" strokeWidth="1.2" fill="none" />
+      <circle cx="14" cy="8" r="2.5" fill="#E7BA80" />
+      <path d="M4 11 Q8 16 14 14 Q20 16 24 11" stroke="#E7BA80" strokeWidth="1" fill="none" />
+    </g>
+    <g transform="translate(2,500)">
+      <path d="M14 2 L28 28 L0 28 Z" stroke="#E7BA80" strokeWidth="1.2" fill="none" />
+      <line x1="14" y1="10" x2="22" y2="28" stroke="#E7BA80" strokeWidth="0.6" opacity="0.5" />
+      <line x1="14" y1="10" x2="6" y2="28" stroke="#E7BA80" strokeWidth="0.6" opacity="0.5" />
+    </g>
+    <g transform="translate(4,580)">
+      <path d="M4 20 Q2 8 10 4 Q8 12 14 14 Q20 12 18 4 Q26 8 24 20" stroke="#E7BA80" strokeWidth="1.2" fill="none" />
+      <circle cx="14" cy="24" r="4" stroke="#E7BA80" strokeWidth="1.2" fill="none" />
+    </g>
+    <g transform="translate(0,680)">
+      <line x1="4" y1="0" x2="32" y2="0" stroke="#E7BA80" strokeWidth="0.8" />
+      <circle cx="18" cy="0" r="2" fill="#E7BA80" />
+      <circle cx="8" cy="0" r="1" fill="#E7BA80" />
+      <circle cx="28" cy="0" r="1" fill="#E7BA80" />
+    </g>
+  </>);
 }
 
 function TopBorder() {
-  return (
-    <>
-      <line x1="0" y1="30" x2="10000" y2="30" stroke="#E7BA80" strokeWidth="0.8" />
-      <line x1="0" y1="34" x2="10000" y2="34" stroke="#E7BA80" strokeWidth="0.4" />
-      {Array.from({ length: 120 }).map((_,i) => (
-        <g key={i} transform={`translate(${i*80+8},0)`}>
-          <path d="M20 28 L20 16 Q16 8 12 10 Q10 16 20 18"  fill="#E7BA80" opacity="0.6" />
-          <path d="M20 28 L20 16 Q24 8 28 10 Q30 16 20 18"  fill="#E7BA80" opacity="0.6" />
-          <path d="M20 28 L20 12 Q19 6 20 4 Q21 6 20 12"    fill="#E7BA80" opacity="0.8" />
-          <path d="M2 28 L8 20 L2 12"  stroke="#E7BA80" strokeWidth="0.8" fill="none" opacity="0.5" />
-          <path d="M38 28 L32 20 L38 12" stroke="#E7BA80" strokeWidth="0.8" fill="none" opacity="0.5" />
-        </g>
-      ))}
-    </>
-  );
+  return (<>
+    <line x1="0" y1="30" x2="10000" y2="30" stroke="#E7BA80" strokeWidth="0.8" />
+    <line x1="0" y1="34" x2="10000" y2="34" stroke="#E7BA80" strokeWidth="0.4" />
+    {Array.from({ length: 120 }).map((_, i) => (
+      <g key={i} transform={`translate(${i * 80 + 8},0)`}>
+        <path d="M20 28 L20 16 Q16 8 12 10 Q10 16 20 18" fill="#E7BA80" opacity="0.6" />
+        <path d="M20 28 L20 16 Q24 8 28 10 Q30 16 20 18" fill="#E7BA80" opacity="0.6" />
+        <path d="M20 28 L20 12 Q19 6 20 4 Q21 6 20 12" fill="#E7BA80" opacity="0.8" />
+        <path d="M2 28 L8 20 L2 12" stroke="#E7BA80" strokeWidth="0.8" fill="none" opacity="0.5" />
+        <path d="M38 28 L32 20 L38 12" stroke="#E7BA80" strokeWidth="0.8" fill="none" opacity="0.5" />
+      </g>
+    ))}
+  </>);
 }
 
-/* ─────────────────────────────────────────────────────────────────────────────
-   SCROLL REVEAL HOOK
-───────────────────────────────────────────────────────────────────────────── */
+/* ─── scroll reveal hook ─── */
 function useScrollReveal(threshold = 0.15) {
   const ref = useRef<HTMLDivElement>(null);
   const [visible, setVisible] = useState(false);
@@ -140,156 +112,228 @@ function useScrollReveal(threshold = 0.15) {
   return { ref, visible };
 }
 
-/* ─────────────────────────────────────────────────────────────────────────────
-   SECTION HEADING
-───────────────────────────────────────────────────────────────────────────── */
+/* ─── preloader ─── */
+function Preloader({ onComplete }: { onComplete: () => void }) {
+  const stageRef = useRef<HTMLDivElement>(null);
+  const canvasRef = useRef<HTMLCanvasElement>(null);
+  const [exiting, setExiting] = useState(false);
+
+  const complete = useCallback(() => {
+    setExiting(true);
+    setTimeout(onComplete, 900);
+  }, [onComplete]);
+
+  useEffect(() => {
+    const stage = stageRef.current;
+    const canvas = canvasRef.current;
+    if (!stage || !canvas) return;
+    const W = window.innerWidth;
+    const H = window.innerHeight;
+    const FLOOR = H - 120;
+    canvas.width = W; canvas.height = H;
+    const ctx = canvas.getContext("2d")!;
+
+    const dust: { x: number; y: number; vx: number; vy: number; r: number; a: number; life: number; decay: number }[] = [];
+    const spawnDust = (x: number, n: number) => {
+      for (let i = 0; i < n; i++) dust.push({ x, y: FLOOR, vx: (Math.random() - .5) * 3, vy: -Math.random() * 2 - .5, r: Math.random() * 1.8 + .4, a: Math.random() * .5 + .2, life: 1, decay: Math.random() * .025 + .012 });
+    };
+
+    const COUNT = 18;
+    const chars = [...GREEK].sort(() => Math.random() - .5).slice(0, COUNT);
+    const letters: { el: HTMLDivElement; x: number; y: number; vy: number; rot: number; rotV: number; size: number; settleY: number; settled: boolean; bounces: number; maxBounces: number; started: boolean; delay: number }[] = [];
+
+    chars.forEach((char, i) => {
+      const t = i / (COUNT - 1);
+      const x = 80 + t * (W - 160);
+      const sz = 28 + Math.random() * 56;
+      const el = document.createElement("div");
+      el.textContent = char;
+      el.style.cssText = `position:absolute;font-family:'Cinzel',serif;font-weight:700;font-size:${sz}px;color:${GOLD[i % GOLD.length]};opacity:0;left:${x}px;top:-100px;pointer-events:none;transform:translate(-50%,0);user-select:none;`;
+      stage.appendChild(el);
+      letters.push({ el, x, y: -sz, vy: 0, rot: (Math.random() - .5) * 25, rotV: (Math.random() - .5) * 5, size: sz, settleY: FLOOR - sz * .65, settled: false, bounces: 0, maxBounces: Math.floor(Math.random() * 2) + 1, started: false, delay: 120 + i * 160 + Math.random() * 100 });
+    });
+
+    let t0 = 0, allDone = false, raf = 0;
+    const loop = (ts: number) => {
+      if (!t0) t0 = ts;
+      const now = ts - t0;
+      ctx.clearRect(0, 0, W, H);
+      for (let i = dust.length - 1; i >= 0; i--) {
+        const d = dust[i]; d.x += d.vx; d.y += d.vy; d.vy += .04; d.life -= d.decay;
+        if (d.life <= 0) { dust.splice(i, 1); continue; }
+        ctx.beginPath(); ctx.arc(d.x, d.y, d.r, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(231,186,128,${d.a * d.life})`; ctx.fill();
+      }
+      let done = 0;
+      for (const L of letters) {
+        if (now < L.delay) continue;
+        if (!L.started) { L.started = true; L.el.style.opacity = "1"; }
+        if (L.settled) { done++; continue; }
+        L.vy += 0.6; L.y += L.vy;
+        L.rot += L.rotV * (L.bounces > 0 ? .5 : 1); L.rotV *= .92;
+        if (L.y >= L.settleY) {
+          L.y = L.settleY; L.bounces++;
+          const bv = Math.abs(L.vy) * (L.bounces <= L.maxBounces ? .36 : .1);
+          spawnDust(L.x, L.bounces <= L.maxBounces ? 7 : 3);
+          if (bv < 1.2) { L.vy = 0; L.settled = true; L.rot = (Math.random() - .5) * 7; done++; }
+          else L.vy = -bv;
+        }
+        L.el.style.top = L.y + "px";
+        L.el.style.transform = `translate(-50%,0) rotate(${L.rot}deg)`;
+      }
+      if (done === letters.length && !allDone) { allDone = true; setTimeout(complete, 800); }
+      raf = requestAnimationFrame(loop);
+    };
+    raf = requestAnimationFrame(loop);
+    return () => { cancelAnimationFrame(raf); letters.forEach(L => L.el.remove()); };
+  }, [complete]);
+
+  return (
+    <div ref={stageRef} className={`preloader${exiting ? " preloader--exit" : ""}`}>
+      <canvas ref={canvasRef} className="preloader__canvas" />
+      <div className="preloader__floor" />
+      <div className="preloader__wordmark">Prodyogiki · XXVI</div>
+      <button className="preloader__skip" onClick={() => complete()}>skip ›</button>
+      <div className="preloader__scanlines" />
+    </div>
+  );
+}
+
+/* ─── section heading ─── */
 function SectionHeading({ overline, title, glyph = "𓇳" }: { overline: string; title: string; glyph?: string }) {
   const { ref, visible } = useScrollReveal(0.2);
   return (
-    <div ref={ref} style={{
-      textAlign: "center", marginBottom: "56px",
-      opacity: visible ? 1 : 0,
-      transform: visible ? "translateY(0)" : "translateY(24px)",
-      transition: "opacity 0.7s ease, transform 0.7s ease",
-    }}>
-      <p style={{ margin:"0 0 10px", fontSize:"10px", letterSpacing:"0.4em", textTransform:"uppercase", color:"rgba(231,186,128,0.45)", fontFamily:"'Cinzel',serif" }}>
-        {overline}
-      </p>
-      <h2 style={{ margin:"0 0 14px", fontSize:"clamp(1.5rem,3vw,2.2rem)", fontWeight:700, color:"#E7BA80", fontFamily:"'Cinzel Decorative','Cinzel',serif", letterSpacing:"0.05em", textShadow:"0 0 50px rgba(231,186,128,0.25)" }}>
-        {title}
-      </h2>
-      <div style={{ display:"flex", alignItems:"center", justifyContent:"center", gap:"12px" }}>
-        <div style={{ height:"1px", width:"60px", background:"linear-gradient(to right,transparent,#E7BA80)" }} />
-        <span style={{ fontSize:"18px" }}>{glyph}</span>
-        <div style={{ height:"1px", width:"60px", background:"linear-gradient(to left,transparent,#E7BA80)" }} />
+    <div ref={ref} className={`section-heading${visible ? " section-heading--visible" : ""}`}>
+      <p className="section-heading__over">{overline}</p>
+      <h2 className="section-heading__title">{title}</h2>
+      <div className="ornament-line">
+        <span className="ornament-line__rule ornament-line__rule--left" />
+        <span className="ornament-line__glyph">{glyph}</span>
+        <span className="ornament-line__rule ornament-line__rule--right" />
       </div>
     </div>
   );
 }
 
-/* ─────────────────────────────────────────────────────────────────────────────
-   STAT CARD
-───────────────────────────────────────────────────────────────────────────── */
-function StatCard({ value, label, icon, delay }: { value:string; label:string; icon:string; delay:number }) {
+/* ─── stat card ─── */
+function StatCard({ value, label, icon, delay }: { value: string; label: string; icon: string; delay: number }) {
   const { ref, visible } = useScrollReveal(0.2);
-  const [hovered, setHovered] = useState(false);
   return (
-    <div ref={ref}
-      onMouseEnter={() => setHovered(true)} onMouseLeave={() => setHovered(false)}
-      style={{
-        opacity: visible ? 1 : 0,
-        transform: visible ? "translateY(0)" : "translateY(30px)",
-        transition: `opacity 0.7s ease ${delay}s, transform 0.7s ease ${delay}s`,
-        background: "rgba(15,8,0,0.75)", borderRadius:"4px", padding:"28px 24px",
-        textAlign:"center", backdropFilter:"blur(8px)",
-        border: hovered ? "1px solid rgba(231,186,128,0.6)" : "1px solid rgba(231,186,128,0.2)",
-        boxShadow: hovered ? "0 0 30px rgba(231,186,128,0.2)" : "none",
-        cursor:"default",
-      }}>
-      <div style={{ fontSize:"26px", marginBottom:"10px" }}>{icon}</div>
-      <div style={{ fontSize:"clamp(1.8rem,4vw,2.6rem)", fontWeight:700, color:"#E7BA80", fontFamily:"'Cinzel Decorative','Cinzel',serif", lineHeight:1, marginBottom:"8px" }}>{value}</div>
-      <div style={{ fontSize:"10px", letterSpacing:"0.3em", textTransform:"uppercase", color:"rgba(231,186,128,0.5)", fontFamily:"'Cinzel',serif" }}>{label}</div>
+    <div ref={ref} className={`stat-card${visible ? " stat-card--visible" : ""}`} style={{ transitionDelay: `${delay}s` }}>
+      <div className="stat-card__icon">{icon}</div>
+      <div className="stat-card__value">{value}</div>
+      <div className="stat-card__label">{label}</div>
     </div>
   );
 }
 
-/* ─────────────────────────────────────────────────────────────────────────────
-   SPONSOR TABLET  — stone tablet aesthetic
-───────────────────────────────────────────────────────────────────────────── */
-function SponsorTablet({
-  name, glyph, tier, delay,
-}: { name:string; glyph:string; tier:"gold"|"silver"|"bronze"; delay:number }) {
+/* ─── sponsor tablet ─── */
+function SponsorTablet({ name, glyph, tier, delay }: { name: string; glyph: string; tier: "gold" | "silver" | "bronze"; delay: number }) {
   const { ref, visible } = useScrollReveal(0.1);
-  const [hovered, setHovered] = useState(false);
-
-  const tierColor = {
-    gold:   { border:"rgba(231,186,128,0.7)", glow:"rgba(231,186,128,0.3)", text:"#E7BA80",  badge:"#C9922A" },
-    silver: { border:"rgba(192,192,192,0.5)", glow:"rgba(192,192,192,0.15)", text:"#C8C8C8", badge:"#909090" },
-    bronze: { border:"rgba(176,110,65,0.5)",  glow:"rgba(176,110,65,0.15)", text:"#C8865A",  badge:"#8B5A2B" },
-  }[tier];
-
-  const size = tier === "gold" ? 130 : tier === "silver" ? 110 : 95;
-
   return (
-    <div ref={ref}
-      onMouseEnter={() => setHovered(true)} onMouseLeave={() => setHovered(false)}
-      style={{
-        opacity: visible ? 1 : 0,
-        transform: visible ? "translateY(0) scale(1)" : "translateY(40px) scale(0.95)",
-        transition: `opacity 0.7s ease ${delay}s, transform 0.7s ease ${delay}s`,
-        width: size, flexShrink:0,
-        display:"flex", flexDirection:"column", alignItems:"center", gap:"10px",
-        cursor:"default",
-      }}>
-      {/* tablet shape */}
-      <div style={{
-        width: "100%",
-        paddingBottom:"110%",
-        position:"relative",
-        background: "rgba(15,8,0,0.85)",
-        border: hovered ? `1px solid ${tierColor.border}` : `1px solid ${tierColor.border.replace("0.7","0.3").replace("0.5","0.2")}`,
-        borderBottom: "none",
-        borderRadius:"4px 4px 0 0",
-        boxShadow: hovered ? `0 0 24px ${tierColor.glow}, 0 -2px 0 ${tierColor.badge}` : `0 -2px 0 ${tierColor.badge}44`,
-        transition:"border-color 0.3s, box-shadow 0.3s",
-      }}>
-        {/* top arch cutout */}
-        <div style={{
-          position:"absolute", top:0, left:"50%", transform:"translateX(-50%)",
-          width:"40%", height:"20px",
-          borderRadius:"0 0 50% 50%",
-          border:`1px solid ${tierColor.border.replace("0.7","0.25")}`,
-          borderTop:"none",
-          background:"rgba(10,5,0,0.9)",
-        }} />
-        {/* glyph */}
-        <div style={{
-          position:"absolute", inset:0,
-          display:"flex", flexDirection:"column",
-          alignItems:"center", justifyContent:"center", gap:6,
-        }}>
-          <span style={{ fontSize: tier==="gold"?28:tier==="silver"?24:20, color:tierColor.text, opacity: hovered?1:0.65, transition:"opacity 0.3s" }}>
-            {glyph}
-          </span>
-          {/* horizontal rule */}
-          <div style={{ width:"50%", height:"1px", background:`linear-gradient(to right,transparent,${tierColor.badge},transparent)` }} />
+    <div ref={ref} className={`tablet tablet--${tier}${visible ? " tablet--visible" : ""}`} style={{ transitionDelay: `${delay}s` }}>
+      <div className="tablet__body">
+        <div className="tablet__arch" />
+        <div className="tablet__inner">
+          <span className="tablet__glyph">{glyph}</span>
+          <span className="tablet__rule" />
         </div>
-        {/* corner dots */}
-        {[[8,8],[8,"calc(100% - 8px)"],["calc(100% - 8px)",8],["calc(100% - 8px)","calc(100% - 8px)"]].map(([t,l],i)=>(
-          <div key={i} style={{
-            position:"absolute", top:t as string, left:l as string,
-            width:3, height:3, borderRadius:"50%",
-            background:tierColor.badge, opacity:0.5,
-          }}/>
+        {([[8, 8], [8, 9999], [9999, 8], [9999, 9999]] as [number, number][]).map((_, i) => (
+          <span key={i} className={`tablet__dot tablet__dot--${i}`} />
         ))}
       </div>
-      {/* tablet base */}
-      <div style={{
-        width:"110%", height:6,
-        background:`linear-gradient(to right,transparent,${tierColor.badge}44,transparent)`,
-        borderTop:`1px solid ${tierColor.badge}44`,
-      }} />
-      {/* name */}
-      <p style={{
-        margin:0, fontFamily:"'Cinzel',serif", fontWeight:700,
-        fontSize: tier==="gold"?12:10,
-        letterSpacing:"0.08em", textTransform:"uppercase",
-        color: hovered ? tierColor.text : `${tierColor.text}99`,
-        textAlign:"center", lineHeight:1.3,
-        transition:"color 0.3s",
-      }}>{name}</p>
+      <div className="tablet__base" />
+      <p className="tablet__name">{name}</p>
     </div>
   );
 }
 
-/* ─────────────────────────────────────────────────────────────────────────────
-   PRELOADER
-───────────────────────────────────────────────────────────────────────────── */
+/* ─── about block ─── */
+function AboutBlock() {
+  const { ref, visible } = useScrollReveal(0.15);
+  return (
+    <div ref={ref} className={`about-block${visible ? " about-block--visible" : ""}`}>
+      <div className="about-block__col">
+        <p className="about-block__quote">"An institution is the lengthened shadow of one great idea."</p>
+        <p className="about-block__body">ISTE — Indian Society for Technical Education — is the premier national organisation for technical education in India. Since its founding, it has been the lifeblood of engineering campuses across the country, connecting students, faculty, and industry in a shared pursuit of excellence.</p>
+      </div>
+      <div className="about-block__col">
+        <p className="about-block__body">Our student chapter carries this flame forward — organising technical festivals, coding marathons, design challenges, cultural nights, and leadership conclaves that transform students into well-rounded professionals ready to face the world.</p>
+        <p className="about-block__body" style={{ marginTop: 20 }}>We believe great engineers are not just built in classrooms. They are forged in competition, shaped by mentorship, and polished by community.</p>
+      </div>
+      <div className="about-block__divider">
+        <span className="about-block__divider-line about-block__divider-line--left" />
+        <span className="about-block__divider-glyph">𓋴</span>
+        <span className="about-block__divider-line about-block__divider-line--right" />
+      </div>
+    </div>
+  );
+}
 
+/* ─── temple columns ─── */
+function TempleColumns() {
+  const { ref, visible } = useScrollReveal(0.1);
+  return (
+    <div ref={ref} className={`temple-cols${visible ? " temple-cols--visible" : ""}`}>
+      {[0, 1, 2, 3, 4].map(i => (
+        <div key={i} className="temple-cols__col" style={{ opacity: .25 + i * .04 }}>
+          <div className="temple-cols__capital" />
+          {Array.from({ length: 6 }).map((_, j) => <div key={j} className="temple-cols__flute" />)}
+          <div className="temple-cols__base" />
+        </div>
+      ))}
+    </div>
+  );
+}
 
-/* ─────────────────────────────────────────────────────────────────────────────
-   MAIN PAGE
-───────────────────────────────────────────────────────────────────────────── */
+/* ─── sponsor tier ─── */
+function SponsorTier({ tier, label, badge, sponsors }: { tier: "gold" | "silver" | "bronze"; label: string; badge: string; sponsors: { name: string; glyph: string }[] }) {
+  const { ref, visible } = useScrollReveal(0.1);
+  return (
+    <div ref={ref} className={`sponsor-tier sponsor-tier--${tier}${visible ? " sponsor-tier--visible" : ""}`}>
+      <div className="sponsor-tier__header">
+        <span className="sponsor-tier__rule sponsor-tier__rule--left" />
+        <span className="sponsor-tier__label">{badge} {label}</span>
+        <span className="sponsor-tier__rule sponsor-tier__rule--right" />
+      </div>
+      <div className="sponsor-tier__tablets">
+        {sponsors.map((s, i) => <SponsorTablet key={i} name={s.name} glyph={s.glyph} tier={tier} delay={i * .08} />)}
+      </div>
+    </div>
+  );
+}
+
+/* ─── tier divider ─── */
+function TierDivider() {
+  return (
+    <div className="tier-divider">
+      <span className="tier-divider__line tier-divider__line--left" />
+      <span className="tier-divider__dot tier-divider__dot--1" />
+      <span className="tier-divider__dot tier-divider__dot--2" />
+      <span className="tier-divider__dot tier-divider__dot--3" />
+      <span className="tier-divider__line tier-divider__line--right" />
+    </div>
+  );
+}
+
+/* ─── become sponsor cta ─── */
+function BecomeSponsorCTA() {
+  const { ref, visible } = useScrollReveal(0.2);
+  return (
+    <div ref={ref} className={`sponsor-cta${visible ? " sponsor-cta--visible" : ""}`}>
+      <div className="ornament-line" style={{ marginBottom: 28 }}>
+        <span className="ornament-line__rule ornament-line__rule--left" />
+        <span className="ornament-line__glyph" style={{ opacity: .4 }}>𓊹</span>
+        <span className="ornament-line__rule ornament-line__rule--right" />
+      </div>
+      <p className="sponsor-cta__heading">Leave your name upon the temple walls.</p>
+      <p className="sponsor-cta__sub">Partner with Prodyogiki and reach 4000+ engineering minds.</p>
+      <button className="sponsor-cta__btn">Become a Patron</button>
+    </div>
+  );
+}
+
+/* ─── main ─── */
 export default function Home() {
   const [preloaderDone, setPreloaderDone] = useState(false);
   const [contentVisible, setContentVisible] = useState(false);
@@ -300,365 +344,429 @@ export default function Home() {
     setTimeout(() => setContentVisible(true), 50);
   }, []);
 
-  /* gold dust particles */
   useEffect(() => {
     if (!contentVisible) return;
     const canvas = canvasRef.current;
     if (!canvas) return;
     const ctx = canvas.getContext("2d")!;
-    const resize = () => { canvas.width=window.innerWidth; canvas.height=window.innerHeight; };
+    const resize = () => { canvas.width = window.innerWidth; canvas.height = window.innerHeight; };
     resize();
     window.addEventListener("resize", resize);
-    const pts = Array.from({length:65}, () => ({
-      x:Math.random()*window.innerWidth, y:Math.random()*window.innerHeight,
-      r:Math.random()*1.5+.3, dx:(Math.random()-.5)*.22, dy:-Math.random()*.4-.1,
-      alpha:Math.random()*.45+.1,
+    const pts = Array.from({ length: 65 }, () => ({
+      x: Math.random() * window.innerWidth, y: Math.random() * window.innerHeight,
+      r: Math.random() * 1.5 + .3, dx: (Math.random() - .5) * .22, dy: -Math.random() * .4 - .1, alpha: Math.random() * .45 + .1,
     }));
     let raf = 0;
     const draw = () => {
-      ctx.clearRect(0,0,canvas.width,canvas.height);
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
       pts.forEach(p => {
-        ctx.beginPath(); ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
-        ctx.fillStyle=`rgba(231,186,128,${p.alpha})`; ctx.fill();
-        p.x+=p.dx; p.y+=p.dy;
-        if (p.y<-4) { p.y=canvas.height+4; p.x=Math.random()*canvas.width; }
-        if (p.x<-4)  p.x=canvas.width+4;
-        if (p.x>canvas.width+4) p.x=-4;
+        ctx.beginPath(); ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(231,186,128,${p.alpha})`; ctx.fill();
+        p.x += p.dx; p.y += p.dy;
+        if (p.y < -4) { p.y = canvas.height + 4; p.x = Math.random() * canvas.width; }
+        if (p.x < -4) p.x = canvas.width + 4;
+        if (p.x > canvas.width + 4) p.x = -4;
       });
       raf = requestAnimationFrame(draw);
     };
     draw();
-    return () => { cancelAnimationFrame(raf); window.removeEventListener("resize",resize); };
+    return () => { cancelAnimationFrame(raf); window.removeEventListener("resize", resize); };
   }, [contentVisible]);
 
   return (
     <>
-      <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Cinzel+Decorative:wght@700&family=Open+Sans:wght@300;400;600&display=swap');
-        *{box-sizing:border-box}
-        html{scroll-behavior:smooth}
-        body{margin:0;background:#080400;color:#f5ead8;overflow-x:hidden}
-        @keyframes floatCard{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
-        @keyframes scrollCue{0%,100%{opacity:.5;transform:translateY(0)}50%{opacity:.2;transform:translateY(8px)}}
-        @keyframes templeGlow{0%,100%{opacity:.04}50%{opacity:.08}}
-      `}</style>
+      <style>{CSS}</style>
 
-      {/* preloader */}
       {!preloaderDone && <Preloader onComplete={handlePreloaderComplete} />}
 
-      {/* main content fades in after preloader */}
-      <div style={{ opacity: contentVisible ? 1 : 0, transition:"opacity 0.8s ease", minHeight:"100vh", position:"relative" }}>
+      <div className={`page${contentVisible ? " page--visible" : ""}`}>
 
-        {/* ── EGYPTIAN BG LAYERS ── */}
-        <div aria-hidden style={{ position:"fixed", inset:0, zIndex:0, pointerEvents:"none", background:"radial-gradient(ellipse 130% 80% at 50% -10%,#1e0f00 0%,#0d0700 50%,#000 100%)" }} />
-        <div aria-hidden style={{ position:"fixed", inset:0, zIndex:1, pointerEvents:"none", opacity:.5, mixBlendMode:"overlay" as React.CSSProperties["mixBlendMode"], backgroundImage:`url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='0.07'/%3E%3C/svg%3E")` }} />
-        <div aria-hidden style={{ position:"fixed", inset:0, zIndex:2, pointerEvents:"none", backgroundImage:"repeating-linear-gradient(0deg,transparent,transparent 3px,rgba(180,120,40,0.025) 3px,rgba(180,120,40,0.025) 4px)" }} />
+        {/* bg layers */}
+        <div aria-hidden className="bg-base" />
+        <div aria-hidden className="bg-noise" />
+        <div aria-hidden className="bg-scanlines" />
+        <div aria-hidden className="bg-vignette" />
 
-        {/* left hieroglyph col */}
-        <div aria-hidden style={{ position:"fixed", left:0, top:0, bottom:0, width:72, zIndex:3, pointerEvents:"none", opacity:.3, display:"flex", flexDirection:"column", alignItems:"center", paddingTop:20 }}>
-          <div style={{ position:"absolute", right:12, top:0, bottom:0, width:1, background:"linear-gradient(to bottom,transparent,#E7BA80 15%,#E7BA80 85%,transparent)" }} />
+        {/* hieroglyph columns (desktop only) */}
+        <div aria-hidden className="hiero-col hiero-col--left">
+          <div className="hiero-col__line" />
           <svg width="36" viewBox="0 0 36 820" fill="none"><HieroglyphStrip /></svg>
         </div>
-        {/* right hieroglyph col */}
-        <div aria-hidden style={{ position:"fixed", right:0, top:0, bottom:0, width:72, zIndex:3, pointerEvents:"none", opacity:.3, display:"flex", flexDirection:"column", alignItems:"center", paddingTop:20, transform:"scaleX(-1)" }}>
-          <div style={{ position:"absolute", right:12, top:0, bottom:0, width:1, background:"linear-gradient(to bottom,transparent,#E7BA80 15%,#E7BA80 85%,transparent)" }} />
+        <div aria-hidden className="hiero-col hiero-col--right">
+          <div className="hiero-col__line" />
           <svg width="36" viewBox="0 0 36 820" fill="none"><HieroglyphStrip offset={14} /></svg>
         </div>
 
-        {/* bottom border */}
-        <div aria-hidden style={{ position:"fixed", bottom:0, left:0, right:0, height:36, zIndex:4, pointerEvents:"none", opacity:.4, transform:"scaleY(-1)" }}>
+        {/* top / bottom borders */}
+        <div aria-hidden className="top-border">
+          <svg width="100%" height="36" preserveAspectRatio="xMidYMid slice"><TopBorder /></svg>
+        </div>
+        <div aria-hidden className="bot-border">
           <svg width="100%" height="36" preserveAspectRatio="xMidYMid slice"><TopBorder /></svg>
         </div>
 
         {/* particles */}
-        <canvas ref={canvasRef} aria-hidden style={{ position:"fixed", inset:0, zIndex:5, pointerEvents:"none" }} />
+        <canvas ref={canvasRef} aria-hidden className="particles" />
 
-        {/* vignette */}
-        <div aria-hidden style={{ position:"fixed", inset:0, zIndex:6, pointerEvents:"none", background:"radial-gradient(ellipse 85% 85% at 50% 50%,transparent 35%,rgba(0,0,0,0.72) 100%)" }} />
+        {/* content */}
+        <div className="content">
 
-        {/* ── PAGE CONTENT ── */}
-        <div style={{ position:"relative", zIndex:10 }}>
+          {/* hero — untouched */}
+          <HeroScene />
 
-          {/* ════════════════════ HERO ════════════════════ */}
-          <section style={{ minHeight:"100vh", display:"flex", flexDirection:"column", alignItems:"center", justifyContent:"center", padding:"80px 100px 60px", textAlign:"center", position:"relative" }}>
-
-            {/* Eye of Ra watermark */}
-            <div aria-hidden style={{ position:"absolute", top:"50%", left:"50%", transform:"translate(-50%,-50%)", width:500, height:500, opacity:0, pointerEvents:"none", animation:"templeGlow 6s ease-in-out infinite" }}>
-              <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
-                <circle cx="100" cy="100" r="90" stroke="#E7BA80" strokeWidth="0.5" fill="none" />
-                <path d="M20 100 Q60 50 100 50 Q140 50 180 100 Q140 150 100 150 Q60 150 20 100 Z" stroke="#E7BA80" strokeWidth="2" fill="none" />
-                <circle cx="100" cy="100" r="28" stroke="#E7BA80" strokeWidth="1.5" fill="none" />
-                <circle cx="100" cy="100" r="14" fill="#E7BA80" opacity="0.8" />
-                <path d="M100 128 L90 160 L100 155 L110 160 Z" fill="#E7BA80" opacity="0.7" />
-              </svg>
-            </div>
-
-            <p style={{ margin:"0 0 16px", fontSize:10, letterSpacing:".5em", textTransform:"uppercase", color:"rgba(231,186,128,0.45)", fontFamily:"'Cinzel',serif" }}>
-              The Society of Scholars
-            </p>
-
-            {/* ISTE monogram */}
-            <div style={{ margin:"0 auto 24px", width:90, height:90, border:"1px solid rgba(231,186,128,0.35)", borderRadius:"50%", display:"flex", alignItems:"center", justifyContent:"center", position:"relative", boxShadow:"0 0 30px rgba(231,186,128,0.12)" }}>
-              <div style={{ position:"absolute", inset:6, border:"1px solid rgba(231,186,128,0.18)", borderRadius:"50%" }} />
-              <span style={{ fontSize:26, fontFamily:"'Cinzel Decorative',serif", color:"#E7BA80", fontWeight:700 }}>I</span>
-            </div>
-
-            <h1 style={{ margin:"0 0 6px", fontSize:"clamp(3rem,8vw,6rem)", fontWeight:700, color:"#E7BA80", fontFamily:"'Cinzel Decorative','Cinzel',serif", letterSpacing:".08em", lineHeight:1, textShadow:"0 0 80px rgba(231,186,128,0.35)" }}>
-              ISTE
-            </h1>
-
-            <p style={{ margin:"0 0 20px", fontSize:"clamp(0.65rem,1.5vw,0.9rem)", letterSpacing:".3em", textTransform:"uppercase", color:"rgba(231,186,128,0.55)", fontFamily:"'Cinzel',serif" }}>
-              Indian Society for Technical Education
-            </p>
-
-            <div style={{ display:"flex", alignItems:"center", justifyContent:"center", gap:14, marginBottom:28 }}>
-              <div style={{ height:1, width:80, background:"linear-gradient(to right,transparent,#E7BA80)" }} />
-              <span style={{ fontSize:20 }}>𓂀</span>
-              <div style={{ height:1, width:80, background:"linear-gradient(to left,transparent,#E7BA80)" }} />
-            </div>
-
-            <p style={{ margin:"0 auto 40px", maxWidth:520, fontSize:"clamp(0.85rem,1.8vw,1.05rem)", lineHeight:1.8, color:"rgba(231,186,128,0.6)", fontFamily:"'Open Sans',sans-serif" }}>
-              Forging the engineers of tomorrow, one chapter at a time.<br />
-              A legacy carved in knowledge, bound by brotherhood.
-            </p>
-
-            {/* nav pills */}
-            <div style={{ display:"flex", gap:12, flexWrap:"wrap", justifyContent:"center" }}>
-              {["about","sponsors"].map(s => (
-                <a key={s} href={`#${s}`} style={{
-                  padding:"8px 22px", border:"1px solid rgba(231,186,128,0.3)", borderRadius:2,
-                  fontFamily:"'Cinzel',serif", fontSize:10, letterSpacing:".25em", textTransform:"uppercase",
-                  color:"rgba(231,186,128,0.6)", textDecoration:"none",
-                  transition:"border-color 0.2s,color 0.2s",
-                }}
-                onMouseEnter={e=>{(e.currentTarget as HTMLAnchorElement).style.borderColor="rgba(231,186,128,0.7)";(e.currentTarget as HTMLAnchorElement).style.color="#E7BA80";}}
-                onMouseLeave={e=>{(e.currentTarget as HTMLAnchorElement).style.borderColor="rgba(231,186,128,0.3)";(e.currentTarget as HTMLAnchorElement).style.color="rgba(231,186,128,0.6)";}}
-                >{s}</a>
-              ))}
-            </div>
-
-            {/* scroll cue */}
-            <div style={{ position:"absolute", bottom:40, left:"50%", transform:"translateX(-50%)", display:"flex", flexDirection:"column", alignItems:"center", gap:8, animation:"scrollCue 2.4s ease-in-out infinite" }}>
-              <div style={{ width:1, height:36, background:"linear-gradient(to bottom,transparent,rgba(231,186,128,0.4))" }} />
-              <span style={{ fontSize:9, letterSpacing:".3em", fontFamily:"'Cinzel',serif", color:"rgba(231,186,128,0.4)", textTransform:"uppercase" }}>Scroll</span>
-            </div>
-          </section>
-
-          {/* ════════════════════ ABOUT ════════════════════ */}
-          <section id="about" style={{ padding:"80px 120px", maxWidth:1100, margin:"0 auto" }}>
+          {/* about */}
+          <section id="about" className="section">
             <SectionHeading overline="Who We Are" title="The Order of Engineers" glyph="𓊹" />
-
             <AboutBlock />
-
-            {/* stats */}
-            <div style={{ display:"grid", gridTemplateColumns:"repeat(auto-fit,minmax(180px,1fr))", gap:20, marginTop:60 }}>
+            <div className="stats-grid">
               {[
-                { value:"1941", label:"Year Founded",          icon:"𓇳", delay:0   },
-                { value:"200+", label:"Chapters Across India", icon:"𓅓", delay:0.1 },
-                { value:"4000+",label:"Active Members",        icon:"𓂀", delay:0.2 },
-                { value:"50+",  label:"Annual Events",         icon:"𓋴", delay:0.3 },
-              ].map((s,i) => <StatCard key={i} {...s} />)}
+                { value: "1941", label: "Year Founded", icon: "𓇳", delay: 0 },
+                { value: "200+", label: "Chapters Across India", icon: "𓅓", delay: .1 },
+                { value: "4000+", label: "Active Members", icon: "𓂀", delay: .2 },
+                { value: "50+", label: "Annual Events", icon: "𓋴", delay: .3 },
+              ].map((s, i) => <StatCard key={i} {...s} />)}
             </div>
           </section>
 
-          {/* ════════════════════ SPONSORS ════════════════════ */}
-          <section id="sponsors" style={{ padding:"80px 80px 120px", maxWidth:1200, margin:"0 auto" }}>
+          <div className="section-divider" />
+
+          {/* sponsors */}
+          <section id="sponsors" className="section section--wide">
             <SectionHeading overline="Our Patrons" title="The Grand Benefactors" glyph="𓋴" />
-
-            {/* temple column divider top */}
             <TempleColumns />
-
-            {/* GOLD tier */}
-            <SponsorTier
-              tier="gold"
-              label="Gold Patrons"
-              badge="𓇳"
-              sponsors={SPONSORS.gold}
-            />
-
+            <SponsorTier tier="gold" label="Gold Patrons" badge="𓇳" sponsors={SPONSORS.gold} />
             <TierDivider />
-
-            {/* SILVER tier */}
-            <SponsorTier
-              tier="silver"
-              label="Silver Patrons"
-              badge="𓂀"
-              sponsors={SPONSORS.silver}
-            />
-
+            <SponsorTier tier="silver" label="Silver Patrons" badge="𓂀" sponsors={SPONSORS.silver} />
             <TierDivider />
-
-            {/* BRONZE tier */}
-            <SponsorTier
-              tier="bronze"
-              label="Bronze Patrons"
-              badge="𓅓"
-              sponsors={SPONSORS.bronze}
-            />
-
-            {/* become a sponsor CTA */}
+            <SponsorTier tier="bronze" label="Bronze Patrons" badge="𓅓" sponsors={SPONSORS.bronze} />
             <BecomeSponsorCTA />
           </section>
 
+          <div style={{ height: 40 }} />
         </div>
       </div>
     </>
   );
 }
 
-/* ─────────────────────────────────────────────────────────────────────────────
-   ABOUT BLOCK
-───────────────────────────────────────────────────────────────────────────── */
-function AboutBlock() {
-  const { ref, visible } = useScrollReveal(0.15);
-  return (
-    <div ref={ref} style={{
-      display:"grid", gridTemplateColumns:"1fr 1fr", gap:48, alignItems:"start",
-      opacity: visible?1:0, transform: visible?"translateY(0)":"translateY(30px)",
-      transition:"opacity 0.8s ease,transform 0.8s ease",
-    }}>
-      <div>
-        <p style={{ margin:"0 0 20px", fontSize:"clamp(1.1rem,2.5vw,1.35rem)", lineHeight:1.6, color:"#E7BA80", fontFamily:"'Cinzel',serif", fontWeight:400, letterSpacing:".02em" }}>
-          "An institution is the lengthened shadow of one great idea."
-        </p>
-        <p style={{ margin:0, fontSize:13, lineHeight:1.8, color:"rgba(231,186,128,0.55)", fontFamily:"'Open Sans',sans-serif" }}>
-          ISTE — Indian Society for Technical Education — is the premier national organisation for technical education in India. Since its founding, it has been the lifeblood of engineering campuses across the country, connecting students, faculty, and industry in a shared pursuit of excellence.
-        </p>
-      </div>
-      <div>
-        <p style={{ margin:"0 0 20px", fontSize:13, lineHeight:1.8, color:"rgba(231,186,128,0.55)", fontFamily:"'Open Sans',sans-serif" }}>
-          Our student chapter carries this flame forward — organising technical festivals, coding marathons, design challenges, cultural nights, and leadership conclaves that transform students into well-rounded professionals ready to face the world.
-        </p>
-        <p style={{ margin:0, fontSize:13, lineHeight:1.8, color:"rgba(231,186,128,0.55)", fontFamily:"'Open Sans',sans-serif" }}>
-          We believe great engineers are not just built in classrooms. They are forged in competition, shaped by mentorship, and polished by community.
-        </p>
-      </div>
-      <div style={{ gridColumn:"1 / -1", display:"flex", alignItems:"center", gap:16 }}>
-        <div style={{ flex:1, height:1, background:"linear-gradient(to right,transparent,rgba(231,186,128,0.3))" }} />
-        <span style={{ fontSize:16, opacity:.5 }}>𓋴</span>
-        <div style={{ flex:1, height:1, background:"linear-gradient(to left,transparent,rgba(231,186,128,0.3))" }} />
-      </div>
-    </div>
-  );
+/* ═══════════════════════════════════════════════════════════════
+   ALL CSS IN ONE PLACE
+═══════════════════════════════════════════════════════════════ */
+const CSS = `
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Cinzel+Decorative:wght@700&family=Open+Sans:wght@300;400;600&display=swap');
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body { background: #080400; color: #f5ead8; overflow-x: hidden; }
+
+/* ── page wrapper ── */
+.page { opacity: 0; transition: opacity .7s ease; min-height: 100vh; position: relative; overflow-x: hidden; }
+.page--visible { opacity: 1; }
+
+/* ── fixed bg layers ── */
+.bg-base {
+  position: fixed; inset: 0; z-index: 0; pointer-events: none;
+  background: radial-gradient(ellipse 130% 80% at 50% -10%, #1e0f00 0%, #0d0700 50%, #000 100%);
+}
+.bg-noise {
+  position: fixed; inset: 0; z-index: 1; pointer-events: none; opacity: .5; mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='0.07'/%3E%3C/svg%3E");
+}
+.bg-scanlines {
+  position: fixed; inset: 0; z-index: 2; pointer-events: none;
+  background-image: repeating-linear-gradient(0deg, transparent, transparent 3px, rgba(180,120,40,.025) 3px, rgba(180,120,40,.025) 4px);
+}
+.bg-vignette {
+  position: fixed; inset: 0; z-index: 6; pointer-events: none;
+  background: radial-gradient(ellipse 85% 85% at 50% 50%, transparent 35%, rgba(0,0,0,.72) 100%);
 }
 
-/* ─────────────────────────────────────────────────────────────────────────────
-   TEMPLE COLUMN ORNAMENT
-───────────────────────────────────────────────────────────────────────────── */
-function TempleColumns() {
-  const { ref, visible } = useScrollReveal(0.1);
-  return (
-    <div ref={ref} style={{
-      display:"flex", justifyContent:"center", gap:32, marginBottom:52,
-      opacity: visible?1:0, transition:"opacity 1s ease",
-    }}>
-      {[0,1,2,3,4].map(i => (
-        <div key={i} style={{ display:"flex", flexDirection:"column", alignItems:"center", gap:0, opacity:.25+i*.04 }}>
-          {/* capital */}
-          <div style={{ width:24, height:8, background:"rgba(231,186,128,0.4)", borderRadius:"2px 2px 0 0" }} />
-          {/* flutes */}
-          {Array.from({length:6}).map((_,j)=>(
-            <div key={j} style={{ width:18, height:8, borderLeft:"1px solid rgba(231,186,128,0.2)", borderRight:"1px solid rgba(231,186,128,0.2)" }} />
-          ))}
-          {/* base */}
-          <div style={{ width:26, height:5, background:"rgba(231,186,128,0.3)", borderRadius:"0 0 2px 2px" }} />
-        </div>
-      ))}
-    </div>
-  );
+/* ── particles ── */
+.particles { position: fixed; inset: 0; z-index: 5; pointer-events: none; }
+
+/* ── hieroglyph columns ── */
+.hiero-col {
+  display: none;
+  position: fixed; top: 0; bottom: 0; width: 72px;
+  z-index: 3; pointer-events: none; opacity: .3;
+  flex-direction: column; align-items: center; padding-top: 20px;
+}
+.hiero-col--left  { left: 0; }
+.hiero-col--right { right: 0; transform: scaleX(-1); }
+.hiero-col__line {
+  position: absolute; right: 12px; top: 0; bottom: 0; width: 1px;
+  background: linear-gradient(to bottom, transparent, #E7BA80 15%, #E7BA80 85%, transparent);
+}
+@media (min-width: 768px) { .hiero-col { display: flex; } }
+
+/* ── top / bottom decorative borders ── */
+.top-border {
+  position: fixed; top: 0; left: 0; right: 0; height: 36px;
+  z-index: 4; pointer-events: none; opacity: .45;
+}
+.bot-border {
+  position: fixed; bottom: 0; left: 0; right: 0; height: 36px;
+  z-index: 4; pointer-events: none; opacity: .4; transform: scaleY(-1);
 }
 
-/* ─────────────────────────────────────────────────────────────────────────────
-   SPONSOR TIER
-───────────────────────────────────────────────────────────────────────────── */
-function SponsorTier({ tier, label, badge, sponsors }: {
-  tier:"gold"|"silver"|"bronze";
-  label:string; badge:string;
-  sponsors:{ name:string; glyph:string }[];
-}) {
-  const { ref, visible } = useScrollReveal(0.1);
-  const tierStyle = {
-    gold:   { color:"#E7BA80", border:"rgba(231,186,128,0.25)" },
-    silver: { color:"#C8C8C8", border:"rgba(192,192,192,0.2)"  },
-    bronze: { color:"#C8865A", border:"rgba(176,110,65,0.2)"   },
-  }[tier];
+/* ── content wrapper ── */
+.content { position: relative; z-index: 10; }
 
-  return (
-    <div ref={ref} style={{
-      marginBottom:8,
-      opacity: visible?1:0, transform: visible?"translateY(0)":"translateY(20px)",
-      transition:"opacity 0.6s ease,transform 0.6s ease",
-    }}>
-      {/* tier label */}
-      <div style={{ display:"flex", alignItems:"center", gap:12, marginBottom:32 }}>
-        <div style={{ flex:1, height:1, background:`linear-gradient(to right,transparent,${tierStyle.border})` }} />
-        <span style={{ fontFamily:"'Cinzel',serif", fontSize:9, letterSpacing:".35em", textTransform:"uppercase", color:tierStyle.color, opacity:.6 }}>
-          {badge} {label}
-        </span>
-        <div style={{ flex:1, height:1, background:`linear-gradient(to left,transparent,${tierStyle.border})` }} />
-      </div>
+/* ── sections ── */
+.section {
+  max-width: 1100px; margin: 0 auto;
+  padding: 80px 24px;
+}
+.section--wide { max-width: 1200px; padding: 80px 24px; }
+@media (min-width: 640px)  { .section, .section--wide { padding-left: 40px; padding-right: 40px; } }
+@media (min-width: 768px)  { .section, .section--wide { padding-left: 80px; padding-right: 80px; } }
+@media (min-width: 1024px) { .section, .section--wide { padding-left: 100px; padding-right: 100px; } }
 
-      {/* tablets row */}
-      <div style={{ display:"flex", flexWrap:"wrap", justifyContent:"center", gap:tier==="gold"?40:tier==="silver"?28:20, alignItems:"flex-end" }}>
-        {sponsors.map((s,i) => (
-          <SponsorTablet key={i} name={s.name} glyph={s.glyph} tier={tier} delay={i*0.08} />
-        ))}
-      </div>
-    </div>
-  );
+/* ── section divider ── */
+.section-divider {
+  max-width: 1100px; margin: 0 auto; height: 1px;
+  background: linear-gradient(to right, transparent, rgba(231,186,128,.15), transparent);
 }
 
-/* ─────────────────────────────────────────────────────────────────────────────
-   TIER DIVIDER
-───────────────────────────────────────────────────────────────────────────── */
-function TierDivider() {
-  return (
-    <div style={{ display:"flex", alignItems:"center", justifyContent:"center", gap:16, margin:"48px 0" }}>
-      <div style={{ flex:1, height:1, background:"linear-gradient(to right,transparent,rgba(231,186,128,0.12))" }} />
-      <div style={{ display:"flex", gap:6 }}>
-        {[0,1,2].map(i=>(
-          <div key={i} style={{ width:4, height:4, borderRadius:"50%", background:"rgba(231,186,128,0.25)", transform:`scale(${1-i*.15})` }} />
-        ))}
-      </div>
-      <div style={{ flex:1, height:1, background:"linear-gradient(to left,transparent,rgba(231,186,128,0.12))" }} />
-    </div>
-  );
+/* ── ornament line ── */
+.ornament-line { display: flex; align-items: center; justify-content: center; gap: 12px; }
+.ornament-line__rule { flex: 1; max-width: 60px; height: 1px; display: block; }
+.ornament-line__rule--left  { background: linear-gradient(to right, transparent, #E7BA80); }
+.ornament-line__rule--right { background: linear-gradient(to left,  transparent, #E7BA80); }
+.ornament-line__glyph { font-size: 18px; }
+
+/* ── section heading ── */
+.section-heading {
+  text-align: center; margin-bottom: 48px;
+  opacity: 0; transform: translateY(24px); transition: opacity .7s ease, transform .7s ease;
+}
+.section-heading--visible { opacity: 1; transform: translateY(0); }
+.section-heading__over {
+  font-family: 'Cinzel', serif; font-size: 10px; letter-spacing: .4em;
+  text-transform: uppercase; color: rgba(231,186,128,.45); margin-bottom: 10px;
+}
+.section-heading__title {
+  font-family: 'Cinzel Decorative', 'Cinzel', serif; font-weight: 700;
+  font-size: clamp(1.4rem, 3vw, 2.2rem); color: #E7BA80;
+  letter-spacing: .05em; text-shadow: 0 0 50px rgba(231,186,128,.25);
+  margin-bottom: 14px;
 }
 
-/* ─────────────────────────────────────────────────────────────────────────────
-   BECOME A SPONSOR CTA
-───────────────────────────────────────────────────────────────────────────── */
-function BecomeSponsorCTA() {
-  const { ref, visible } = useScrollReveal(0.2);
-  const [hovered, setHovered] = useState(false);
-  return (
-    <div ref={ref} style={{
-      marginTop:64, textAlign:"center",
-      opacity: visible?1:0, transform: visible?"translateY(0)":"translateY(24px)",
-      transition:"opacity 0.7s ease,transform 0.7s ease",
-    }}>
-      <div style={{ display:"flex", alignItems:"center", justifyContent:"center", gap:14, marginBottom:28 }}>
-        <div style={{ height:1, width:80, background:"linear-gradient(to right,transparent,rgba(231,186,128,0.3))" }} />
-        <span style={{ fontSize:14, opacity:.4 }}>𓊹</span>
-        <div style={{ height:1, width:80, background:"linear-gradient(to left,transparent,rgba(231,186,128,0.3))" }} />
-      </div>
-      <p style={{ fontFamily:"'Cinzel',serif", fontSize:"clamp(1rem,2vw,1.3rem)", fontWeight:700, color:"rgba(231,186,128,0.7)", letterSpacing:".05em", margin:"0 0 8px" }}>
-        Leave your name upon the temple walls.
-      </p>
-      <p style={{ fontFamily:"'Open Sans',sans-serif", fontSize:13, color:"rgba(231,186,128,0.4)", margin:"0 0 24px", lineHeight:1.7 }}>
-        Partner with Prodyogiki and reach 4000+ engineering minds.
-      </p>
-      <button
-        onMouseEnter={()=>setHovered(true)} onMouseLeave={()=>setHovered(false)}
-        style={{
-          padding:"10px 28px", background: hovered?"rgba(231,186,128,0.12)":"transparent",
-          border:"1px solid rgba(231,186,128,0.4)", borderRadius:2, cursor:"pointer",
-          fontFamily:"'Cinzel',serif", fontSize:10, letterSpacing:".28em", textTransform:"uppercase",
-          color: hovered?"#E7BA80":"rgba(231,186,128,0.6)",
-          transition:"all 0.25s ease",
-        }}>
-        Become a Patron
-      </button>
-    </div>
-  );
+/* ── stat card ── */
+.stats-grid {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 56px;
 }
+@media (min-width: 768px) { .stats-grid { grid-template-columns: repeat(4,1fr); } }
+.stat-card {
+  background: rgba(15,8,0,.75); border-radius: 4px; padding: 28px 20px;
+  text-align: center; backdrop-filter: blur(8px); cursor: default;
+  border: 1px solid rgba(231,186,128,.2);
+  opacity: 0; transform: translateY(30px);
+  transition: opacity .7s ease, transform .7s ease, border-color .3s, box-shadow .3s;
+}
+.stat-card--visible { opacity: 1; transform: translateY(0); }
+.stat-card:hover {
+  border-color: rgba(231,186,128,.6);
+  box-shadow: 0 0 30px rgba(231,186,128,.2);
+}
+.stat-card__icon  { font-size: 24px; margin-bottom: 10px; }
+.stat-card__value {
+  font-family: 'Cinzel Decorative', 'Cinzel', serif; font-weight: 700;
+  font-size: clamp(1.6rem, 4vw, 2.4rem); color: #E7BA80; line-height: 1; margin-bottom: 8px;
+}
+.stat-card__label {
+  font-family: 'Cinzel', serif; font-size: 9px; letter-spacing: .3em;
+  text-transform: uppercase; color: rgba(231,186,128,.5);
+}
+
+/* ── about block ── */
+.about-block {
+  display: grid; grid-template-columns: 1fr; gap: 32px;
+  opacity: 0; transform: translateY(30px); transition: opacity .8s ease, transform .8s ease;
+}
+.about-block--visible { opacity: 1; transform: translateY(0); }
+@media (min-width: 768px) { .about-block { grid-template-columns: 1fr 1fr; gap: 48px; } }
+.about-block__col { display: flex; flex-direction: column; }
+.about-block__quote {
+  font-family: 'Cinzel', serif; font-size: clamp(1rem, 2.5vw, 1.25rem);
+  line-height: 1.6; color: #E7BA80; margin-bottom: 20px; letter-spacing: .02em;
+}
+.about-block__body {
+  font-family: 'Open Sans', sans-serif; font-size: 13px;
+  line-height: 1.8; color: rgba(231,186,128,.55);
+}
+.about-block__divider {
+  display: flex; align-items: center; gap: 16px;
+  grid-column: 1 / -1;
+}
+.about-block__divider-line { flex: 1; height: 1px; display: block; }
+.about-block__divider-line--left  { background: linear-gradient(to right, transparent, rgba(231,186,128,.3)); }
+.about-block__divider-line--right { background: linear-gradient(to left,  transparent, rgba(231,186,128,.3)); }
+.about-block__divider-glyph { font-size: 16px; opacity: .5; }
+
+/* ── temple columns ── */
+.temple-cols {
+  display: none; justify-content: center; gap: 32px; margin-bottom: 52px;
+  opacity: 0; transition: opacity 1s ease;
+}
+.temple-cols--visible { opacity: 1; }
+@media (min-width: 640px) { .temple-cols { display: flex; } }
+.temple-cols__col   { display: flex; flex-direction: column; align-items: center; }
+.temple-cols__capital { width: 24px; height: 8px; background: rgba(231,186,128,.4); border-radius: 2px 2px 0 0; }
+.temple-cols__flute   { width: 18px; height: 8px; border-left: 1px solid rgba(231,186,128,.2); border-right: 1px solid rgba(231,186,128,.2); }
+.temple-cols__base    { width: 26px; height: 5px; background: rgba(231,186,128,.3); border-radius: 0 0 2px 2px; }
+
+/* ── sponsor tier ── */
+.sponsor-tier { margin-bottom: 8px; opacity: 0; transform: translateY(20px); transition: opacity .6s ease, transform .6s ease; }
+.sponsor-tier--visible { opacity: 1; transform: translateY(0); }
+.sponsor-tier__header { display: flex; align-items: center; gap: 12px; margin-bottom: 32px; }
+.sponsor-tier__label  { font-family: 'Cinzel', serif; font-size: 9px; letter-spacing: .35em; text-transform: uppercase; opacity: .6; white-space: nowrap; }
+.sponsor-tier__rule   { flex: 1; height: 1px; display: block; }
+.sponsor-tier--gold   .sponsor-tier__label { color: #E7BA80; }
+.sponsor-tier--silver .sponsor-tier__label { color: #C8C8C8; }
+.sponsor-tier--bronze .sponsor-tier__label { color: #C8865A; }
+.sponsor-tier--gold   .sponsor-tier__rule--left  { background: linear-gradient(to right, transparent, rgba(231,186,128,.25)); }
+.sponsor-tier--gold   .sponsor-tier__rule--right { background: linear-gradient(to left,  transparent, rgba(231,186,128,.25)); }
+.sponsor-tier--silver .sponsor-tier__rule--left  { background: linear-gradient(to right, transparent, rgba(192,192,192,.2)); }
+.sponsor-tier--silver .sponsor-tier__rule--right { background: linear-gradient(to left,  transparent, rgba(192,192,192,.2)); }
+.sponsor-tier--bronze .sponsor-tier__rule--left  { background: linear-gradient(to right, transparent, rgba(176,110,65,.2)); }
+.sponsor-tier--bronze .sponsor-tier__rule--right { background: linear-gradient(to left,  transparent, rgba(176,110,65,.2)); }
+.sponsor-tier__tablets { display: flex; flex-wrap: wrap; justify-content: center; align-items: flex-end; gap: 16px; }
+@media (min-width: 640px) {
+  .sponsor-tier--gold   .sponsor-tier__tablets { gap: 40px; }
+  .sponsor-tier--silver .sponsor-tier__tablets { gap: 28px; }
+  .sponsor-tier--bronze .sponsor-tier__tablets { gap: 20px; }
+}
+
+/* ── tablet ── */
+.tablet {
+  display: flex; flex-direction: column; align-items: center; gap: 10px; cursor: default; flex-shrink: 0;
+  width: 80px;
+  opacity: 0; transform: translateY(40px) scale(.95); transition: opacity .7s ease, transform .7s ease;
+}
+.tablet--visible { opacity: 1; transform: translateY(0) scale(1); }
+@media (min-width: 640px) {
+  .tablet--gold   { width: 130px; }
+  .tablet--silver { width: 110px; }
+  .tablet--bronze { width: 95px;  }
+}
+.tablet__body {
+  width: 100%; position: relative; border-radius: 4px 4px 0 0; padding-bottom: 110%;
+  background: rgba(15,8,0,.85); border-bottom: none;
+  transition: border-color .3s, box-shadow .3s;
+}
+.tablet--gold   .tablet__body { border: 1px solid rgba(231,186,128,.25); box-shadow: 0 -2px 0 #C9922A44; }
+.tablet--silver .tablet__body { border: 1px solid rgba(192,192,192,.18); box-shadow: 0 -2px 0 #90909044; }
+.tablet--bronze .tablet__body { border: 1px solid rgba(176,110,65,.18);  box-shadow: 0 -2px 0 #8B5A2B44; }
+.tablet--gold:hover   .tablet__body { border-color: rgba(231,186,128,.65); box-shadow: 0 0 24px rgba(231,186,128,.25), 0 -2px 0 #C9922A; }
+.tablet--silver:hover .tablet__body { border-color: rgba(192,192,192,.5);  box-shadow: 0 0 24px rgba(192,192,192,.15), 0 -2px 0 #909090; }
+.tablet--bronze:hover .tablet__body { border-color: rgba(176,110,65,.5);   box-shadow: 0 0 24px rgba(176,110,65,.15),  0 -2px 0 #8B5A2B; }
+.tablet__arch {
+  position: absolute; top: 0; left: 50%; transform: translateX(-50%);
+  width: 40%; height: 20px; background: #0a0503;
+  border-radius: 0 0 50% 50%; border-bottom: 1px solid rgba(231,186,128,.15); border-left: 1px solid rgba(231,186,128,.15); border-right: 1px solid rgba(231,186,128,.15);
+}
+.tablet__inner {
+  position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px;
+}
+.tablet__glyph {
+  font-size: 24px; opacity: .6; transition: opacity .3s; color: #E7BA80;
+}
+.tablet--silver .tablet__glyph { color: #C8C8C8; font-size: 20px; }
+.tablet--bronze .tablet__glyph { color: #C8865A; font-size: 18px; }
+.tablet:hover .tablet__glyph { opacity: 1; }
+.tablet__rule {
+  width: 50%; height: 1px; display: block;
+  background: linear-gradient(to right, transparent, #C9922A, transparent);
+}
+.tablet--silver .tablet__rule { background: linear-gradient(to right, transparent, #909090, transparent); }
+.tablet--bronze .tablet__rule { background: linear-gradient(to right, transparent, #8B5A2B, transparent); }
+.tablet__dot {
+  position: absolute; width: 3px; height: 3px; border-radius: 50%; opacity: .5;
+  background: #C9922A;
+}
+.tablet--silver .tablet__dot { background: #909090; }
+.tablet--bronze .tablet__dot { background: #8B5A2B; }
+.tablet__dot--0 { top: 8px;  left: 8px;  }
+.tablet__dot--1 { top: 8px;  right: 8px; }
+.tablet__dot--2 { bottom: 8px; left: 8px;  }
+.tablet__dot--3 { bottom: 8px; right: 8px; }
+.tablet__base {
+  width: 110%; height: 6px; border-top: 1px solid rgba(201,146,42,.44);
+  background: linear-gradient(to right, transparent, rgba(201,146,42,.44), transparent);
+}
+.tablet--silver .tablet__base { border-top-color: rgba(144,144,144,.3); background: linear-gradient(to right, transparent, rgba(144,144,144,.3), transparent); }
+.tablet--bronze .tablet__base { border-top-color: rgba(139,90,43,.3);   background: linear-gradient(to right, transparent, rgba(139,90,43,.3),   transparent); }
+.tablet__name {
+  font-family: 'Cinzel', serif; font-weight: 700; font-size: 10px; letter-spacing: .08em;
+  text-transform: uppercase; text-align: center; line-height: 1.3; color: rgba(231,186,128,.6);
+  transition: color .3s;
+}
+.tablet--gold   .tablet__name { font-size: 12px; color: rgba(231,186,128,.6); }
+.tablet--silver .tablet__name { color: rgba(200,200,200,.5); }
+.tablet--bronze .tablet__name { color: rgba(200,134,90,.5); }
+.tablet:hover .tablet__name { color: #E7BA80; }
+.tablet--silver:hover .tablet__name { color: #C8C8C8; }
+.tablet--bronze:hover .tablet__name { color: #C8865A; }
+
+/* ── tier divider ── */
+.tier-divider { display: flex; align-items: center; justify-content: center; gap: 8px; margin: 48px 0; }
+.tier-divider__line { flex: 1; height: 1px; display: block; }
+.tier-divider__line--left  { background: linear-gradient(to right, transparent, rgba(231,186,128,.12)); }
+.tier-divider__line--right { background: linear-gradient(to left,  transparent, rgba(231,186,128,.12)); }
+.tier-divider__dot { width: 4px; height: 4px; border-radius: 50%; background: rgba(231,186,128,.25); display: block; }
+.tier-divider__dot--2 { width: 3px; height: 3px; opacity: .7; }
+.tier-divider__dot--3 { width: 2px; height: 2px; opacity: .5; }
+
+/* ── sponsor cta ── */
+.sponsor-cta {
+  margin-top: 64px; text-align: center;
+  opacity: 0; transform: translateY(24px); transition: opacity .7s ease, transform .7s ease;
+}
+.sponsor-cta--visible { opacity: 1; transform: translateY(0); }
+.sponsor-cta__heading {
+  font-family: 'Cinzel', serif; font-weight: 700; color: rgba(231,186,128,.7);
+  font-size: clamp(1rem, 2vw, 1.3rem); letter-spacing: .05em; margin-bottom: 8px;
+}
+.sponsor-cta__sub {
+  font-family: 'Open Sans', sans-serif; font-size: 13px;
+  color: rgba(231,186,128,.4); margin-bottom: 24px; line-height: 1.7;
+}
+.sponsor-cta__btn {
+  padding: 10px 28px; background: transparent; cursor: pointer;
+  border: 1px solid rgba(231,186,128,.4); border-radius: 2px;
+  font-family: 'Cinzel', serif; font-size: 10px; letter-spacing: .28em;
+  text-transform: uppercase; color: rgba(231,186,128,.6);
+  transition: all .25s ease;
+}
+.sponsor-cta__btn:hover { background: rgba(231,186,128,.1); color: #E7BA80; border-color: rgba(231,186,128,.7); }
+
+/* ── preloader ── */
+.preloader {
+  position: fixed; inset: 0; z-index: 200; overflow: hidden; background: #080400;
+  opacity: 1; transition: opacity .9s ease;
+}
+.preloader--exit { opacity: 0; }
+.preloader__canvas    { position: absolute; inset: 0; pointer-events: none; }
+.preloader__scanlines {
+  position: absolute; inset: 0; pointer-events: none;
+  background-image: repeating-linear-gradient(0deg, transparent, transparent 3px, rgba(180,120,40,.02) 3px, rgba(180,120,40,.02) 4px);
+}
+.preloader__floor {
+  position: absolute; bottom: 120px; left: 0; right: 0; height: 1px; pointer-events: none;
+  background: linear-gradient(to right, transparent, rgba(231,186,128,.3) 20%, rgba(231,186,128,.3) 80%, transparent);
+}
+.preloader__wordmark {
+  position: absolute; bottom: 50px; left: 0; right: 0; text-align: center; pointer-events: none;
+  font-family: 'Cinzel', serif; font-size: 11px; letter-spacing: .45em;
+  text-transform: uppercase; color: rgba(231,186,128,.35);
+}
+.preloader__skip {
+  position: absolute; top: 20px; right: 24px;
+  background: transparent; border: none; cursor: pointer;
+  font-family: 'Cinzel', serif; font-size: 9px; letter-spacing: .2em;
+  text-transform: uppercase; color: rgba(231,186,128,.25);
+  transition: color .2s;
+}
+.preloader__skip:hover { color: rgba(231,186,128,.6); }
+`;
