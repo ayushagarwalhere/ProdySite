@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState, useCallback } from "react";
 import HeroScene from "@/components/HeroScene";
+import Preloader from "@/components/Home/Preloader";
 
 /* ─── sponsors data ─── */
 const SPONSORS = {
@@ -113,91 +114,7 @@ function useScrollReveal(threshold = 0.15) {
 }
 
 /* ─── preloader ─── */
-function Preloader({ onComplete }: { onComplete: () => void }) {
-  const stageRef = useRef<HTMLDivElement>(null);
-  const canvasRef = useRef<HTMLCanvasElement>(null);
-  const [exiting, setExiting] = useState(false);
 
-  const complete = useCallback(() => {
-    setExiting(true);
-    setTimeout(onComplete, 900);
-  }, [onComplete]);
-
-  useEffect(() => {
-    const stage = stageRef.current;
-    const canvas = canvasRef.current;
-    if (!stage || !canvas) return;
-    const W = window.innerWidth;
-    const H = window.innerHeight;
-    const FLOOR = H - 120;
-    canvas.width = W; canvas.height = H;
-    const ctx = canvas.getContext("2d")!;
-
-    const dust: { x: number; y: number; vx: number; vy: number; r: number; a: number; life: number; decay: number }[] = [];
-    const spawnDust = (x: number, n: number) => {
-      for (let i = 0; i < n; i++) dust.push({ x, y: FLOOR, vx: (Math.random() - .5) * 3, vy: -Math.random() * 2 - .5, r: Math.random() * 1.8 + .4, a: Math.random() * .5 + .2, life: 1, decay: Math.random() * .025 + .012 });
-    };
-
-    const COUNT = 18;
-    const chars = [...GREEK].sort(() => Math.random() - .5).slice(0, COUNT);
-    const letters: { el: HTMLDivElement; x: number; y: number; vy: number; rot: number; rotV: number; size: number; settleY: number; settled: boolean; bounces: number; maxBounces: number; started: boolean; delay: number }[] = [];
-
-    chars.forEach((char, i) => {
-      const t = i / (COUNT - 1);
-      const x = 80 + t * (W - 160);
-      const sz = 28 + Math.random() * 56;
-      const el = document.createElement("div");
-      el.textContent = char;
-      el.style.cssText = `position:absolute;font-family:'Cinzel',serif;font-weight:700;font-size:${sz}px;color:${GOLD[i % GOLD.length]};opacity:0;left:${x}px;top:-100px;pointer-events:none;transform:translate(-50%,0);user-select:none;`;
-      stage.appendChild(el);
-      letters.push({ el, x, y: -sz, vy: 0, rot: (Math.random() - .5) * 25, rotV: (Math.random() - .5) * 5, size: sz, settleY: FLOOR - sz * .65, settled: false, bounces: 0, maxBounces: Math.floor(Math.random() * 2) + 1, started: false, delay: 120 + i * 160 + Math.random() * 100 });
-    });
-
-    let t0 = 0, allDone = false, raf = 0;
-    const loop = (ts: number) => {
-      if (!t0) t0 = ts;
-      const now = ts - t0;
-      ctx.clearRect(0, 0, W, H);
-      for (let i = dust.length - 1; i >= 0; i--) {
-        const d = dust[i]; d.x += d.vx; d.y += d.vy; d.vy += .04; d.life -= d.decay;
-        if (d.life <= 0) { dust.splice(i, 1); continue; }
-        ctx.beginPath(); ctx.arc(d.x, d.y, d.r, 0, Math.PI * 2);
-        ctx.fillStyle = `rgba(231,186,128,${d.a * d.life})`; ctx.fill();
-      }
-      let done = 0;
-      for (const L of letters) {
-        if (now < L.delay) continue;
-        if (!L.started) { L.started = true; L.el.style.opacity = "1"; }
-        if (L.settled) { done++; continue; }
-        L.vy += 0.6; L.y += L.vy;
-        L.rot += L.rotV * (L.bounces > 0 ? .5 : 1); L.rotV *= .92;
-        if (L.y >= L.settleY) {
-          L.y = L.settleY; L.bounces++;
-          const bv = Math.abs(L.vy) * (L.bounces <= L.maxBounces ? .36 : .1);
-          spawnDust(L.x, L.bounces <= L.maxBounces ? 7 : 3);
-          if (bv < 1.2) { L.vy = 0; L.settled = true; L.rot = (Math.random() - .5) * 7; done++; }
-          else L.vy = -bv;
-        }
-        L.el.style.top = L.y + "px";
-        L.el.style.transform = `translate(-50%,0) rotate(${L.rot}deg)`;
-      }
-      if (done === letters.length && !allDone) { allDone = true; setTimeout(complete, 800); }
-      raf = requestAnimationFrame(loop);
-    };
-    raf = requestAnimationFrame(loop);
-    return () => { cancelAnimationFrame(raf); letters.forEach(L => L.el.remove()); };
-  }, [complete]);
-
-  return (
-    <div ref={stageRef} className={`preloader${exiting ? " preloader--exit" : ""}`}>
-      <canvas ref={canvasRef} className="preloader__canvas" />
-      <div className="preloader__floor" />
-      <div className="preloader__wordmark">Prodyogiki · XXVI</div>
-      <button className="preloader__skip" onClick={() => complete()}>skip ›</button>
-      <div className="preloader__scanlines" />
-    </div>
-  );
-}
 
 /* ─── section heading ─── */
 function SectionHeading({ overline, title, glyph = "𓇳" }: { overline: string; title: string; glyph?: string }) {
