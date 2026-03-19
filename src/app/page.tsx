@@ -3,6 +3,8 @@
 import { useEffect, useRef, useState, useCallback } from "react";
 import HeroScene from "@/components/HeroScene";
 import Preloader from "@/components/Home/Preloader";
+import Footer from "@/components/custom/footer";
+import ScarabCursor from "@/components/ScarabCursor";
 
 /* ─── sponsors data ─── */
 const SPONSORS = {
@@ -289,11 +291,8 @@ function useScrollReveal(threshold = 0.15) {
   return { ref, visible };
 }
 
-/* ─── preloader ─── */
-
 /* ─── section heading ─── */
 function SectionHeading({
-  overline,
   title,
   glyph = "𓇳",
 }: {
@@ -307,7 +306,6 @@ function SectionHeading({
       ref={ref}
       className={`section-heading${visible ? " section-heading--visible" : ""}`}
     >
-      <p className="section-heading__over">{overline}</p>
       <h2 className="section-heading__title">{title}</h2>
       <div className="ornament-line">
         <span className="ornament-line__rule ornament-line__rule--left" />
@@ -399,17 +397,17 @@ function AboutBlock() {
           "An institution is the lengthened shadow of one great idea."
         </p>
         <p className="about-block__body">
-          ISTE — Indian Society for Technical Education — is the premier
-          national organisation for technical education in India. Since its
-          founding, it has been the lifeblood of engineering campuses across the
-          country, connecting students, faculty, and industry in a shared
-          pursuit of excellence.
+          ISTE — Indian Society for Technical Education is the premier national
+          organisation for technical education in India. Since its founding, it
+          has been the lifeblood of engineering campuses across the country,
+          connecting students, faculty, and industry in a shared pursuit of
+          excellence.
         </p>
       </div>
       <div className="about-block__col">
         <p className="about-block__body">
-          Our student chapter carries this flame forward — organising technical
-          festivals, coding marathons, design challenges, cultural nights, and
+          Our student chapter at NITH carries this flame forward organising
+          technical festivals, coding marathons, design challenges, and
           leadership conclaves that transform students into well-rounded
           professionals ready to face the world.
         </p>
@@ -506,32 +504,6 @@ function TierDivider() {
   );
 }
 
-/* ─── become sponsor cta ─── */
-function BecomeSponsorCTA() {
-  const { ref, visible } = useScrollReveal(0.2);
-  return (
-    <div
-      ref={ref}
-      className={`sponsor-cta${visible ? " sponsor-cta--visible" : ""}`}
-    >
-      <div className="ornament-line" style={{ marginBottom: 28 }}>
-        <span className="ornament-line__rule ornament-line__rule--left" />
-        <span className="ornament-line__glyph" style={{ opacity: 0.4 }}>
-          𓊹
-        </span>
-        <span className="ornament-line__rule ornament-line__rule--right" />
-      </div>
-      <p className="sponsor-cta__heading">
-        Leave your name upon the temple walls.
-      </p>
-      <p className="sponsor-cta__sub">
-        Partner with Prodyogiki and reach 4000+ engineering minds.
-      </p>
-      <button className="sponsor-cta__btn">Become a Patron</button>
-    </div>
-  );
-}
-
 /* ─── main ─── */
 export default function Home() {
   const [preloaderDone, setPreloaderDone] = useState(false);
@@ -591,6 +563,7 @@ export default function Home() {
   return (
     <>
       <style>{CSS}</style>
+      <ScarabCursor />
 
       {!preloaderDone && <Preloader onComplete={handlePreloaderComplete} />}
 
@@ -639,43 +612,15 @@ export default function Home() {
 
           {/* about */}
           <section id="about" className="section">
-            <SectionHeading
-              overline="Who We Are"
-              title="The Order of Engineers"
-              glyph="𓊹"
-            />
+            <SectionHeading title="ABOUT US" overline="" glyph="☼" />
             <AboutBlock />
-            <div className="stats-grid">
-              {[
-                { value: "1941", label: "Year Founded", icon: "𓇳", delay: 0 },
-                {
-                  value: "200+",
-                  label: "Chapters Across India",
-                  icon: "𓅓",
-                  delay: 0.1,
-                },
-                {
-                  value: "4000+",
-                  label: "Active Members",
-                  icon: "𓂀",
-                  delay: 0.2,
-                },
-                { value: "50+", label: "Annual Events", icon: "𓋴", delay: 0.3 },
-              ].map((s, i) => (
-                <StatCard key={i} {...s} />
-              ))}
-            </div>
           </section>
 
           <div className="section-divider" />
 
           {/* sponsors */}
           <section id="sponsors" className="section section--wide">
-            <SectionHeading
-              overline="Our Patrons"
-              title="The Grand Benefactors"
-              glyph="𓋴"
-            />
+            <SectionHeading title="OUR SPONSORS" overline="" glyph="𓋴" />
             <TempleColumns />
             <SponsorTier
               tier="gold"
@@ -697,10 +642,9 @@ export default function Home() {
               badge="𓅓"
               sponsors={SPONSORS.bronze}
             />
-            <BecomeSponsorCTA />
           </section>
-
           <div style={{ height: 40 }} />
+          <Footer />
         </div>
       </div>
     </>
@@ -715,7 +659,7 @@ const CSS = `
 
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 html { scroll-behavior: smooth; }
-body { background: #080400; color: #f5ead8; overflow-x: hidden; }
+body { background: #080400; color: #f5ead8; overflow-x: hidden; cursor: none; }
 
 /* ── page wrapper ── */
 .page { opacity: 0; transition: opacity .7s ease; min-height: 100vh; position: relative; overflow-x: hidden; }
@@ -727,14 +671,12 @@ body { background: #080400; color: #f5ead8; overflow-x: hidden; }
   background: radial-gradient(ellipse 130% 80% at 50% -10%, #1e0f00 0%, #0d0700 50%, #000 100%);
 }
 .bg-noise {
-  position: fixed; inset: 0; z-index: 1; pointer-events: none; opacity: .45; mix-blend-mode: overlay;
-  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 300 300' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.68' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='matrix' values='0.55 0.35 0.05 0 0.08 0.45 0.30 0.05 0 0.05 0.10 0.08 0.02 0 0.01 0 0 0 1 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.2'/%3E%3C/svg%3E");
-  background-size: 300px 300px;
+  position: fixed; inset: 0; z-index: 1; pointer-events: none; opacity: .5; mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='0.07'/%3E%3C/svg%3E");
 }
 .bg-scanlines {
   position: fixed; inset: 0; z-index: 2; pointer-events: none;
-  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='matrix' values='0.6 0.4 0.1 0 0.1 0.5 0.35 0.08 0 0.06 0.15 0.1 0.03 0 0.02 0 0 0 1 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.2'/%3E%3C/svg%3E");
-  background-size: 200px 200px; opacity: 0.5;
+  background-image: repeating-linear-gradient(0deg, transparent, transparent 3px, rgba(180,120,40,.025) 3px, rgba(180,120,40,.025) 4px);
 }
 .bg-vignette {
   position: fixed; inset: 0; z-index: 6; pointer-events: none;
@@ -811,7 +753,7 @@ body { background: #080400; color: #f5ead8; overflow-x: hidden; }
 .section-heading__title {
   font-family: 'Cinzel Decorative', 'Cinzel', serif; font-weight: 700;
   font-size: clamp(1.4rem, 3vw, 2.2rem); color: #E7BA80;
-  letter-spacing: .05em; text-shadow: 0 0 50px rgba(231,186,128,.25);
+  letter-spacing: .05em;
   margin-bottom: 14px;
 }
 
@@ -822,7 +764,7 @@ body { background: #080400; color: #f5ead8; overflow-x: hidden; }
 @media (min-width: 768px) { .stats-grid { grid-template-columns: repeat(4,1fr); } }
 .stat-card {
   background: rgba(15,8,0,.75); border-radius: 4px; padding: 28px 20px;
-  text-align: center; backdrop-filter: blur(8px); cursor: default;
+  text-align: center; backdrop-filter: blur(8px); cursor: none;
   border: 1px solid rgba(231,186,128,.2);
   opacity: 0; transform: translateY(30px);
   transition: opacity .7s ease, transform .7s ease, border-color .3s, box-shadow .3s;
@@ -1018,11 +960,6 @@ body { background: #080400; color: #f5ead8; overflow-x: hidden; }
 .preloader__floor {
   position: absolute; bottom: 120px; left: 0; right: 0; height: 1px; pointer-events: none;
   background: linear-gradient(to right, transparent, rgba(231,186,128,.3) 20%, rgba(231,186,128,.3) 80%, transparent);
-}
-.preloader__wordmark {
-  position: absolute; bottom: 50px; left: 0; right: 0; text-align: center; pointer-events: none;
-  font-family: 'Cinzel', serif; font-size: 11px; letter-spacing: .45em;
-  text-transform: uppercase; color: rgba(231,186,128,.35);
 }
 .preloader__skip {
   position: absolute; top: 20px; right: 24px;

@@ -1046,7 +1046,7 @@ export default function TimelinePage() {
                 opacity: 0.55,
               }}
             >
-              The Grand Festival
+              Technology meets mysticism in the heart of the desert
             </div>
             <div
               className="scroll-nudge"
