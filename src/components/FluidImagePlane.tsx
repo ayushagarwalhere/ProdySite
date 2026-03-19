@@ -1,12 +1,10 @@
 "use client";
 
-import { useRef, useMemo } from "react";
+import { useRef, useMemo, useEffect } from "react";
 import { useFrame, useThree } from "@react-three/fiber";
 import { useTexture } from "@react-three/drei";
 import * as THREE from "three";
 import { useFluidCursor } from "@/hooks/useFluidCursor";
-
-
 
 const vertexShader = `
   varying vec2 vUv;
@@ -91,13 +89,18 @@ const fragmentShader = `
     float edge0 = maskRadius - 0.04 + noiseTotal;
     float edge1 = maskRadius + 0.04 + noiseTotal;
 
-    // ── sample textures FIRST ──
     vec4 face = texture2D(u_faceTexture, distortedUv);
     vec4 tomb = texture2D(u_tombTexture, vUv);
 
-    // ── now use tomb.a safely ──
     float overTomb = step(0.1, tomb.a);
+
+    // when hovering over canvas reveal the face image
+    // when outside canvas (u_hovering < 1) show a subtle tint circle instead
     float reveal = (1.0 - smoothstep(edge0, edge1, dist)) * u_hovering * overTomb;
+
+    // subtle amber glow circle that shows even outside canvas area
+    float glowCircle = (1.0 - smoothstep(edge0, edge1, dist)) * (1.0 - u_hovering);
+    vec3 glowColor = vec3(0.6, 0.35, 0.05); // dark amber tint
 
     float rimWidth = 0.018 + speed * 0.04;
     float rim = smoothstep(rimWidth, 0.0, abs(dist - maskRadius - noiseTotal * 0.5))
@@ -106,6 +109,8 @@ const fragmentShader = `
 
     vec3 color = mix(tomb.rgb, face.rgb, reveal * face.a);
     color += goldRim * rim * tomb.a;
+    // add subtle glow tint outside canvas
+    color += glowColor * glowCircle * tomb.a * 0.3;
 
     float alpha = max(tomb.a, reveal * face.a);
 
@@ -115,33 +120,50 @@ const fragmentShader = `
 
 interface FluidImagePlaneProps {
   scrollProgress: React.MutableRefObject<number>;
+  isOverMeshRef: React.MutableRefObject<boolean>;
 }
 
 export default function FluidImagePlane({
   scrollProgress,
+  isOverMeshRef,
 }: FluidImagePlaneProps) {
   const meshRef = useRef<THREE.Mesh>(null);
   const hoverRef = useRef(0.0);
   const materialRef = useRef<THREE.ShaderMaterial>(null);
+  const rawMouse = useRef({ x: 0.5, y: 0.5 });
+  const glCanvasRect = useRef<DOMRect | null>(null);
   const { viewport } = useThree();
   const { update } = useFluidCursor();
+
+  useEffect(() => {
+    const onMove = (e: MouseEvent) => {
+      // use stored rect from useFrame which is always the WebGL canvas
+      if (!glCanvasRect.current) return;
+      const rect = glCanvasRect.current;
+      rawMouse.current.x = (e.clientX - rect.left) / rect.width;
+      rawMouse.current.y = 1.0 - (e.clientY - rect.top) / rect.height;
+    };
+    window.addEventListener("mousemove", onMove, { passive: true });
+    return () => window.removeEventListener("mousemove", onMove);
+  }, []);
 
   useTexture.preload("/images/reveal.png");
   useTexture.preload("/images/tomb.png");
   useTexture.preload("/images/depth-image.png");
 
   const [faceTexture, tombTexture, depthTexture] = useTexture([
-    "/images/reveal.png", // Cleopatra face — transparent bg
-    "/images/tomb.png", // Sarcophagus — transparent bg
-    "/images/depth-image.png", // Depth map for parallax
+    "/images/reveal.png",
+    "/images/tomb.png",
+    "/images/depth-image.png",
   ]);
-  [faceTexture, tombTexture, depthTexture].forEach(t => {
-  t.generateMipmaps = true;
-  t.minFilter = THREE.LinearMipmapLinearFilter;
-  t.magFilter = THREE.LinearFilter;
-  t.anisotropy = 16; // crisp at angles
-  t.needsUpdate = true;
-});
+
+  [faceTexture, tombTexture, depthTexture].forEach((t) => {
+    t.generateMipmaps = true;
+    t.minFilter = THREE.LinearMipmapLinearFilter;
+    t.magFilter = THREE.LinearFilter;
+    t.anisotropy = 16;
+    t.needsUpdate = true;
+  });
 
   faceTexture.premultiplyAlpha = false;
   tombTexture.premultiplyAlpha = false;
@@ -167,13 +189,18 @@ export default function FluidImagePlane({
     if (!materialRef.current) return;
     const cursor = update(0.075);
     const mat = materialRef.current;
+
+    // always keep rect fresh — this is the definitive WebGL canvas
+    glCanvasRect.current = state.gl.domElement.getBoundingClientRect();
+
     mat.uniforms.u_time.value = state.clock.getElapsedTime();
-    mat.uniforms.u_mouse.value.copy(cursor.position);
-    mat.uniforms.u_velocity.value.copy(cursor.velocity);
+    mat.uniforms.u_mouse.value.set(rawMouse.current.x, rawMouse.current.y);
+    mat.uniforms.u_velocity.value.set(
+      cursor.velocity.x,
+      -cursor.velocity.y,
+    );
     mat.uniforms.u_scrollProgress.value = scrollProgress.current;
-    const target = hoverRef.current;
-    mat.uniforms.u_hovering.value +=
-      (target - mat.uniforms.u_hovering.value) * 0.08;
+mat.uniforms.u_hovering.value = 1.0;
   });
 
   const imageAspect = 9 / 16;
@@ -186,13 +213,15 @@ export default function FluidImagePlane({
       position={[0, 0, 0]}
       onPointerEnter={() => {
         hoverRef.current = 1.0;
+        isOverMeshRef.current = true;
       }}
       onPointerLeave={() => {
         hoverRef.current = 0.0;
+        isOverMeshRef.current = false;
       }}
-      onPointerMove={(e) => {
-        // Only activate if we're over an opaque part
+      onPointerMove={() => {
         hoverRef.current = 1.0;
+        isOverMeshRef.current = true;
       }}
     >
       <planeGeometry args={[planeW, planeH, 64, 64]} />

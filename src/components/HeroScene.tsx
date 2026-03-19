@@ -6,10 +6,13 @@ import { Suspense } from "react";
 import FluidImagePlane from "./FluidImagePlane";
 import HomePageCursor from "./HomePageCursor";
 
+
 export default function HeroScene() {
   const containerRef = useRef<HTMLDivElement>(null);
   const heroRef = useRef<HTMLDivElement>(null); // scoped cursor container
   const scrollProgress = useRef(0);
+   const canvasContainerRef = useRef<HTMLDivElement>(null);
+   const isOverMeshRef = useRef(false);
 
   // bg shift state — normalized cursor position
   const [cursorNorm, setCursorNorm] = useState({ x: 0.5, y: 0.5 });
@@ -58,7 +61,7 @@ export default function HeroScene() {
 
   return (
     <div ref={containerRef} className="relative h-[300vh]">
-      <HomePageCursor containerRef={heroRef} />
+      <HomePageCursor containerRef={heroRef} isOverMeshRef={isOverMeshRef} />
       <div
         ref={heroRef}
         className="sticky top-0 h-screen w-full overflow-hidden flex items-center justify-center"
@@ -70,31 +73,35 @@ export default function HeroScene() {
           style={{ ...bgStyle, zIndex: 1 }}
         />
 
-        {/* ── canvas ── */}
-        <div className="absolute inset-y-0 right-0 z-10 w-1/2 h-full">
-          <Canvas
-            camera={{ position: [0, 0, 5], fov: 50 }}
-            gl={{
-              antialias: true,
-              alpha: true,
-              powerPreference: "high-performance",
-            }}
-            dpr={[1, 1.5]}
-            style={{
-              width: "100vw",
-              height: "100vh",
-              background: "transparent",
-            }}
-          >
-            <Suspense fallback={null}>
-              <FluidImagePlane scrollProgress={scrollProgress} />
-            </Suspense>
-          </Canvas>
-        </div>
+{/* ── canvas ── */}
+<div 
+  className="absolute inset-0 z-10 w-full h-full"
+  style={{ transform: "translateX(25%)" }}
+>
+  <Canvas
+    camera={{ position: [0, 0, 5], fov: 50 }}
+    gl={{
+      antialias: true,
+      alpha: true,
+      powerPreference: "high-performance",
+    }}
+    dpr={[1, 1.5]}
+    style={{
+      width: "100vw",
+      height: "100vh",
+      background: "transparent",
+    }}
+  >
+    <Suspense fallback={null}>
+      <FluidImagePlane scrollProgress={scrollProgress} isOverMeshRef={isOverMeshRef} />
+    </Suspense>
+  </Canvas>
+</div>
 
         {/* ── text block ── */}
-        <div className="absolute inset-0 z-9999 pointer-events-none flex flex-col justify-end p-8 md:p-16 w-1/2">
-          <div className="max-w-3xl">
+        <div className="absolute inset-0 z-12 pointer-events-none flex flex-col justify-end p-8 md:p-16"
+  style={{ transform: "translateY(-195%) translateX(15%)"  }}>
+          <div className="max-w-xl">
             <p className="font-ui text-muted-foreground mb-4 tracking-widest text-xs uppercase">
               Alchemy of Innovation
             </p>

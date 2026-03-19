@@ -4,9 +4,10 @@ import { useRef, useEffect } from "react";
 
 interface HomePageCursorProps {
   containerRef: React.RefObject<HTMLDivElement | null>;
+  isOverMeshRef: React.RefObject<boolean>;
 }
 
-export default function HomePageCursor({ containerRef }: HomePageCursorProps) {
+export default function HomePageCursor({ containerRef, isOverMeshRef }: HomePageCursorProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
   useEffect(() => {
@@ -26,14 +27,9 @@ export default function HomePageCursor({ containerRef }: HomePageCursorProps) {
     let raf = 0;
     let isInHero = false;
 
-    const MAX_POINTS = 120;
+    const MAX_POINTS = 160;
     const trail: { x: number; y: number; age: number }[] = [];
-
-    const MAX_AGE = 60;
-    const BASE_DOT_RADIUS = 5;
-    const MAX_DOT_RADIUS = 18;
-    const BASE_TRAIL_WIDTH = 3;
-    const MAX_TRAIL_WIDTH = 14;
+    const MAX_AGE = 90;
 
     let velocity = { x: 0, y: 0 };
     let prevPos = { x: -400, y: -400 };
@@ -51,34 +47,35 @@ export default function HomePageCursor({ containerRef }: HomePageCursorProps) {
     const onLeave = () => {
       isInHero = false;
       document.body.style.cursor = "auto";
-      // push mouse offscreen so trail fades naturally
       mouse.x = -400;
       mouse.y = -400;
     };
 
     window.addEventListener("mousemove", onMove, { passive: true });
-
     const container = containerRef.current;
     container?.addEventListener("mouseenter", onEnter);
     container?.addEventListener("mouseleave", onLeave);
 
     const draw = () => {
-      pos.x += (mouse.x - pos.x) * 0.15;
-      pos.y += (mouse.y - pos.y) * 0.15;
+      // smooth follow
+      pos.x += (mouse.x - pos.x) * 0.18;
+      pos.y += (mouse.y - pos.y) * 0.18;
 
+      // velocity
       velocity.x = pos.x - prevPos.x;
       velocity.y = pos.y - prevPos.y;
       prevPos.x = pos.x;
       prevPos.y = pos.y;
 
-      const speed = Math.sqrt(velocity.x ** 2 + velocity.y ** 2);
+      const speed = Math.sqrt(velocity.x ** 4 + velocity.y ** 4);
       const speedNorm = Math.min(speed / 20, 1);
 
+      // push trail points
       if (isInHero) {
         const last = trail[trail.length - 1];
         const dx = pos.x - (last?.x ?? pos.x);
         const dy = pos.y - (last?.y ?? pos.y);
-        if (Math.sqrt(dx * dx + dy * dy) > 1.5) {
+        if (Math.sqrt(dx * dx + dy * dy) > 1.2) {
           trail.push({ x: pos.x, y: pos.y, age: 0 });
           if (trail.length > MAX_POINTS) trail.shift();
         }
@@ -88,30 +85,39 @@ export default function HomePageCursor({ containerRef }: HomePageCursorProps) {
 
       ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-      // Draw trail
+      if (!isInHero) {
+        raf = requestAnimationFrame(draw);
+        return;
+      }
+
+      // ── trail ──
       if (trail.length >= 2) {
         for (let i = 1; i < trail.length; i++) {
           const a = trail[i - 1];
           const b = trail[i];
-          const progress = i / (trail.length - 1);
+
+          const progress = i / (trail.length - 1); // 0=tail 1=head
           const ageFade = 1 - Math.min(a.age / MAX_AGE, 1);
-          const alpha = ageFade * progress * 0.85;
-          if (alpha < 0.01) continue;
+          const alpha = ageFade * progress * 0.75;
+          if (alpha < 0.005) continue;
 
-          const trailWidth =
-            BASE_TRAIL_WIDTH +
-            (MAX_TRAIL_WIDTH - BASE_TRAIL_WIDTH) * progress * speedNorm;
+          // tapered: thin at tail, thick at head, max scales with velocity
+          const minW = 1;
+          const maxW = 6 + speedNorm * 20; // grows with speed
+          const trailWidth = minW + (maxW - minW) * progress;
 
-          const g = Math.round(170 + progress * 66);
-          const b_ = Math.round(30 + progress * 90);
+          // amber-gold gradient along trail
+          const r = 255;
+          const g = Math.round(120 + progress * 100); // 120→220
+          const b_ = Math.round(10 + progress * 50);  // 10→60
 
           ctx.save();
-          ctx.shadowColor = `rgba(255,150,20,${alpha * 0.6})`;
-          ctx.shadowBlur = 8 * progress;
+          ctx.shadowColor = `rgba(255, 140, 20, ${alpha * 0.6})`;
+          ctx.shadowBlur = 12 * progress * (0.5 + speedNorm * 0.5);
           ctx.beginPath();
           ctx.moveTo(a.x, a.y);
           ctx.lineTo(b.x, b.y);
-          ctx.strokeStyle = `rgba(255,${g},${b_},${alpha})`;
+          ctx.strokeStyle = `rgba(${r}, ${g}, ${b_}, ${alpha})`;
           ctx.lineWidth = trailWidth;
           ctx.lineCap = "round";
           ctx.lineJoin = "round";
@@ -120,25 +126,38 @@ export default function HomePageCursor({ containerRef }: HomePageCursorProps) {
         }
       }
 
-      // Cursor dot — only render inside hero
-      if (isInHero) {
-        const dotRadius =
-          BASE_DOT_RADIUS + (MAX_DOT_RADIUS - BASE_DOT_RADIUS) * speedNorm;
+      // ── reveal rings — always show in hero ──
+      const ringRadius = 32 + speedNorm * 18;
 
-        ctx.save();
-        ctx.shadowColor = "rgba(255,200,80,0.9)";
-        ctx.shadowBlur = 20 * (0.5 + speedNorm * 0.5);
-        ctx.beginPath();
-        ctx.arc(pos.x, pos.y, dotRadius, 0, Math.PI * 2);
-        ctx.fillStyle = `rgba(255,225,140,${0.85 - speedNorm * 0.2})`;
-        ctx.fill();
-        ctx.restore();
+      // inner ring
+      ctx.save();
+      ctx.beginPath();
+      ctx.arc(pos.x, pos.y, ringRadius, 0, Math.PI * 2);
+      ctx.strokeStyle = `rgba(255, 200, 80, ${0.28 + speedNorm * 0.12})`;
+      ctx.lineWidth = 1.5 + speedNorm * 2.5;
+      ctx.stroke();
+      ctx.restore();
 
-        ctx.beginPath();
-        ctx.arc(pos.x, pos.y, Math.min(dotRadius * 0.35, 4), 0, Math.PI * 2);
-        ctx.fillStyle = "#ffffff";
-        ctx.fill();
-      }
+      // ── cursor dot ──
+      // at rest: medium dot. moving: large dot
+      const dotRadius = 8 + speedNorm * 20; // 8px still → 26px fast
+
+      // glow
+      ctx.save();
+      ctx.shadowColor = "rgba(255, 200, 60, 0.9)";
+      ctx.shadowBlur = 20 + speedNorm * 20;
+      ctx.beginPath();
+      ctx.arc(pos.x, pos.y, dotRadius, 0, Math.PI * 2);
+      // slightly transparent fill so ring is visible through it when slow
+      // ctx.fillStyle = `rgba(255, 210, 100, ${0.55 + speedNorm * 0.3})`;
+      ctx.fill();
+      ctx.restore();
+
+      // sharp bright core
+      ctx.beginPath();
+      ctx.arc(pos.x, pos.y, Math.max(dotRadius * 0.28, 3), 0, Math.PI * 2);
+      ctx.fillStyle = "rgba(255, 255, 255, 0.95)";
+      ctx.fill();
 
       raf = requestAnimationFrame(draw);
     };
@@ -153,7 +172,7 @@ export default function HomePageCursor({ containerRef }: HomePageCursorProps) {
       container?.removeEventListener("mouseleave", onLeave);
       document.body.style.cursor = "auto";
     };
-  }, [containerRef]);
+  }, [containerRef, isOverMeshRef]);
 
   return (
     <canvas
