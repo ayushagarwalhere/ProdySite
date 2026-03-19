@@ -251,9 +251,6 @@ export default function EventsPage() {
           {/* Header */}
           <div className="page-header">
             <div>
-              <p style={{ fontFamily: "'DM Sans',sans-serif", fontSize: "0.65rem", letterSpacing: "0.4em", textTransform: "uppercase", color: "rgba(200,146,78,0.4)", margin: "0 0 0.5rem" }}>
-                Prodyogiki &rsquo;26
-              </p>
               <h1 style={{ fontFamily: "'Barlow Condensed',sans-serif", fontSize: "clamp(1.8rem,4vw,2.8rem)", fontWeight: 800, letterSpacing: "0.04em", textTransform: "uppercase", color: "#f5ead8", margin: 0, lineHeight: 1 }}>
                 Events
               </h1>
