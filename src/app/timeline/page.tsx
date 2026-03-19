@@ -1040,7 +1040,7 @@ export default function TimelinePage() {
             </div>
             <div
               style={{
-                fontSize: 10,
+                fontSize: 11,
                 letterSpacing: ".28em",
                 textTransform: "uppercase",
                 opacity: 0.55,
