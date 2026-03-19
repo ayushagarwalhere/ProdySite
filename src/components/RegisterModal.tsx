@@ -3,9 +3,10 @@
 import { useEffect, useState } from "react";
 import {
   checkTeamForEvent, createTeam, joinTeam,
-  leaveTeam, removeMember, type Team,
+  leaveTeam, removeMember, deleteTeam, type Team,
 } from "@/lib/api/teams";
 import { registerEvent } from "@/lib/api/events";
+
 
 const S = {
   overlay: { position: "fixed", inset: 0, zIndex: 100, background: "rgba(4,3,2,0.9)", display: "flex", alignItems: "center", justifyContent: "center", padding: "1rem" } as React.CSSProperties,
@@ -30,13 +31,13 @@ export function RegisterModal({
   onClose: () => void; onSuccess?: () => void;
 }) {
   const [loading, setLoading] = useState(true);
-  const [team, setTeam] = useState<Team | null>(null);
-  const [tab, setTab] = useState<"create" | "join">("create");
-  const [name, setName] = useState("");
-  const [code, setCode] = useState("");
-  const [busy, setBusy] = useState(false);
-  const [err, setErr] = useState("");
-  const [msg, setMsg] = useState("");
+  const [team, setTeam]       = useState<Team | null>(null);
+  const [tab, setTab]         = useState<"create" | "join">("create");
+  const [name, setName]       = useState("");
+  const [code, setCode]       = useState("");
+  const [busy, setBusy]       = useState(false);
+  const [err, setErr]         = useState("");
+  const [msg, setMsg]         = useState("");
 
   // single call on open — backend knows who's logged in via cookie
   useEffect(() => {
@@ -67,11 +68,17 @@ export function RegisterModal({
     return "Something went wrong.";
   };
 
+  const refetchTeam = async () => {
+    const d = await checkTeamForEvent(eventId);
+    setTeam(d.hasTeam ? d.team : null);
+  };
+
   const doCreate = async () => {
     if (!name.trim()) return;
     setBusy(true); setErr("");
     try {
-      setTeam(await createTeam(name.trim(), eventId));
+      await createTeam(name.trim(), eventId);
+      await refetchTeam();
       flash("Team created! Share the code with your teammates.");
     } catch (e) { flash(errMsg(e), true); }
     finally { setBusy(false); }
@@ -81,7 +88,8 @@ export function RegisterModal({
     if (!code.trim()) return;
     setBusy(true); setErr("");
     try {
-      setTeam(await joinTeam(code.trim().toUpperCase()));
+      await joinTeam(code.trim().toUpperCase());
+      await refetchTeam();
       flash("Joined team!");
     } catch (e) { flash(errMsg(e), true); }
     finally { setBusy(false); }
@@ -123,6 +131,17 @@ export function RegisterModal({
         };
       });
     } catch (e) { flash(errMsg(e), true); }
+  };
+
+  const doDelete = async () => {
+    if (!team) return;
+    setBusy(true);
+    try {
+      await deleteTeam(team.id);
+      setTeam(null);
+      flash("Team deleted.");
+    } catch (e) { flash(errMsg(e), true); }
+    finally { setBusy(false); }
   };
 
   const canRegister = team?.teamSize?.canRegister ?? false;
@@ -263,6 +282,16 @@ export function RegisterModal({
               </button>
             )}
 
+            {/* admin: delete team */}
+            {team.isUserAdmin && !team.registered && (
+              <button onClick={doDelete} disabled={busy}
+                style={{ ...S.ghostBtn, marginTop: "0.5rem", opacity: busy ? 0.5 : 1, color: "rgba(220,80,80,0.6)", borderColor: "rgba(220,80,80,0.2)", fontSize: "0.75rem" }}
+                onMouseEnter={e => (e.currentTarget.style.color = "rgba(220,80,80,0.9)")}
+                onMouseLeave={e => (e.currentTarget.style.color = "rgba(220,80,80,0.6)")}>
+                {busy ? "Deleting…" : "Delete team"}
+              </button>
+            )}
+
             {/* member: leave */}
             {!team.isUserAdmin && !team.registered && (
               <div style={{ display: "flex", flexDirection: "column", gap: "0.5rem" }}>
@@ -282,4 +311,4 @@ export function RegisterModal({
       </div>
     </div>
   );
-};
+}

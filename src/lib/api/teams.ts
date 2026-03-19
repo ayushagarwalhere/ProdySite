@@ -48,9 +48,7 @@ const api = axios.create({
   withCredentials: true,
 });
 
-/* ─────────────────────────────────────────────────────────────────────────────
-   RAW SHAPES — exactly what the backend returns, no assumptions
-───────────────────────────────────────────────────────────────────────────── */
+/* ── Raw shapes (exactly what backend returns) ── */
 
 type RawUser = {
   id: string;
@@ -61,14 +59,14 @@ type RawUser = {
 };
 
 type RawMember = {
-  id: string;         // TeamMember row id
+  id: string;       // TeamMember row id
   userId: string;
   teamId: string;
   createdAt: string;
-  user: RawUser;      // nested user object
+  user: RawUser;
 };
 
-type RawTeamSize = {
+export type TeamSize = {
   current: number;
   min: number;
   max: number;
@@ -80,36 +78,24 @@ type RawTeam = {
   id: string;
   name: string;
   teamCode: string;
-  adminId: string;        // use this to derive isUserAdmin
+  adminId: string;
   registered: boolean;
   memberCount: number;
+  isUserAdmin: boolean;   // backend derives this from cookie session
   members: RawMember[];
-  teamSize: RawTeamSize;
-  eventId: string;
-  createdAt: string;
-  updatedAt: string;
+  teamSize: TeamSize;
 };
 
-/* ─────────────────────────────────────────────────────────────────────────────
-   NORMALISED SHAPES — what the UI actually uses
-───────────────────────────────────────────────────────────────────────────── */
+/* ── Normalised shape the UI uses ── */
 
 export type Member = {
-  memberId: string;   // TeamMember row id
+  memberId: string;
   userId: string;
   name: string;
   username: string;
   email: string;
   avatarUrl: string | null;
   isAdmin: boolean;
-};
-
-export type TeamSize = {
-  current: number;
-  min: number;
-  max: number;
-  canJoin: boolean;
-  canRegister: boolean;
 };
 
 export type Team = {
@@ -126,90 +112,54 @@ export type Team = {
 
 export type CheckTeamResponse =
   | { hasTeam: false; team: null }
-  | { hasTeam: true; team: Team };
+  | { hasTeam: true;  team: Team };
 
-/* ─────────────────────────────────────────────────────────────────────────────
-   NORMALISE  — flatten members[].user and derive isUserAdmin from adminId
-───────────────────────────────────────────────────────────────────────────── */
+/* ── Normalise: flatten members[].user, derive isAdmin from adminId ── */
 
-function normalise(raw: RawTeam, currentUserId?: string): Team {
-  const isUserAdmin = currentUserId
-    ? raw.adminId === currentUserId
-    : raw.isUserAdmin as unknown as boolean ?? false;   // fallback if backend ever adds it
-
+function normalise(raw: RawTeam): Team {
   return {
-    id: raw.id,
-    name: raw.name,
-    teamCode: raw.teamCode,
-    adminId: raw.adminId,
-    registered: raw.registered,
+    id:          raw.id,
+    name:        raw.name,
+    teamCode:    raw.teamCode,
+    adminId:     raw.adminId,
+    registered:  raw.registered,
     memberCount: raw.memberCount,
-    isUserAdmin,
-    teamSize: raw.teamSize,
-    members: raw.members.map(m => ({
-      memberId: m.id,
-      userId: m.userId,
-      name: m.user.name,
-      username: m.user.username,
-      email: m.user.email,
-      avatarUrl: m.user.avatarUrl,
-      isAdmin: m.userId === raw.adminId,
+    isUserAdmin: raw.isUserAdmin,   // straight from backend, no derivation needed
+    teamSize:    raw.teamSize,
+    members:     raw.members.map(m => ({
+      memberId:  m.id,
+      userId:    m.userId,
+      name:      m.user?.name     ?? "",
+      username:  m.user?.username ?? "",
+      email:     m.user?.email    ?? "",
+      avatarUrl: m.user?.avatarUrl ?? null,
+      isAdmin:   m.userId === raw.adminId,
     })),
   };
 }
 
-/* ─────────────────────────────────────────────────────────────────────────────
-   ROUTES
-───────────────────────────────────────────────────────────────────────────── */
+/* ── Routes ── */
 
-// GET /teams/event/:eventId
-export async function checkTeamForEvent(
-  eventId: string,
-  currentUserId?: string,
-): Promise<CheckTeamResponse> {
-  const { data } = await api.get<{ hasTeam: boolean; team: RawTeam | null }>(
-    `/teams/event/${eventId}`,
-  );
-  if (!data.hasTeam || !data.team) return { hasTeam: false, team: null };
-  return { hasTeam: true, team: normalise(data.team, currentUserId) };
-}
+export const checkTeamForEvent = (eventId: string) =>
+  api.get<{ hasTeam: boolean; team: RawTeam | null }>(`/teams/event/${eventId}`)
+    .then(r => r.data.hasTeam && r.data.team
+      ? { hasTeam: true  as const, team: normalise(r.data.team) }
+      : { hasTeam: false as const, team: null });
 
-// POST /teams/create  — { name, eventId }
-export async function createTeam(
-  name: string,
-  eventId: string,
-  currentUserId?: string,
-): Promise<Team> {
-  const { data } = await api.post<RawTeam>("/teams/create", { name, eventId });
-  return normalise(data, currentUserId);
-}
+export const createTeam = (name: string, eventId: string) =>
+  api.post<RawTeam>("/teams/create", { name, eventId }).then(r => normalise(r.data));
 
-// POST /teams/join  — { teamCode }
-export async function joinTeam(
-  teamCode: string,
-  currentUserId?: string,
-): Promise<Team> {
-  const { data } = await api.post<RawTeam>("/teams/join", { teamCode });
-  return normalise(data, currentUserId);
-}
+export const joinTeam = (teamCode: string) =>
+  api.post<RawTeam>("/teams/join", { teamCode }).then(r => normalise(r.data));
 
-// POST /teams/leave  — { teamId }
 export const leaveTeam = (teamId: string) =>
   api.post("/teams/leave", { teamId });
 
-// POST /teams/remove-member  — { teamId, userId }
 export const removeMember = (teamId: string, userId: string) =>
   api.post("/teams/remove-member", { teamId, userId });
 
-// GET /teams/:teamId
-export async function getTeam(
-  teamId: string,
-  currentUserId?: string,
-): Promise<Team> {
-  const { data } = await api.get<RawTeam>(`/teams/${teamId}`);
-  return normalise(data, currentUserId);
-}
+export const getTeam = (teamId: string) =>
+  api.get<RawTeam>(`/teams/${teamId}`).then(r => normalise(r.data));
 
-// POST /teams/delete  — { teamId }
 export const deleteTeam = (teamId: string) =>
   api.post("/teams/delete", { teamId });
