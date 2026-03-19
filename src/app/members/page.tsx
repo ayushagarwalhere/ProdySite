@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useRef, useCallback } from "react";
 import Image from "next/image";
+import Footer from "@/components/custom/footer";
 
 type Member = {
   name: string;
@@ -582,6 +583,7 @@ export default function MembersPage() {
           ))}
         </div>
       </div>
+      <Footer/>
     </>
   );
 }
