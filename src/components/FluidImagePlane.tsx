@@ -120,12 +120,10 @@ const fragmentShader = `
 
 interface FluidImagePlaneProps {
   scrollProgress: React.MutableRefObject<number>;
-  isOverMeshRef: React.MutableRefObject<boolean>;
 }
 
 export default function FluidImagePlane({
   scrollProgress,
-  isOverMeshRef,
 }: FluidImagePlaneProps) {
   const meshRef = useRef<THREE.Mesh>(null);
   const hoverRef = useRef(0.0);
@@ -213,15 +211,12 @@ mat.uniforms.u_hovering.value = 1.0;
       position={[0, 0, 0]}
       onPointerEnter={() => {
         hoverRef.current = 1.0;
-        isOverMeshRef.current = true;
       }}
       onPointerLeave={() => {
         hoverRef.current = 0.0;
-        isOverMeshRef.current = false;
       }}
       onPointerMove={() => {
         hoverRef.current = 1.0;
-        isOverMeshRef.current = true;
       }}
     >
       <planeGeometry args={[planeW, planeH, 64, 64]} />

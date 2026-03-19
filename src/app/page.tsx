@@ -4,6 +4,7 @@ import { useEffect, useRef, useState, useCallback } from "react";
 import HeroScene from "@/components/HeroScene";
 import Preloader from "@/components/Home/Preloader";
 import Footer from "@/components/custom/footer";
+import ScarabCursor from "@/components/ScarabCursor";
 
 /* ─── sponsors data ─── */
 const SPONSORS = {
@@ -396,17 +397,17 @@ function AboutBlock() {
           "An institution is the lengthened shadow of one great idea."
         </p>
         <p className="about-block__body">
-          ISTE — Indian Society for Technical Education is the premier
-          national organisation for technical education in India. Since its
-          founding, it has been the lifeblood of engineering campuses across the
-          country, connecting students, faculty, and industry in a shared
-          pursuit of excellence.
+          ISTE — Indian Society for Technical Education is the premier national
+          organisation for technical education in India. Since its founding, it
+          has been the lifeblood of engineering campuses across the country,
+          connecting students, faculty, and industry in a shared pursuit of
+          excellence.
         </p>
       </div>
       <div className="about-block__col">
         <p className="about-block__body">
-          Our student chapter at NITH carries this flame forward organising technical
-          festivals, coding marathons, design challenges, and
+          Our student chapter at NITH carries this flame forward organising
+          technical festivals, coding marathons, design challenges, and
           leadership conclaves that transform students into well-rounded
           professionals ready to face the world.
         </p>
@@ -562,6 +563,7 @@ export default function Home() {
   return (
     <>
       <style>{CSS}</style>
+      <ScarabCursor />
 
       {!preloaderDone && <Preloader onComplete={handlePreloaderComplete} />}
 
@@ -610,35 +612,15 @@ export default function Home() {
 
           {/* about */}
           <section id="about" className="section">
-            <SectionHeading title="ABOUT US" glyph="☼" />
+            <SectionHeading title="ABOUT US" overline="" glyph="☼" />
             <AboutBlock />
-            <div className="stats-grid">
-              {[
-                { value: "1941", label: "Year Founded", icon: "𓇳", delay: 0 },
-                {
-                  value: "200+",
-                  label: "Chapters Across India",
-                  icon: "𓅓",
-                  delay: 0.1,
-                },
-                {
-                  value: "4000+",
-                  label: "Active Members",
-                  icon: "𓂀",
-                  delay: 0.2,
-                },
-                { value: "50+", label: "Annual Events", icon: "𓋴", delay: 0.3 },
-              ].map((s, i) => (
-                <StatCard key={i} {...s} />
-              ))}
-            </div>
           </section>
 
           <div className="section-divider" />
 
           {/* sponsors */}
           <section id="sponsors" className="section section--wide">
-            <SectionHeading title="OUR SPONSORS" glyph="𓋴" />
+            <SectionHeading title="OUR SPONSORS" overline="" glyph="𓋴" />
             <TempleColumns />
             <SponsorTier
               tier="gold"
@@ -677,7 +659,7 @@ const CSS = `
 
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 html { scroll-behavior: smooth; }
-body { background: #080400; color: #f5ead8; overflow-x: hidden; }
+body { background: #080400; color: #f5ead8; overflow-x: hidden; cursor: none; }
 
 /* ── page wrapper ── */
 .page { opacity: 0; transition: opacity .7s ease; min-height: 100vh; position: relative; overflow-x: hidden; }
@@ -782,7 +764,7 @@ body { background: #080400; color: #f5ead8; overflow-x: hidden; }
 @media (min-width: 768px) { .stats-grid { grid-template-columns: repeat(4,1fr); } }
 .stat-card {
   background: rgba(15,8,0,.75); border-radius: 4px; padding: 28px 20px;
-  text-align: center; backdrop-filter: blur(8px); cursor: default;
+  text-align: center; backdrop-filter: blur(8px); cursor: none;
   border: 1px solid rgba(231,186,128,.2);
   opacity: 0; transform: translateY(30px);
   transition: opacity .7s ease, transform .7s ease, border-color .3s, box-shadow .3s;

@@ -4,10 +4,9 @@ import { useRef, useEffect } from "react";
 
 interface HomePageCursorProps {
   containerRef: React.RefObject<HTMLDivElement | null>;
-  isOverMeshRef: React.RefObject<boolean>;
 }
 
-export default function HomePageCursor({ containerRef, isOverMeshRef }: HomePageCursorProps) {
+export default function HomePageCursor({ containerRef }: HomePageCursorProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
   useEffect(() => {
@@ -58,8 +57,8 @@ export default function HomePageCursor({ containerRef, isOverMeshRef }: HomePage
 
     const draw = () => {
       // smooth follow
-      pos.x += (mouse.x - pos.x) * 0.18;
-      pos.y += (mouse.y - pos.y) * 0.18;
+      pos.x += (mouse.x - pos.x) * 0.1;
+      pos.y += (mouse.y - pos.y) * 0.1;
 
       // velocity
       velocity.x = pos.x - prevPos.x;
@@ -97,19 +96,19 @@ export default function HomePageCursor({ containerRef, isOverMeshRef }: HomePage
           const b = trail[i];
 
           const progress = i / (trail.length - 1); // 0=tail 1=head
-          const ageFade = 1 - Math.min(a.age / MAX_AGE, 1);
+          const ageFade = 1 - Math.max(a.age / MAX_AGE, 1);
           const alpha = ageFade * progress * 0.75;
           if (alpha < 0.005) continue;
 
           // tapered: thin at tail, thick at head, max scales with velocity
           const minW = 1;
-          const maxW = 6 + speedNorm * 20; // grows with speed
+          const maxW = 1 + speedNorm * 10; // grows with speed
           const trailWidth = minW + (maxW - minW) * progress;
 
           // amber-gold gradient along trail
           const r = 255;
           const g = Math.round(120 + progress * 100); // 120→220
-          const b_ = Math.round(10 + progress * 50);  // 10→60
+          const b_ = Math.round(10 + progress * 50); // 10→60
 
           ctx.save();
           ctx.shadowColor = `rgba(255, 140, 20, ${alpha * 0.6})`;
@@ -127,7 +126,7 @@ export default function HomePageCursor({ containerRef, isOverMeshRef }: HomePage
       }
 
       // ── reveal rings — always show in hero ──
-      const ringRadius = 32 + speedNorm * 18;
+      const ringRadius = 16 + speedNorm * 18;
 
       // inner ring
       ctx.save();
@@ -138,26 +137,18 @@ export default function HomePageCursor({ containerRef, isOverMeshRef }: HomePage
       ctx.stroke();
       ctx.restore();
 
-      // ── cursor dot ──
-      // at rest: medium dot. moving: large dot
-      const dotRadius = 8 + speedNorm * 20; // 8px still → 26px fast
+      // ── cursor ring (thick white outline, transparent center) ──
+      const dotRadius = 8 + speedNorm * 8; // 8px still -> 26px fast
 
-      // glow
       ctx.save();
-      ctx.shadowColor = "rgba(255, 200, 60, 0.9)";
-      ctx.shadowBlur = 20 + speedNorm * 20;
+      ctx.shadowColor = "rgba(255, 255, 255, 0.75)";
+      ctx.shadowBlur = 12 + speedNorm * 14;
       ctx.beginPath();
       ctx.arc(pos.x, pos.y, dotRadius, 0, Math.PI * 2);
-      // slightly transparent fill so ring is visible through it when slow
-      // ctx.fillStyle = `rgba(255, 210, 100, ${0.55 + speedNorm * 0.3})`;
-      ctx.fill();
+      ctx.strokeStyle = "rgba(255, 255, 255, 0.98)";
+      ctx.lineWidth = 4 + speedNorm * 2;
+      ctx.stroke();
       ctx.restore();
-
-      // sharp bright core
-      ctx.beginPath();
-      ctx.arc(pos.x, pos.y, Math.max(dotRadius * 0.28, 3), 0, Math.PI * 2);
-      ctx.fillStyle = "rgba(255, 255, 255, 0.95)";
-      ctx.fill();
 
       raf = requestAnimationFrame(draw);
     };
@@ -172,7 +163,7 @@ export default function HomePageCursor({ containerRef, isOverMeshRef }: HomePage
       container?.removeEventListener("mouseleave", onLeave);
       document.body.style.cursor = "auto";
     };
-  }, [containerRef, isOverMeshRef]);
+  }, [containerRef]);
 
   return (
     <canvas

@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { useIsMobile } from "@/hooks/use-mobile";
 
 const navLinks = [
@@ -18,8 +19,10 @@ const BG = "#0a0703";
 
 export default function Navbar() {
   const isMobile = useIsMobile();
+  const pathname = usePathname();
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const isHome = pathname === "/";
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 50);
@@ -310,18 +313,20 @@ export default function Navbar() {
               opacity="0.6"
             />
           </svg>
-          <span
-            className="logo-shimmer"
-            style={{
-              fontFamily: "'Barlow Condensed', sans-serif",
-              fontSize: "1.85rem",
-              fontWeight: 800,
-              letterSpacing: ".28em",
-              textTransform: "uppercase",
-            }}
-          >
-            Prodyogiki&rsquo;26
-          </span>
+          {!isHome && (
+            <span
+              className="logo-shimmer"
+              style={{
+                fontFamily: "'Barlow Condensed', sans-serif",
+                fontSize: "1.85rem",
+                fontWeight: 800,
+                letterSpacing: ".28em",
+                textTransform: "uppercase",
+              }}
+            >
+              Prodyogiki&rsquo;26
+            </span>
+          )}
         </Link>
 
         {/* right side */}

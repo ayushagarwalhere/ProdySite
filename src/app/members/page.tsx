@@ -229,36 +229,44 @@ export default function MembersPage() {
         }
 
         /* ── Fire cursor ── */
-        .fire-cursor {
-          position: fixed;
-          pointer-events: none;
-          z-index: 9999;
-          transform: translate(-50%, -50%);
-          transition: none;
-        }
-        .fire-glow {
-          width: 180px;
-          height: 180px;
-          border-radius: 50%;
-          background: radial-gradient(circle,
-            rgba(255,140,0,0.18) 0%,
-            rgba(255,80,0,0.10) 30%,
-            rgba(180,60,0,0.05) 60%,
-            transparent 75%
-          );
-          filter: blur(8px);
-          animation: fire-flicker 0.8s ease-in-out infinite alternate;
-        }
-        .fire-core {
-          position: absolute;
-          top: 50%; left: 50%;
-          transform: translate(-50%, -60%);
-          width: 10px; height: 14px;
-          background: radial-gradient(ellipse, #fff8e1 0%, #ffb300 40%, transparent 80%);
-          border-radius: 50% 50% 30% 30%;
-          filter: blur(2px);
-          animation: fire-flicker 0.4s ease-in-out infinite alternate;
-        }
+.fire-cursor {
+  position: fixed;
+  pointer-events: none;
+  z-index: 9999;
+  /* Remove transform from here */
+  transition: none;
+}
+
+.fire-glow {
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  background: radial-gradient(circle,
+    rgba(255,140,0,0.18) 0%,
+    rgba(255,80,0,0.10) 30%,
+    rgba(180,60,0,0.05) 60%,
+    transparent 85%
+  );
+  filter: blur(8px);
+  animation: fire-flicker 0.8s ease-in-out infinite alternate;
+  /* Offset the glow so its center aligns with cursor position */
+  transform: translate(-50%, -50%);
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+.fire-core {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 10px;
+  height: 14px;
+  background: radial-gradient(ellipse, #fff8e1 0%, #ffb300 40%, transparent 80%);
+  border-radius: 50% 50% 30% 30%;
+  filter: blur(2px);
+  animation: fire-flicker 0.4s ease-in-out infinite alternate;
+}
         @keyframes fire-flicker {
           0%   { opacity: 0.85; transform: translate(-50%, -60%) scaleX(0.95) scaleY(1); }
           100% { opacity: 1;    transform: translate(-50%, -65%) scaleX(1.05) scaleY(1.08); }
@@ -506,14 +514,13 @@ export default function MembersPage() {
         }
       `}</style>
 
-      {/* Fire glow cursor */}
       <div
-        className="fire-cursor"
-        style={{ left: mouse.x, top: mouse.y }}
-      >
-        <div className="fire-glow" />
-        <div className="fire-core" />
-      </div>
+  className="fire-cursor"
+  style={{ left: `${mouse.x}px`, top: `${mouse.y}px` }}
+>
+  <div className="fire-glow" />
+  <div className="fire-core" />
+</div>
 
       {/* Ambient embers */}
       {Array.from({ length: 10 }).map((_, i) => (
@@ -543,7 +550,6 @@ export default function MembersPage() {
 
         {/* Header */}
         <div className="page-header">
-          <p className="page-eyebrow">Organizing Committee</p>
           <h1 className="page-title">The Alchemists</h1>
           <div className="page-rule" />
         </div>
