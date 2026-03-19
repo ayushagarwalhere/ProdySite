@@ -67,9 +67,7 @@ const ALL_MEMBERS: Member[] = [
   { year: 3, category: "Coordinator", name: "Amit Singh Bathyal", post: "Joint PR Head", pokemon: "Scizor", pokemonImage: POKEMON_SPRITES(212), memberImage: "/members/third/amitsingh.png", title: ALCHEMICAL_TITLE["Joint PR Head"] },
   { year: 3, category: "Coordinator", name: "Akshit Pathania", post: "Technical Head", pokemon: "Muk", pokemonImage: POKEMON_SPRITES(89), memberImage: "/members/third/akshitpathania.png", title: ALCHEMICAL_TITLE["Technical Head"] },
   { year: 3, category: "Coordinator", name: "Ayush Arora", post: "Joint Technical Head", pokemon: "Electivire", pokemonImage: POKEMON_SPRITES(466), memberImage: "/members/third/ayusharora.png", title: ALCHEMICAL_TITLE["Joint Technical Head"] },
-  { year: 3, category: "Coordinator", name: "Kanishk Singh", post: "Media & Marketing Head", pokemon: "Minccino", pokemonImage: POKEMON_SPRITES(572
-    
-  ), memberImage: "/members/third/kanishk.png", title: ALCHEMICAL_TITLE["Media & Marketing Head"] },
+  { year: 3, category: "Coordinator", name: "Kanishk Singh", post: "Media & Marketing Head", pokemon: "Minccino", pokemonImage: POKEMON_SPRITES(572), memberImage: "/members/third/kanishk.png", title: ALCHEMICAL_TITLE["Media & Marketing Head"] },
   { year: 3, category: "Coordinator", name: "Siya Sood", post: "Creative Head", pokemon: "Roserade", pokemonImage: POKEMON_SPRITES(407), memberImage: "/members/third/siyasood.png", title: ALCHEMICAL_TITLE["Creative Head"] },
   { year: 3, category: "Coordinator", name: "Naman Srivastava", post: "Operations/Logistics Head", pokemon: "Heracross", pokemonImage: POKEMON_SPRITES(214), memberImage: "/members/third/namansrivastava.png", title: ALCHEMICAL_TITLE["Operations/Logistics Head"] },
   { year: 3, category: "Coordinator", name: "Ashutosh", post: "Joint Media & Marketing Head", pokemon: "Haunter", pokemonImage: POKEMON_SPRITES(93), memberImage: "/members/third/ashutosh.png", title: ALCHEMICAL_TITLE["Joint Media & Marketing Head"] },
