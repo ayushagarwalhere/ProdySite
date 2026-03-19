@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState, useCallback } from "react";
 import HeroScene from "@/components/HeroScene";
 import Preloader from "@/components/Home/Preloader";
+import Footer from "@/components/custom/footer";
 
 /* ─── sponsors data ─── */
 const SPONSORS = {
@@ -289,11 +290,8 @@ function useScrollReveal(threshold = 0.15) {
   return { ref, visible };
 }
 
-/* ─── preloader ─── */
-
 /* ─── section heading ─── */
 function SectionHeading({
-  overline,
   title,
   glyph = "𓇳",
 }: {
@@ -307,7 +305,6 @@ function SectionHeading({
       ref={ref}
       className={`section-heading${visible ? " section-heading--visible" : ""}`}
     >
-      <p className="section-heading__over">{overline}</p>
       <h2 className="section-heading__title">{title}</h2>
       <div className="ornament-line">
         <span className="ornament-line__rule ornament-line__rule--left" />
@@ -399,7 +396,7 @@ function AboutBlock() {
           "An institution is the lengthened shadow of one great idea."
         </p>
         <p className="about-block__body">
-          ISTE — Indian Society for Technical Education — is the premier
+          ISTE — Indian Society for Technical Education is the premier
           national organisation for technical education in India. Since its
           founding, it has been the lifeblood of engineering campuses across the
           country, connecting students, faculty, and industry in a shared
@@ -408,8 +405,8 @@ function AboutBlock() {
       </div>
       <div className="about-block__col">
         <p className="about-block__body">
-          Our student chapter carries this flame forward — organising technical
-          festivals, coding marathons, design challenges, cultural nights, and
+          Our student chapter at NITH carries this flame forward organising technical
+          festivals, coding marathons, design challenges, and
           leadership conclaves that transform students into well-rounded
           professionals ready to face the world.
         </p>
@@ -502,32 +499,6 @@ function TierDivider() {
       <span className="tier-divider__dot tier-divider__dot--2" />
       <span className="tier-divider__dot tier-divider__dot--3" />
       <span className="tier-divider__line tier-divider__line--right" />
-    </div>
-  );
-}
-
-/* ─── become sponsor cta ─── */
-function BecomeSponsorCTA() {
-  const { ref, visible } = useScrollReveal(0.2);
-  return (
-    <div
-      ref={ref}
-      className={`sponsor-cta${visible ? " sponsor-cta--visible" : ""}`}
-    >
-      <div className="ornament-line" style={{ marginBottom: 28 }}>
-        <span className="ornament-line__rule ornament-line__rule--left" />
-        <span className="ornament-line__glyph" style={{ opacity: 0.4 }}>
-          𓊹
-        </span>
-        <span className="ornament-line__rule ornament-line__rule--right" />
-      </div>
-      <p className="sponsor-cta__heading">
-        Leave your name upon the temple walls.
-      </p>
-      <p className="sponsor-cta__sub">
-        Partner with Prodyogiki and reach 4000+ engineering minds.
-      </p>
-      <button className="sponsor-cta__btn">Become a Patron</button>
     </div>
   );
 }
@@ -639,11 +610,7 @@ export default function Home() {
 
           {/* about */}
           <section id="about" className="section">
-            <SectionHeading
-              overline="Who We Are"
-              title="The Order of Engineers"
-              glyph="𓊹"
-            />
+            <SectionHeading title="ABOUT US" glyph="☼" />
             <AboutBlock />
             <div className="stats-grid">
               {[
@@ -671,11 +638,7 @@ export default function Home() {
 
           {/* sponsors */}
           <section id="sponsors" className="section section--wide">
-            <SectionHeading
-              overline="Our Patrons"
-              title="The Grand Benefactors"
-              glyph="𓋴"
-            />
+            <SectionHeading title="OUR SPONSORS" glyph="𓋴" />
             <TempleColumns />
             <SponsorTier
               tier="gold"
@@ -697,10 +660,9 @@ export default function Home() {
               badge="𓅓"
               sponsors={SPONSORS.bronze}
             />
-            <BecomeSponsorCTA />
           </section>
-
           <div style={{ height: 40 }} />
+          <Footer />
         </div>
       </div>
     </>
@@ -727,14 +689,12 @@ body { background: #080400; color: #f5ead8; overflow-x: hidden; }
   background: radial-gradient(ellipse 130% 80% at 50% -10%, #1e0f00 0%, #0d0700 50%, #000 100%);
 }
 .bg-noise {
-  position: fixed; inset: 0; z-index: 1; pointer-events: none; opacity: .45; mix-blend-mode: overlay;
-  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 300 300' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.68' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='matrix' values='0.55 0.35 0.05 0 0.08 0.45 0.30 0.05 0 0.05 0.10 0.08 0.02 0 0.01 0 0 0 1 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.2'/%3E%3C/svg%3E");
-  background-size: 300px 300px;
+  position: fixed; inset: 0; z-index: 1; pointer-events: none; opacity: .5; mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='0.07'/%3E%3C/svg%3E");
 }
 .bg-scanlines {
   position: fixed; inset: 0; z-index: 2; pointer-events: none;
-  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='matrix' values='0.6 0.4 0.1 0 0.1 0.5 0.35 0.08 0 0.06 0.15 0.1 0.03 0 0.02 0 0 0 1 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.2'/%3E%3C/svg%3E");
-  background-size: 200px 200px; opacity: 0.5;
+  background-image: repeating-linear-gradient(0deg, transparent, transparent 3px, rgba(180,120,40,.025) 3px, rgba(180,120,40,.025) 4px);
 }
 .bg-vignette {
   position: fixed; inset: 0; z-index: 6; pointer-events: none;
@@ -811,7 +771,7 @@ body { background: #080400; color: #f5ead8; overflow-x: hidden; }
 .section-heading__title {
   font-family: 'Cinzel Decorative', 'Cinzel', serif; font-weight: 700;
   font-size: clamp(1.4rem, 3vw, 2.2rem); color: #E7BA80;
-  letter-spacing: .05em; text-shadow: 0 0 50px rgba(231,186,128,.25);
+  letter-spacing: .05em;
   margin-bottom: 14px;
 }
 
@@ -1018,11 +978,6 @@ body { background: #080400; color: #f5ead8; overflow-x: hidden; }
 .preloader__floor {
   position: absolute; bottom: 120px; left: 0; right: 0; height: 1px; pointer-events: none;
   background: linear-gradient(to right, transparent, rgba(231,186,128,.3) 20%, rgba(231,186,128,.3) 80%, transparent);
-}
-.preloader__wordmark {
-  position: absolute; bottom: 50px; left: 0; right: 0; text-align: center; pointer-events: none;
-  font-family: 'Cinzel', serif; font-size: 11px; letter-spacing: .45em;
-  text-transform: uppercase; color: rgba(231,186,128,.35);
 }
 .preloader__skip {
   position: absolute; top: 20px; right: 24px;
