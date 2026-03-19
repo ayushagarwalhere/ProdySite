@@ -6,94 +6,265 @@ import Preloader from "@/components/Home/Preloader";
 
 /* ─── sponsors data ─── */
 const SPONSORS = {
-  gold: [{ name: "Nexus Corp", glyph: "𓇳" }, { name: "Arcadia Tech", glyph: "𓂀" }, { name: "Helios Labs", glyph: "𓊹" }],
-  silver: [{ name: "Iris Dynamics", glyph: "𓅓" }, { name: "Phaedra AI", glyph: "𓋴" }, { name: "Olympus Cloud", glyph: "𓆑" }, { name: "Aether Systems", glyph: "𓏛" }],
-  bronze: [{ name: "Cadmus Media", glyph: "𓇯" }, { name: "Pythia Tools", glyph: "𓆓" }, { name: "Delphi Works", glyph: "𓂃" }, { name: "Logos Studio", glyph: "𓇋" }, { name: "Eris Finance", glyph: "𓂋" }],
+  gold: [
+    { name: "Nexus Corp", glyph: "𓇳" },
+    { name: "Arcadia Tech", glyph: "𓂀" },
+    { name: "Helios Labs", glyph: "𓊹" },
+  ],
+  silver: [
+    { name: "Iris Dynamics", glyph: "𓅓" },
+    { name: "Phaedra AI", glyph: "𓋴" },
+    { name: "Olympus Cloud", glyph: "𓆑" },
+    { name: "Aether Systems", glyph: "𓏛" },
+  ],
+  bronze: [
+    { name: "Cadmus Media", glyph: "𓇯" },
+    { name: "Pythia Tools", glyph: "𓆓" },
+    { name: "Delphi Works", glyph: "𓂃" },
+    { name: "Logos Studio", glyph: "𓇋" },
+    { name: "Eris Finance", glyph: "𓂋" },
+  ],
 };
-
-const GREEK = ["Α", "Β", "Γ", "Δ", "Ε", "Ζ", "Η", "Θ", "Ι", "Κ", "Λ", "Μ", "Ν", "Ξ", "Ο", "Π", "Ρ", "Σ", "Τ", "Υ", "Φ", "Χ", "Ψ", "Ω"];
-const GOLD = ["#E7BA80", "#C9922A", "#F0C97A", "#A87230", "#FAD98B", "#D4A853"];
 
 /* ─── hieroglyph strip ─── */
 function HieroglyphStrip({ offset = 0 }: { offset?: number }) {
-  return (<>
-    <g transform="translate(4,0)">
-      <ellipse cx="14" cy="8" rx="10" ry="6" stroke="#E7BA80" strokeWidth="1.2" fill="none" />
-      <circle cx="14" cy="8" r="2.5" fill="#E7BA80" />
-      <path d="M4 11 Q8 16 14 14 Q20 16 24 11" stroke="#E7BA80" strokeWidth="1" fill="none" />
-      <path d="M14 14 L12 20" stroke="#E7BA80" strokeWidth="1" />
-      <path d="M14 14 L16 20" stroke="#E7BA80" strokeWidth="1" />
-    </g>
-    <g transform="translate(8,35)">
-      <ellipse cx="10" cy="6" rx="5" ry="4" stroke="#E7BA80" strokeWidth="1.2" fill="none" />
-      <line x1="10" y1="10" x2="10" y2="26" stroke="#E7BA80" strokeWidth="1.2" />
-      <line x1="4" y1="16" x2="16" y2="16" stroke="#E7BA80" strokeWidth="1.2" />
-    </g>
-    <g transform="translate(6,70)">
-      <rect x="6" y="0" width="12" height="2" fill="#E7BA80" rx="1" />
-      <rect x="5" y="4" width="14" height="2" fill="#E7BA80" rx="1" />
-      <rect x="4" y="8" width="16" height="2" fill="#E7BA80" rx="1" />
-      <rect x="3" y="12" width="18" height="2" fill="#E7BA80" rx="1" />
-      <rect x="5" y="16" width="14" height="8" fill="none" stroke="#E7BA80" strokeWidth="1" />
-    </g>
-    <g transform="translate(10,105)">
-      <line x1="9" y1="0" x2="9" y2="28" stroke="#E7BA80" strokeWidth="1.2" />
-      <path d="M4 4 Q9 0 14 4" stroke="#E7BA80" strokeWidth="1.2" fill="none" />
-      <path d="M7 28 L4 34 M11 28 L14 34" stroke="#E7BA80" strokeWidth="1.2" />
-    </g>
-    <g transform="translate(6,182)">
-      <circle cx="12" cy="12" r="7" stroke="#E7BA80" strokeWidth="1.2" fill="none" />
-      <circle cx="12" cy="12" r="3" fill="#E7BA80" />
-      {[0, 45, 90, 135, 180, 225, 270, 315].map((a, i) => (
-        <line key={i}
-          x1={12 + 8 * Math.cos(a * Math.PI / 180)} y1={12 + 8 * Math.sin(a * Math.PI / 180)}
-          x2={12 + 11 * Math.cos(a * Math.PI / 180)} y2={12 + 11 * Math.sin(a * Math.PI / 180)}
-          stroke="#E7BA80" strokeWidth="1" />
-      ))}
-    </g>
-    <g transform="translate(4,300)">
-      <path d="M14 24 Q14 12 14 8" stroke="#E7BA80" strokeWidth="1.2" />
-      <path d="M14 8 Q10 0 6 4 Q8 10 14 12" fill="#E7BA80" opacity="0.7" />
-      <path d="M14 8 Q18 0 22 4 Q20 10 14 12" fill="#E7BA80" opacity="0.7" />
-      <line x1="8" y1="24" x2="20" y2="24" stroke="#E7BA80" strokeWidth="1.2" />
-    </g>
-    <g transform={`translate(4,${380 + offset})`}>
-      <ellipse cx="14" cy="8" rx="10" ry="6" stroke="#E7BA80" strokeWidth="1.2" fill="none" />
-      <circle cx="14" cy="8" r="2.5" fill="#E7BA80" />
-      <path d="M4 11 Q8 16 14 14 Q20 16 24 11" stroke="#E7BA80" strokeWidth="1" fill="none" />
-    </g>
-    <g transform="translate(2,500)">
-      <path d="M14 2 L28 28 L0 28 Z" stroke="#E7BA80" strokeWidth="1.2" fill="none" />
-      <line x1="14" y1="10" x2="22" y2="28" stroke="#E7BA80" strokeWidth="0.6" opacity="0.5" />
-      <line x1="14" y1="10" x2="6" y2="28" stroke="#E7BA80" strokeWidth="0.6" opacity="0.5" />
-    </g>
-    <g transform="translate(4,580)">
-      <path d="M4 20 Q2 8 10 4 Q8 12 14 14 Q20 12 18 4 Q26 8 24 20" stroke="#E7BA80" strokeWidth="1.2" fill="none" />
-      <circle cx="14" cy="24" r="4" stroke="#E7BA80" strokeWidth="1.2" fill="none" />
-    </g>
-    <g transform="translate(0,680)">
-      <line x1="4" y1="0" x2="32" y2="0" stroke="#E7BA80" strokeWidth="0.8" />
-      <circle cx="18" cy="0" r="2" fill="#E7BA80" />
-      <circle cx="8" cy="0" r="1" fill="#E7BA80" />
-      <circle cx="28" cy="0" r="1" fill="#E7BA80" />
-    </g>
-  </>);
+  return (
+    <>
+      <g transform="translate(4,0)">
+        <ellipse
+          cx="14"
+          cy="8"
+          rx="10"
+          ry="6"
+          stroke="#E7BA80"
+          strokeWidth="1.2"
+          fill="none"
+        />
+        <circle cx="14" cy="8" r="2.5" fill="#E7BA80" />
+        <path
+          d="M4 11 Q8 16 14 14 Q20 16 24 11"
+          stroke="#E7BA80"
+          strokeWidth="1"
+          fill="none"
+        />
+        <path d="M14 14 L12 20" stroke="#E7BA80" strokeWidth="1" />
+        <path d="M14 14 L16 20" stroke="#E7BA80" strokeWidth="1" />
+      </g>
+      <g transform="translate(8,35)">
+        <ellipse
+          cx="10"
+          cy="6"
+          rx="5"
+          ry="4"
+          stroke="#E7BA80"
+          strokeWidth="1.2"
+          fill="none"
+        />
+        <line
+          x1="10"
+          y1="10"
+          x2="10"
+          y2="26"
+          stroke="#E7BA80"
+          strokeWidth="1.2"
+        />
+        <line
+          x1="4"
+          y1="16"
+          x2="16"
+          y2="16"
+          stroke="#E7BA80"
+          strokeWidth="1.2"
+        />
+      </g>
+      <g transform="translate(6,70)">
+        <rect x="6" y="0" width="12" height="2" fill="#E7BA80" rx="1" />
+        <rect x="5" y="4" width="14" height="2" fill="#E7BA80" rx="1" />
+        <rect x="4" y="8" width="16" height="2" fill="#E7BA80" rx="1" />
+        <rect x="3" y="12" width="18" height="2" fill="#E7BA80" rx="1" />
+        <rect
+          x="5"
+          y="16"
+          width="14"
+          height="8"
+          fill="none"
+          stroke="#E7BA80"
+          strokeWidth="1"
+        />
+      </g>
+      <g transform="translate(10,105)">
+        <line x1="9" y1="0" x2="9" y2="28" stroke="#E7BA80" strokeWidth="1.2" />
+        <path
+          d="M4 4 Q9 0 14 4"
+          stroke="#E7BA80"
+          strokeWidth="1.2"
+          fill="none"
+        />
+        <path
+          d="M7 28 L4 34 M11 28 L14 34"
+          stroke="#E7BA80"
+          strokeWidth="1.2"
+        />
+      </g>
+      <g transform="translate(6,182)">
+        <circle
+          cx="12"
+          cy="12"
+          r="7"
+          stroke="#E7BA80"
+          strokeWidth="1.2"
+          fill="none"
+        />
+        <circle cx="12" cy="12" r="3" fill="#E7BA80" />
+        {[0, 45, 90, 135, 180, 225, 270, 315].map((a, i) => (
+          <line
+            key={i}
+            x1={12 + 8 * Math.cos((a * Math.PI) / 180)}
+            y1={12 + 8 * Math.sin((a * Math.PI) / 180)}
+            x2={12 + 11 * Math.cos((a * Math.PI) / 180)}
+            y2={12 + 11 * Math.sin((a * Math.PI) / 180)}
+            stroke="#E7BA80"
+            strokeWidth="1"
+          />
+        ))}
+      </g>
+      <g transform="translate(4,300)">
+        <path d="M14 24 Q14 12 14 8" stroke="#E7BA80" strokeWidth="1.2" />
+        <path d="M14 8 Q10 0 6 4 Q8 10 14 12" fill="#E7BA80" opacity="0.7" />
+        <path d="M14 8 Q18 0 22 4 Q20 10 14 12" fill="#E7BA80" opacity="0.7" />
+        <line
+          x1="8"
+          y1="24"
+          x2="20"
+          y2="24"
+          stroke="#E7BA80"
+          strokeWidth="1.2"
+        />
+      </g>
+      <g transform={`translate(4,${380 + offset})`}>
+        <ellipse
+          cx="14"
+          cy="8"
+          rx="10"
+          ry="6"
+          stroke="#E7BA80"
+          strokeWidth="1.2"
+          fill="none"
+        />
+        <circle cx="14" cy="8" r="2.5" fill="#E7BA80" />
+        <path
+          d="M4 11 Q8 16 14 14 Q20 16 24 11"
+          stroke="#E7BA80"
+          strokeWidth="1"
+          fill="none"
+        />
+      </g>
+      <g transform="translate(2,500)">
+        <path
+          d="M14 2 L28 28 L0 28 Z"
+          stroke="#E7BA80"
+          strokeWidth="1.2"
+          fill="none"
+        />
+        <line
+          x1="14"
+          y1="10"
+          x2="22"
+          y2="28"
+          stroke="#E7BA80"
+          strokeWidth="0.6"
+          opacity="0.5"
+        />
+        <line
+          x1="14"
+          y1="10"
+          x2="6"
+          y2="28"
+          stroke="#E7BA80"
+          strokeWidth="0.6"
+          opacity="0.5"
+        />
+      </g>
+      <g transform="translate(4,580)">
+        <path
+          d="M4 20 Q2 8 10 4 Q8 12 14 14 Q20 12 18 4 Q26 8 24 20"
+          stroke="#E7BA80"
+          strokeWidth="1.2"
+          fill="none"
+        />
+        <circle
+          cx="14"
+          cy="24"
+          r="4"
+          stroke="#E7BA80"
+          strokeWidth="1.2"
+          fill="none"
+        />
+      </g>
+      <g transform="translate(0,680)">
+        <line x1="4" y1="0" x2="32" y2="0" stroke="#E7BA80" strokeWidth="0.8" />
+        <circle cx="18" cy="0" r="2" fill="#E7BA80" />
+        <circle cx="8" cy="0" r="1" fill="#E7BA80" />
+        <circle cx="28" cy="0" r="1" fill="#E7BA80" />
+      </g>
+    </>
+  );
 }
 
 function TopBorder() {
-  return (<>
-    <line x1="0" y1="30" x2="10000" y2="30" stroke="#E7BA80" strokeWidth="0.8" />
-    <line x1="0" y1="34" x2="10000" y2="34" stroke="#E7BA80" strokeWidth="0.4" />
-    {Array.from({ length: 120 }).map((_, i) => (
-      <g key={i} transform={`translate(${i * 80 + 8},0)`}>
-        <path d="M20 28 L20 16 Q16 8 12 10 Q10 16 20 18" fill="#E7BA80" opacity="0.6" />
-        <path d="M20 28 L20 16 Q24 8 28 10 Q30 16 20 18" fill="#E7BA80" opacity="0.6" />
-        <path d="M20 28 L20 12 Q19 6 20 4 Q21 6 20 12" fill="#E7BA80" opacity="0.8" />
-        <path d="M2 28 L8 20 L2 12" stroke="#E7BA80" strokeWidth="0.8" fill="none" opacity="0.5" />
-        <path d="M38 28 L32 20 L38 12" stroke="#E7BA80" strokeWidth="0.8" fill="none" opacity="0.5" />
-      </g>
-    ))}
-  </>);
+  return (
+    <>
+      <line
+        x1="0"
+        y1="30"
+        x2="10000"
+        y2="30"
+        stroke="#E7BA80"
+        strokeWidth="0.8"
+      />
+      <line
+        x1="0"
+        y1="34"
+        x2="10000"
+        y2="34"
+        stroke="#E7BA80"
+        strokeWidth="0.4"
+      />
+      {Array.from({ length: 120 }).map((_, i) => (
+        <g key={i} transform={`translate(${i * 80 + 8},0)`}>
+          <path
+            d="M20 28 L20 16 Q16 8 12 10 Q10 16 20 18"
+            fill="#E7BA80"
+            opacity="0.6"
+          />
+          <path
+            d="M20 28 L20 16 Q24 8 28 10 Q30 16 20 18"
+            fill="#E7BA80"
+            opacity="0.6"
+          />
+          <path
+            d="M20 28 L20 12 Q19 6 20 4 Q21 6 20 12"
+            fill="#E7BA80"
+            opacity="0.8"
+          />
+          <path
+            d="M2 28 L8 20 L2 12"
+            stroke="#E7BA80"
+            strokeWidth="0.8"
+            fill="none"
+            opacity="0.5"
+          />
+          <path
+            d="M38 28 L32 20 L38 12"
+            stroke="#E7BA80"
+            strokeWidth="0.8"
+            fill="none"
+            opacity="0.5"
+          />
+        </g>
+      ))}
+    </>
+  );
 }
 
 /* ─── scroll reveal hook ─── */
@@ -104,8 +275,13 @@ function useScrollReveal(threshold = 0.15) {
     const el = ref.current;
     if (!el) return;
     const obs = new IntersectionObserver(
-      ([e]) => { if (e.isIntersecting) { setVisible(true); obs.disconnect(); } },
-      { threshold }
+      ([e]) => {
+        if (e.isIntersecting) {
+          setVisible(true);
+          obs.disconnect();
+        }
+      },
+      { threshold },
     );
     obs.observe(el);
     return () => obs.disconnect();
@@ -115,12 +291,22 @@ function useScrollReveal(threshold = 0.15) {
 
 /* ─── preloader ─── */
 
-
 /* ─── section heading ─── */
-function SectionHeading({ overline, title, glyph = "𓇳" }: { overline: string; title: string; glyph?: string }) {
+function SectionHeading({
+  overline,
+  title,
+  glyph = "𓇳",
+}: {
+  overline: string;
+  title: string;
+  glyph?: string;
+}) {
   const { ref, visible } = useScrollReveal(0.2);
   return (
-    <div ref={ref} className={`section-heading${visible ? " section-heading--visible" : ""}`}>
+    <div
+      ref={ref}
+      className={`section-heading${visible ? " section-heading--visible" : ""}`}
+    >
       <p className="section-heading__over">{overline}</p>
       <h2 className="section-heading__title">{title}</h2>
       <div className="ornament-line">
@@ -133,10 +319,24 @@ function SectionHeading({ overline, title, glyph = "𓇳" }: { overline: string;
 }
 
 /* ─── stat card ─── */
-function StatCard({ value, label, icon, delay }: { value: string; label: string; icon: string; delay: number }) {
+function StatCard({
+  value,
+  label,
+  icon,
+  delay,
+}: {
+  value: string;
+  label: string;
+  icon: string;
+  delay: number;
+}) {
   const { ref, visible } = useScrollReveal(0.2);
   return (
-    <div ref={ref} className={`stat-card${visible ? " stat-card--visible" : ""}`} style={{ transitionDelay: `${delay}s` }}>
+    <div
+      ref={ref}
+      className={`stat-card${visible ? " stat-card--visible" : ""}`}
+      style={{ transitionDelay: `${delay}s` }}
+    >
       <div className="stat-card__icon">{icon}</div>
       <div className="stat-card__value">{value}</div>
       <div className="stat-card__label">{label}</div>
@@ -145,17 +345,38 @@ function StatCard({ value, label, icon, delay }: { value: string; label: string;
 }
 
 /* ─── sponsor tablet ─── */
-function SponsorTablet({ name, glyph, tier, delay }: { name: string; glyph: string; tier: "gold" | "silver" | "bronze"; delay: number }) {
+function SponsorTablet({
+  name,
+  glyph,
+  tier,
+  delay,
+}: {
+  name: string;
+  glyph: string;
+  tier: "gold" | "silver" | "bronze";
+  delay: number;
+}) {
   const { ref, visible } = useScrollReveal(0.1);
   return (
-    <div ref={ref} className={`tablet tablet--${tier}${visible ? " tablet--visible" : ""}`} style={{ transitionDelay: `${delay}s` }}>
+    <div
+      ref={ref}
+      className={`tablet tablet--${tier}${visible ? " tablet--visible" : ""}`}
+      style={{ transitionDelay: `${delay}s` }}
+    >
       <div className="tablet__body">
         <div className="tablet__arch" />
         <div className="tablet__inner">
           <span className="tablet__glyph">{glyph}</span>
           <span className="tablet__rule" />
         </div>
-        {([[8, 8], [8, 9999], [9999, 8], [9999, 9999]] as [number, number][]).map((_, i) => (
+        {(
+          [
+            [8, 8],
+            [8, 9999],
+            [9999, 8],
+            [9999, 9999],
+          ] as [number, number][]
+        ).map((_, i) => (
           <span key={i} className={`tablet__dot tablet__dot--${i}`} />
         ))}
       </div>
@@ -169,14 +390,34 @@ function SponsorTablet({ name, glyph, tier, delay }: { name: string; glyph: stri
 function AboutBlock() {
   const { ref, visible } = useScrollReveal(0.15);
   return (
-    <div ref={ref} className={`about-block${visible ? " about-block--visible" : ""}`}>
+    <div
+      ref={ref}
+      className={`about-block${visible ? " about-block--visible" : ""}`}
+    >
       <div className="about-block__col">
-        <p className="about-block__quote">"An institution is the lengthened shadow of one great idea."</p>
-        <p className="about-block__body">ISTE — Indian Society for Technical Education — is the premier national organisation for technical education in India. Since its founding, it has been the lifeblood of engineering campuses across the country, connecting students, faculty, and industry in a shared pursuit of excellence.</p>
+        <p className="about-block__quote">
+          "An institution is the lengthened shadow of one great idea."
+        </p>
+        <p className="about-block__body">
+          ISTE — Indian Society for Technical Education — is the premier
+          national organisation for technical education in India. Since its
+          founding, it has been the lifeblood of engineering campuses across the
+          country, connecting students, faculty, and industry in a shared
+          pursuit of excellence.
+        </p>
       </div>
       <div className="about-block__col">
-        <p className="about-block__body">Our student chapter carries this flame forward — organising technical festivals, coding marathons, design challenges, cultural nights, and leadership conclaves that transform students into well-rounded professionals ready to face the world.</p>
-        <p className="about-block__body" style={{ marginTop: 20 }}>We believe great engineers are not just built in classrooms. They are forged in competition, shaped by mentorship, and polished by community.</p>
+        <p className="about-block__body">
+          Our student chapter carries this flame forward — organising technical
+          festivals, coding marathons, design challenges, cultural nights, and
+          leadership conclaves that transform students into well-rounded
+          professionals ready to face the world.
+        </p>
+        <p className="about-block__body" style={{ marginTop: 20 }}>
+          We believe great engineers are not just built in classrooms. They are
+          forged in competition, shaped by mentorship, and polished by
+          community.
+        </p>
       </div>
       <div className="about-block__divider">
         <span className="about-block__divider-line about-block__divider-line--left" />
@@ -191,11 +432,20 @@ function AboutBlock() {
 function TempleColumns() {
   const { ref, visible } = useScrollReveal(0.1);
   return (
-    <div ref={ref} className={`temple-cols${visible ? " temple-cols--visible" : ""}`}>
-      {[0, 1, 2, 3, 4].map(i => (
-        <div key={i} className="temple-cols__col" style={{ opacity: .25 + i * .04 }}>
+    <div
+      ref={ref}
+      className={`temple-cols${visible ? " temple-cols--visible" : ""}`}
+    >
+      {[0, 1, 2, 3, 4].map((i) => (
+        <div
+          key={i}
+          className="temple-cols__col"
+          style={{ opacity: 0.25 + i * 0.04 }}
+        >
           <div className="temple-cols__capital" />
-          {Array.from({ length: 6 }).map((_, j) => <div key={j} className="temple-cols__flute" />)}
+          {Array.from({ length: 6 }).map((_, j) => (
+            <div key={j} className="temple-cols__flute" />
+          ))}
           <div className="temple-cols__base" />
         </div>
       ))}
@@ -204,17 +454,40 @@ function TempleColumns() {
 }
 
 /* ─── sponsor tier ─── */
-function SponsorTier({ tier, label, badge, sponsors }: { tier: "gold" | "silver" | "bronze"; label: string; badge: string; sponsors: { name: string; glyph: string }[] }) {
+function SponsorTier({
+  tier,
+  label,
+  badge,
+  sponsors,
+}: {
+  tier: "gold" | "silver" | "bronze";
+  label: string;
+  badge: string;
+  sponsors: { name: string; glyph: string }[];
+}) {
   const { ref, visible } = useScrollReveal(0.1);
   return (
-    <div ref={ref} className={`sponsor-tier sponsor-tier--${tier}${visible ? " sponsor-tier--visible" : ""}`}>
+    <div
+      ref={ref}
+      className={`sponsor-tier sponsor-tier--${tier}${visible ? " sponsor-tier--visible" : ""}`}
+    >
       <div className="sponsor-tier__header">
         <span className="sponsor-tier__rule sponsor-tier__rule--left" />
-        <span className="sponsor-tier__label">{badge} {label}</span>
+        <span className="sponsor-tier__label">
+          {badge} {label}
+        </span>
         <span className="sponsor-tier__rule sponsor-tier__rule--right" />
       </div>
       <div className="sponsor-tier__tablets">
-        {sponsors.map((s, i) => <SponsorTablet key={i} name={s.name} glyph={s.glyph} tier={tier} delay={i * .08} />)}
+        {sponsors.map((s, i) => (
+          <SponsorTablet
+            key={i}
+            name={s.name}
+            glyph={s.glyph}
+            tier={tier}
+            delay={i * 0.08}
+          />
+        ))}
       </div>
     </div>
   );
@@ -237,14 +510,23 @@ function TierDivider() {
 function BecomeSponsorCTA() {
   const { ref, visible } = useScrollReveal(0.2);
   return (
-    <div ref={ref} className={`sponsor-cta${visible ? " sponsor-cta--visible" : ""}`}>
+    <div
+      ref={ref}
+      className={`sponsor-cta${visible ? " sponsor-cta--visible" : ""}`}
+    >
       <div className="ornament-line" style={{ marginBottom: 28 }}>
         <span className="ornament-line__rule ornament-line__rule--left" />
-        <span className="ornament-line__glyph" style={{ opacity: .4 }}>𓊹</span>
+        <span className="ornament-line__glyph" style={{ opacity: 0.4 }}>
+          𓊹
+        </span>
         <span className="ornament-line__rule ornament-line__rule--right" />
       </div>
-      <p className="sponsor-cta__heading">Leave your name upon the temple walls.</p>
-      <p className="sponsor-cta__sub">Partner with Prodyogiki and reach 4000+ engineering minds.</p>
+      <p className="sponsor-cta__heading">
+        Leave your name upon the temple walls.
+      </p>
+      <p className="sponsor-cta__sub">
+        Partner with Prodyogiki and reach 4000+ engineering minds.
+      </p>
       <button className="sponsor-cta__btn">Become a Patron</button>
     </div>
   );
@@ -266,28 +548,44 @@ export default function Home() {
     const canvas = canvasRef.current;
     if (!canvas) return;
     const ctx = canvas.getContext("2d")!;
-    const resize = () => { canvas.width = window.innerWidth; canvas.height = window.innerHeight; };
+    const resize = () => {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    };
     resize();
     window.addEventListener("resize", resize);
     const pts = Array.from({ length: 65 }, () => ({
-      x: Math.random() * window.innerWidth, y: Math.random() * window.innerHeight,
-      r: Math.random() * 1.5 + .3, dx: (Math.random() - .5) * .22, dy: -Math.random() * .4 - .1, alpha: Math.random() * .45 + .1,
+      x: Math.random() * window.innerWidth,
+      y: Math.random() * window.innerHeight,
+      r: Math.random() * 1.5 + 0.3,
+      dx: (Math.random() - 0.5) * 0.22,
+      dy: -Math.random() * 0.4 - 0.1,
+      alpha: Math.random() * 0.45 + 0.1,
     }));
     let raf = 0;
     const draw = () => {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
-      pts.forEach(p => {
-        ctx.beginPath(); ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
-        ctx.fillStyle = `rgba(231,186,128,${p.alpha})`; ctx.fill();
-        p.x += p.dx; p.y += p.dy;
-        if (p.y < -4) { p.y = canvas.height + 4; p.x = Math.random() * canvas.width; }
+      pts.forEach((p) => {
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(231,186,128,${p.alpha})`;
+        ctx.fill();
+        p.x += p.dx;
+        p.y += p.dy;
+        if (p.y < -4) {
+          p.y = canvas.height + 4;
+          p.x = Math.random() * canvas.width;
+        }
         if (p.x < -4) p.x = canvas.width + 4;
         if (p.x > canvas.width + 4) p.x = -4;
       });
       raf = requestAnimationFrame(draw);
     };
     draw();
-    return () => { cancelAnimationFrame(raf); window.removeEventListener("resize", resize); };
+    return () => {
+      cancelAnimationFrame(raf);
+      window.removeEventListener("resize", resize);
+    };
   }, [contentVisible]);
 
   return (
@@ -297,7 +595,6 @@ export default function Home() {
       {!preloaderDone && <Preloader onComplete={handlePreloaderComplete} />}
 
       <div className={`page${contentVisible ? " page--visible" : ""}`}>
-
         {/* bg layers */}
         <div aria-hidden className="bg-base" />
         <div aria-hidden className="bg-noise" />
@@ -307,19 +604,27 @@ export default function Home() {
         {/* hieroglyph columns (desktop only) */}
         <div aria-hidden className="hiero-col hiero-col--left">
           <div className="hiero-col__line" />
-          <svg width="36" viewBox="0 0 36 820" fill="none"><HieroglyphStrip /></svg>
+          <svg width="36" viewBox="0 0 36 820" fill="none">
+            <HieroglyphStrip />
+          </svg>
         </div>
         <div aria-hidden className="hiero-col hiero-col--right">
           <div className="hiero-col__line" />
-          <svg width="36" viewBox="0 0 36 820" fill="none"><HieroglyphStrip offset={14} /></svg>
+          <svg width="36" viewBox="0 0 36 820" fill="none">
+            <HieroglyphStrip offset={14} />
+          </svg>
         </div>
 
         {/* top / bottom borders */}
         <div aria-hidden className="top-border">
-          <svg width="100%" height="36" preserveAspectRatio="xMidYMid slice"><TopBorder /></svg>
+          <svg width="100%" height="36" preserveAspectRatio="xMidYMid slice">
+            <TopBorder />
+          </svg>
         </div>
         <div aria-hidden className="bot-border">
-          <svg width="100%" height="36" preserveAspectRatio="xMidYMid slice"><TopBorder /></svg>
+          <svg width="100%" height="36" preserveAspectRatio="xMidYMid slice">
+            <TopBorder />
+          </svg>
         </div>
 
         {/* particles */}
@@ -327,23 +632,38 @@ export default function Home() {
 
         {/* content */}
         <div className="content">
-
           {/* hero — untouched */}
-          <div style={{ position: 'relative', zIndex: 3 }}>
-  <HeroScene />
-</div>
+          <div style={{ position: "relative", zIndex: 3 }}>
+            <HeroScene />
+          </div>
 
           {/* about */}
           <section id="about" className="section">
-            <SectionHeading overline="Who We Are" title="The Order of Engineers" glyph="𓊹" />
+            <SectionHeading
+              overline="Who We Are"
+              title="The Order of Engineers"
+              glyph="𓊹"
+            />
             <AboutBlock />
             <div className="stats-grid">
               {[
                 { value: "1941", label: "Year Founded", icon: "𓇳", delay: 0 },
-                { value: "200+", label: "Chapters Across India", icon: "𓅓", delay: .1 },
-                { value: "4000+", label: "Active Members", icon: "𓂀", delay: .2 },
-                { value: "50+", label: "Annual Events", icon: "𓋴", delay: .3 },
-              ].map((s, i) => <StatCard key={i} {...s} />)}
+                {
+                  value: "200+",
+                  label: "Chapters Across India",
+                  icon: "𓅓",
+                  delay: 0.1,
+                },
+                {
+                  value: "4000+",
+                  label: "Active Members",
+                  icon: "𓂀",
+                  delay: 0.2,
+                },
+                { value: "50+", label: "Annual Events", icon: "𓋴", delay: 0.3 },
+              ].map((s, i) => (
+                <StatCard key={i} {...s} />
+              ))}
             </div>
           </section>
 
@@ -351,13 +671,32 @@ export default function Home() {
 
           {/* sponsors */}
           <section id="sponsors" className="section section--wide">
-            <SectionHeading overline="Our Patrons" title="The Grand Benefactors" glyph="𓋴" />
+            <SectionHeading
+              overline="Our Patrons"
+              title="The Grand Benefactors"
+              glyph="𓋴"
+            />
             <TempleColumns />
-            <SponsorTier tier="gold" label="Gold Patrons" badge="𓇳" sponsors={SPONSORS.gold} />
+            <SponsorTier
+              tier="gold"
+              label="Gold Patrons"
+              badge="𓇳"
+              sponsors={SPONSORS.gold}
+            />
             <TierDivider />
-            <SponsorTier tier="silver" label="Silver Patrons" badge="𓂀" sponsors={SPONSORS.silver} />
+            <SponsorTier
+              tier="silver"
+              label="Silver Patrons"
+              badge="𓂀"
+              sponsors={SPONSORS.silver}
+            />
             <TierDivider />
-            <SponsorTier tier="bronze" label="Bronze Patrons" badge="𓅓" sponsors={SPONSORS.bronze} />
+            <SponsorTier
+              tier="bronze"
+              label="Bronze Patrons"
+              badge="𓅓"
+              sponsors={SPONSORS.bronze}
+            />
             <BecomeSponsorCTA />
           </section>
 
@@ -409,7 +748,8 @@ body { background: #080400; color: #f5ead8; overflow-x: hidden; }
 .hiero-col {
   display: none;
   position: fixed; top: 0; bottom: 0; width: 72px;
-  z-index: 3; pointer-events: none; opacity: .3;
+  z-index: 3; pointer-events: none; opacity: 1;
+  background: #080400;
   flex-direction: column; align-items: center; padding-top: 20px;
 }
 .hiero-col--left  { left: 0; }
@@ -423,11 +763,13 @@ body { background: #080400; color: #f5ead8; overflow-x: hidden; }
 /* ── top / bottom decorative borders ── */
 .top-border {
   position: fixed; top: 0; left: 0; right: 0; height: 36px;
-  z-index: 4; pointer-events: none; opacity: .45;
+  z-index: 4; pointer-events: none; opacity: 1;
+  background: #080400;
 }
 .bot-border {
   position: fixed; bottom: 0; left: 0; right: 0; height: 36px;
-  z-index: 4; pointer-events: none; opacity: .4; transform: scaleY(-1);
+  z-index: 4; pointer-events: none; opacity: 1; transform: scaleY(-1);
+  background: #080400;
 }
 
 /* ── content wrapper ── */
