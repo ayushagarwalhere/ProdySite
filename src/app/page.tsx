@@ -294,6 +294,7 @@ function useScrollReveal(threshold = 0.15) {
 /* ─── section heading ─── */
 function SectionHeading({
   title,
+  overline,
   glyph = "𓇳",
 }: {
   overline: string;
@@ -307,6 +308,7 @@ function SectionHeading({
       className={`section-heading${visible ? " section-heading--visible" : ""}`}
     >
       <h2 className="section-heading__title">{title}</h2>
+      <h5 className="section-heading__overline">{overline}</h5>
       <div className="ornament-line">
         <span className="ornament-line__rule ornament-line__rule--left" />
         <span className="ornament-line__glyph">{glyph}</span>
@@ -611,8 +613,12 @@ export default function Home() {
           </div>
 
           {/* about */}
-          <section id="about" className="section">
-            <SectionHeading title="ABOUT US" overline="" glyph="☼" />
+          <section id="about" className="section section--about">
+            <SectionHeading
+              title="ABOUT US"
+              overline="TEAM ISTE- NITH CHAPTER"
+              glyph="☼"
+            />
             <AboutBlock />
           </section>
 
@@ -722,6 +728,7 @@ body { background: #080400; color: #f5ead8; overflow-x: hidden; cursor: none; }
   max-width: 1100px; margin: 0 auto;
   padding: 80px 24px;
 }
+.section--about { position: relative; top: -36px; }
 .section--wide { max-width: 1200px; padding: 80px 24px; }
 @media (min-width: 640px)  { .section, .section--wide { padding-left: 40px; padding-right: 40px; } }
 @media (min-width: 768px)  { .section, .section--wide { padding-left: 80px; padding-right: 80px; } }
@@ -738,7 +745,7 @@ body { background: #080400; color: #f5ead8; overflow-x: hidden; cursor: none; }
 .ornament-line__rule { flex: 1; max-width: 60px; height: 1px; display: block; }
 .ornament-line__rule--left  { background: linear-gradient(to right, transparent, #E7BA80); }
 .ornament-line__rule--right { background: linear-gradient(to left,  transparent, #E7BA80); }
-.ornament-line__glyph { font-size: 18px; }
+.ornament-line__glyph { font-size: 18px; color: #E7BA80; }
 
 /* ── section heading ── */
 .section-heading {
@@ -746,9 +753,10 @@ body { background: #080400; color: #f5ead8; overflow-x: hidden; cursor: none; }
   opacity: 0; transform: translateY(24px); transition: opacity .7s ease, transform .7s ease;
 }
 .section-heading--visible { opacity: 1; transform: translateY(0); }
-.section-heading__over {
+.section-heading__over,
+.section-heading__overline {
   font-family: 'Cinzel', serif; font-size: 10px; letter-spacing: .4em;
-  text-transform: uppercase; color: rgba(231,186,128,.45); margin-bottom: 10px;
+  text-transform: uppercase; color: #E7BA80; margin-bottom: 10px;
 }
 .section-heading__title {
   font-family: 'Cinzel Decorative', 'Cinzel', serif; font-weight: 700;
