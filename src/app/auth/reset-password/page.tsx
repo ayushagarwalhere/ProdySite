@@ -1,13 +1,13 @@
 "use client";
 
-import { useState } from "react";
+import { useState, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { resetPassword } from "@/lib/api/auth";
 
 type Status = "idle" | "loading" | "success" | "error";
 
-export default function ResetPasswordPage() {
+function ResetPasswordContent() {
   const searchParams = useSearchParams();
   const token = searchParams.get("token");
 
@@ -289,5 +289,17 @@ export default function ResetPasswordPage() {
         }
       `}</style>
     </div>
+  );
+}
+
+export default function ResetPasswordPage() {
+  return (
+    <Suspense fallback={
+      <div className="min-h-screen w-full bg-[#0a0a0a] flex items-center justify-center">
+        <div className="text-[#f0e8d6]">Loading...</div>
+      </div>
+    }>
+      <ResetPasswordContent />
+    </Suspense>
   );
 }

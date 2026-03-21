@@ -1,1 +1,0 @@
-﻿src/components/Members/GooeyNav.tsx(127,30): error TS18047: 'filterRef.current' is possibly 'null'.

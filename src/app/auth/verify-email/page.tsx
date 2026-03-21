@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState, useCallback } from "react";
+import { useEffect, useState, useCallback, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { verifyEmail } from "@/lib/api/auth";
@@ -8,7 +8,7 @@ import { AxiosError } from "axios";
 
 type Status = "idle" | "loading" | "success" | "error";
 
-export default function VerifyEmailPage() {
+function VerifyEmailContent() {
   const searchParams = useSearchParams();
   const token = searchParams.get("token");
 
@@ -164,5 +164,17 @@ export default function VerifyEmailPage() {
         </div>
       </div>
     </>
+  );
+}
+
+export default function VerifyEmailPage() {
+  return (
+    <Suspense fallback={
+      <div style={{ minHeight:"100vh", width:"100%", background:"#0a0a0a", display:"flex", alignItems:"center", justifyContent:"center" }}>
+        <div style={{ color:"#f0e8d6" }}>Loading...</div>
+      </div>
+    }>
+      <VerifyEmailContent />
+    </Suspense>
   );
 }
