@@ -39,7 +39,7 @@
  * All routes match the backend exactly as documented.
  */
 
-const BASE = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:3000";
+const BASE = process.env.NEXT_PUBLIC_API_URL ?? "https://prody.nith.ac.in/api";
 
 async function api<T>(path: string, init: RequestInit = {}): Promise<T> {
   const res = await fetch(`${BASE}${path}`, {

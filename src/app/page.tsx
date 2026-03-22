@@ -318,32 +318,6 @@ function SectionHeading({
   );
 }
 
-/* ─── stat card ─── */
-function StatCard({
-  value,
-  label,
-  icon,
-  delay,
-}: {
-  value: string;
-  label: string;
-  icon: string;
-  delay: number;
-}) {
-  const { ref, visible } = useScrollReveal(0.2);
-  return (
-    <div
-      ref={ref}
-      className={`stat-card${visible ? " stat-card--visible" : ""}`}
-      style={{ transitionDelay: `${delay}s` }}
-    >
-      <div className="stat-card__icon">{icon}</div>
-      <div className="stat-card__value">{value}</div>
-      <div className="stat-card__label">{label}</div>
-    </div>
-  );
-}
-
 /* ─── sponsor tablet ─── */
 function SponsorTablet({
   name,
@@ -590,12 +564,7 @@ export default function Home() {
           </svg>
         </div>
 
-        {/* top / bottom borders */}
-        <div aria-hidden className="top-border">
-          <svg width="100%" height="36" preserveAspectRatio="xMidYMid slice">
-            <TopBorder />
-          </svg>
-        </div>
+        {/* bottom borders */}
         <div aria-hidden className="bot-border">
           <svg width="100%" height="36" preserveAspectRatio="xMidYMid slice">
             <TopBorder />
@@ -621,8 +590,6 @@ export default function Home() {
             />
             <AboutBlock />
           </section>
-
-          <div className="section-divider" />
 
           {/* sponsors */}
           <section id="sponsors" className="section section--wide">

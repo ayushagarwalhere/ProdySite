@@ -326,20 +326,18 @@ export default function Navbar() {
               opacity="0.6"
             />
           </svg>
-          {!isHome && (
-            <span
-              className="logo-shimmer"
-              style={{
-                fontFamily: "'Barlow Condensed', sans-serif",
-                fontSize: "1.85rem",
-                fontWeight: 800,
-                letterSpacing: ".28em",
-                textTransform: "uppercase",
-              }}
-            >
-              Prodyogiki&rsquo;26
-            </span>
-          )}
+          <span
+            className="logo-shimmer"
+            style={{
+              fontFamily: "'Barlow Condensed', sans-serif",
+              fontSize: "1.85rem",
+              fontWeight: 800,
+              letterSpacing: ".28em",
+              textTransform: "uppercase",
+            }}
+          >
+            Prodyogiki&rsquo;26
+          </span>
         </Link>
 
         {/* right side */}
