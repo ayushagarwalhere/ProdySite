@@ -177,14 +177,14 @@ export default function FluidImagePlane({ scrollProgress }: FluidImagePlaneProps
   }, []);
 
   /* ── preload textures ── */
-  useTexture.preload("/images/reveal.png");
-  useTexture.preload("/images/tomb.png");
-  useTexture.preload("/images/depth-image.png");
+  useTexture.preload("/images/reveal.webp");
+  useTexture.preload("/images/tomb.webp");
+  useTexture.preload("/images/depth-image.webp");
 
   const [faceTexture, tombTexture, depthTexture] = useTexture([
-    "/images/reveal.png",
-    "/images/tomb.png",
-    "/images/depth-image.png",
+    "/images/reveal.webp",
+    "/images/tomb.webp",
+    "/images/depth-image.webp",
   ]);
 
   [faceTexture, tombTexture, depthTexture].forEach((t) => {

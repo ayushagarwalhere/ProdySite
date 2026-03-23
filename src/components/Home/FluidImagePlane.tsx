@@ -16,9 +16,9 @@ export default function FluidImagePlane({ scrollProgress }: FluidImagePlaneProps
   const { update } = useFluidCursor();
 
   const [baseTexture, revealTexture, depthTexture] = useTexture([
-    '/images/darken.png',
-    '/images/reveal.png',
-    '/images/depth-image.png',
+    '/images/darken.webp',
+    '/images/reveal.webp',
+    '/images/depth-image.webp',
   ]);
 
   const uniforms = useMemo(() => ({
