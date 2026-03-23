@@ -426,6 +426,7 @@ export default function ProfilePage() {
   const [loading,       setLoading]       = useState(true);
   const [loadingRegs,   setLoadingRegs]   = useState(true);
   const [error,         setError]         = useState("");
+  const [notLoggedIn, setNotLoggedIn] = useState(false);
 
   /* modal state */
   const [teamModal, setTeamModal] = useState<Team | null>(null);
@@ -434,7 +435,11 @@ export default function ProfilePage() {
   const loadProfile = () => {
     getProfile()
       .then(data => setProfile({ ...data, teams: data.teams ?? [], events: data.events ?? [] }))
-      .catch(() => setError("Failed to load profile."))
+      .catch((e: unknown) => {
+        const status = (e as { response?: { status?: number } }).response?.status;
+        if (status === 401 || status === 403) setNotLoggedIn(true);
+        else setError("Failed to load profile.");
+      })
       .finally(() => setLoading(false));
   };
 
@@ -482,6 +487,49 @@ export default function ProfilePage() {
           {error && (
             <div style={{ padding: "1.25rem 1.5rem", border: "1px solid rgba(200,60,60,0.3)", borderRadius: 6, background: "rgba(200,60,60,0.08)", fontFamily: "'DM Sans',sans-serif", fontSize: "0.9rem", color: "rgba(250,160,160,0.9)", textAlign: "center" }}>
               {error}
+            </div>
+          )}
+
+          {/* not logged in */}
+          {notLoggedIn && (
+            <div style={{
+              display: "flex", flexDirection: "column", alignItems: "center",
+              gap: 20, paddingTop: "6rem", textAlign: "center",
+            }}>
+              <svg width="64" height="46" viewBox="0 0 52 38" fill="none" style={{ opacity: 0.5 }}>
+                <path d="M2 19 Q26 2 50 19 Q26 36 2 19Z" stroke="#c8924e" strokeWidth="1.2" fill="none"/>
+                <circle cx="26" cy="19" r="8" stroke="#c8924e" strokeWidth="1" fill="none"/>
+                <circle cx="26" cy="19" r="3.5" fill="#c8924e" opacity="0.4"/>
+                {/* closed lid */}
+                <path d="M2 19 Q26 30 50 19" stroke="#c8924e" strokeWidth="1.5" fill="rgba(10,7,3,0.9)"/>
+              </svg>
+              <div>
+                <p style={{
+                  fontFamily: "'Barlow Condensed', sans-serif", fontWeight: 700,
+                  fontSize: "1.3rem", letterSpacing: "0.15em", textTransform: "uppercase",
+                  color: "#f5ead8", margin: "0 0 0.5rem",
+                }}>
+                  The Scrolls Are Sealed
+                </p>
+                <p style={{
+                  fontFamily: "'DM Sans', sans-serif", fontSize: "0.85rem",
+                  color: "rgba(200,146,78,0.55)", margin: "0 0 1.5rem", lineHeight: 1.6,
+                }}>
+                  Please login to see your profile.
+                </p>
+                <button
+                  onClick={() => router.push("/login")}
+                  style={{
+                    padding: "0.65rem 2rem", background: "#b47c3c", border: "none",
+                    borderRadius: 4, color: "#0a0703",
+                    fontFamily: "'Barlow Condensed', sans-serif", fontWeight: 700,
+                    fontSize: "0.85rem", letterSpacing: "0.15em", textTransform: "uppercase",
+                    cursor: "pointer",
+                  }}
+                >
+                  Login
+                </button>
+              </div>
             </div>
           )}
 
