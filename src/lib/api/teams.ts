@@ -1,50 +1,7 @@
-// import { api } from "./client"
-//
-// export const createTeam = async (name: string, eventId: string) => {
-//   const res = await api.post("/teams/create", { name, eventId })
-//   return res.data
-// }
-//
-// export const joinTeam = async (teamCode: string) => {
-//   const res = await api.post("/teams/join", { teamCode })
-//   return res.data
-// }
-//
-// export function removeMember(teamId: string, userId: string): Promise<void> {
-//   return api<void>("/teams/remove-member", {
-//     method: "POST",
-//     body: JSON.stringify({ teamId, userId }),
-//   });
-// }
-//
-// export const submitTeam = async (teamId: string) => {
-//   const res = await api.post("/teams/submit", { teamId })
-//   return res.data
-// }
-//
-// export const checkTeamForEvent = async (eventId: string) => {
-//   const res = await api.get(`/teams/event/${eventId}`);
-//   return res.data; // { hasTeam: boolean, team: TeamInfo | null }
-// };
-//
-// export const getTeamById = async (teamId: string) => {
-//   const res = await api.get(`/teams/${teamId}`);
-//   return res.data;
-// };
-
-
-/**
- * teamRoutes.ts
- *
- * All routes match the backend exactly as documented.
- * Base URL is read from NEXT_PUBLIC_API_URL (falls back to http://localhost:3000).
- * Cookies are sent automatically because credentials: "include" is set on every call.
- */
-
 import axios from "axios";
 
 const api = axios.create({
-  baseURL: process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:3000",
+  baseURL: process.env.NEXT_PUBLIC_API_URL ?? "https://prody.nith.ac.in/api",
   withCredentials: true,
 });
 
