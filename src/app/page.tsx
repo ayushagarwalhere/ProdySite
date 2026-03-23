@@ -592,7 +592,7 @@ export default function Home() {
           </section>
 
           {/* sponsors */}
-          <section id="sponsors" className="section section--wide">
+          {/* <section id="sponsors" className="section section--wide">
             <SectionHeading title="OUR SPONSORS" overline="" glyph="𓋴" />
             <TempleColumns />
             <SponsorTier
@@ -615,6 +615,9 @@ export default function Home() {
               badge="𓅓"
               sponsors={SPONSORS.bronze}
             />
+          </section> */}
+          <section id="sponsors" className="section section--wide">
+            <SectionHeading title="OUR SPONSORS" overline="Call for Sponsors" glyph="𓋴" />
           </section>
           <div style={{ height: 40 }} />
           <Footer />
