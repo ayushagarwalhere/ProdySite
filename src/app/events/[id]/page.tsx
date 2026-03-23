@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 import { getEventById } from "@/lib/api/events";
 import { RegisterModal } from "@/components/RegisterModal";
+import Footer from "@/components/custom/footer";
 
 /* ─────────────────────────────────────────────────────────────────────────
    TYPES
@@ -527,6 +528,7 @@ export default function EventPage() {
           onSuccess={() => setShowModal(false)}
         />
       )}
+      <Footer/>
     </>
   );
 }

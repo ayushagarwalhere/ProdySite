@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { getProfile } from "@/lib/api/user";
 import { api } from "@/lib/api/client";
-import { joinTeam, deleteTeam } from "@/lib/api/teamRoutes";
+import { joinTeam, deleteTeam } from "@/lib/api/teams";
 
 /* ─── types ─── */
 type TeamMember = {

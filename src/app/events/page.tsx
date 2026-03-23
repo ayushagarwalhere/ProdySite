@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState, useCallback } from "react";
 import { useRouter } from "next/navigation";
 import { api } from "@/lib/api/client";
+import Footer from "@/components/custom/footer";
 
 type Event = {
   id: string;
@@ -322,6 +323,7 @@ export default function EventsPage() {
           )}
         </div>
       </div>
+      <Footer/>
     </>
   );
 }
