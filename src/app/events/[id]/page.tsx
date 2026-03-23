@@ -36,13 +36,14 @@ type Meta  = {
 /* ─────────────────────────────────────────────────────────────────────────
    EVENT METADATA
 ───────────────────────────────────────────────────────────────────────── */
+
 const EVENT_META: Record<string, Meta> = {
+
   "hackathon": {
-    tag: "Technical", date: "Feb 14–15", venue: "CS Lab Block",
-    tagline: "Build the impossible in 24 hours.",
+    tag: "CSE", date: "April 3-5", venue: "Old LH",
+    tagline: "Code. Create. Conquer.",
     rounds: [
       { title: "Problem Statement Reveal", desc: "Teams receive domain-specific problem statements at the opening ceremony. Study them carefully — your 24 hours start now." },
-      { title: "Build Phase", desc: "The core 24-hour marathon. Hardware kits, cloud credits, and industry mentors are available throughout." },
       { title: "Prototype Presentation", desc: "8 minutes to demo your product followed by a 5-minute Q&A with judges from industry and academia." },
       { title: "Grand Finale", desc: "Top 3 teams present on the main stage. Prizes and recruitment fast-tracks announced." },
     ],
@@ -55,122 +56,154 @@ const EVENT_META: Record<string, Meta> = {
     ],
     faqs: [
       { q: "Can participants from different branches register together?", a: "Yes — cross-branch teams are actively encouraged." },
-      { q: "Is there a registration fee?", a: "₹200 per team, covering meals and hardware access for both days." },
-      { q: "Will accommodation be provided for outstation participants?", a: "Yes. On-campus accommodation is available on request during registration." },
+      { q: "Is there a registration fee?", a: "No registration fee is applicable." },
       { q: "What tech stack can we use?", a: "Any language, framework, or platform. The only constraint is that the code must be written during the event." },
     ],
   },
 
-  "ancient-arch": {
-    tag: "Cultural", date: "Feb 14", venue: "Amphitheatre",
-    tagline: "Rediscover civilisations carved in stone.",
+  "pyrabid": {
+    tag: "MNC",
+    date: "April 3-5",
+    venue: "Old LH",
+    tagline: "Strategy. Risk. Power.",
     rounds: [
-      { title: "Identification Round", desc: "Participants identify architectural structures, artefacts, and civilisations from images and descriptions." },
-      { title: "Mystery Monument", desc: "A detailed verbal clue is read aloud. First team to correctly identify the monument advances." },
-      { title: "Reconstruct & Present", desc: "Each team draws or describes a given ancient structure from memory. Judged on accuracy and creativity." },
+      {
+        title: "Game Phase",
+        desc: "Teams start with a fixed number of credits and play from a set of available games. Winning rewards additional credits while losing results in the loss of invested credits. Teams must carefully decide where to invest their credits."
+      },
+      {
+        title: "Auction Phase",
+        desc: "Top teams advance to an auction round where they use accumulated credits to bid for special keys. These keys unlock pyramids that contain hidden powers and rewards."
+      }
     ],
     rules: [
-      "Teams of 2 members only. Solo entries not permitted.",
-      "No electronic devices allowed during the identification rounds.",
-      "Judges' decisions are final and binding.",
-      "Unsportsmanlike conduct results in immediate disqualification.",
+      "Teams can have up to 4 members.",
+      "Each team starts with a fixed number of credits.",
+      "Credits must be used strategically across the available games.",
+      "Winning games adds credits while losing deducts the invested credits.",
+      "Only top teams qualify for the auction phase."
     ],
     faqs: [
-      { q: "Do we need prior knowledge of architecture?", a: "General awareness of world history and famous monuments is sufficient." },
-      { q: "Is the event open to all branches?", a: "Yes, all undergraduate students are eligible." },
-      { q: "Will reference material be provided?", a: "No external materials are allowed. All content is based on general knowledge." },
-    ],
-  },
-
-  "auction": {
-    tag: "Finance", date: "Feb 15", venue: "Seminar Hall B",
-    tagline: "Bid smart. Win big. Outlast the market.",
-    rounds: [
-      { title: "Market Briefing", desc: "Teams receive a virtual portfolio of ₹10,00,000 and a list of available assets. Study the market conditions provided." },
-      { title: "Live Auction", desc: "Assets go under the hammer in real time. Teams bid, bluff, and strategise to acquire the best portfolio." },
-      { title: "Crisis Round", desc: "Surprise market events are introduced. Teams must react quickly to buy, sell, or hold to maximise their net worth." },
-      { title: "Final Valuation", desc: "Portfolios are valued at closing. The team with the highest net worth wins." },
-    ],
-    rules: [
-      "Teams of 2 to 3 members.",
-      "Starting capital is ₹10,00,000 virtual currency — no external funds.",
-      "Short-selling is permitted only in the Crisis Round.",
-      "All bids are final once accepted by the auctioneer.",
-      "Collusion between teams results in disqualification.",
-    ],
-    faqs: [
-      { q: "Do we need finance or economics knowledge?", a: "Basic understanding helps but is not mandatory. The game is designed to be learnable on the day." },
-      { q: "How long does the event last?", a: "Approximately 3 hours including briefing, auction, and final valuation." },
-      { q: "Is there a registration fee?", a: "No registration fee for this event." },
-    ],
+      { q: "Can beginners participate?", a: "Yes. The event is open to everyone with basic strategic thinking." },
+      { q: "Is the event purely luck based?", a: "No. Strategy and decision-making play the most important role." },
+      { q: "What happens in round 2?", a: "Round 2 is an auction where teams bid on keys that unlock pyramids containing special powers and rewards." }
+    ]
   },
 
   "chemystery": {
-    tag: "Science", date: "Feb 14", venue: "Chemistry Lab, Block C",
-    tagline: "Decode the molecules. Crack the mystery.",
+    tag: "CH",
+    date: "April 3-5",
+    venue: "Old LH",
+    tagline: "Observe. Analyze. Solve the mystery.",
     rounds: [
-      { title: "Compound Identification", desc: "Identify unknown compounds using provided reagents and standard lab equipment under time pressure." },
-      { title: "Reaction Prediction", desc: "Given reactants and conditions, predict products and balance equations on paper." },
-      { title: "Lab Challenge", desc: "Perform a given synthesis or analysis procedure accurately and safely. Judged on yield, purity, and technique." },
+      {
+        title: "Qualifying Round",
+        desc: "Participants watch a series of 7 videos containing important visual clues and case-related information. Teams get time to analyze the details before answering questions based on the video content."
+      },
+      {
+        title: "Final Round",
+        desc: "Shortlisted teams investigate a staged crime mystery. Hidden hints are revealed gradually and teams collect samples, perform chemical experiments, analyze evidence and determine what happened."
+      }
     ],
     rules: [
-      "Teams of 2 members. Lab coats and safety goggles are mandatory — provided at the venue.",
-      "No external reference material permitted.",
-      "Deliberate contamination of reagents results in disqualification.",
-      "All waste must be disposed of in designated containers.",
-      "Results are judged by supervising faculty. Their decision is final.",
+      "Teams must consist of 2 members.",
+      "Prior registration is required.",
+      "Phones and electronic devices are collected during the observation phase.",
+      "All materials and chemicals will be provided by the organizers."
     ],
     faqs: [
-      { q: "Is prior lab experience required?", a: "Standard undergraduate-level chemistry knowledge is sufficient." },
-      { q: "Are chemicals dangerous?", a: "All experiments use standard lab-safe reagents. Full safety equipment is provided." },
-      { q: "Can first-year students participate?", a: "Yes, provided they have completed at least one semester of chemistry coursework." },
-    ],
+      { q: "Do we have to bring any apparatus?", a: "No. Everything required will be provided." },
+      { q: "What are the judging criteria?", a: "Time taken and points collected during the game." },
+      { q: "How many members can be in a team?", a: "Teams consist of 2 members." },
+      { q: "How many teams qualify for round 2?", a: "10 teams will qualify for the final round." }
+    ]
   },
 
-  "escape-room": {
-    tag: "Puzzle", date: "Feb 15", venue: "Room 204, Main Block",
-    tagline: "Think fast. Work together. Get out.",
+  "ohmic-curse": {
+    tag: "EE",
+    date: "April 3-5",
+    venue: "Old LH",
+    tagline: "Solve circuits. Escape the challenge.",
     rounds: [
-      { title: "Briefing & Lock-in", desc: "Teams are given a 2-minute briefing on the scenario. Once the timer starts, communication with the outside is cut." },
-      { title: "The Room", desc: "60 minutes to solve interconnected puzzles, find hidden clues, and unlock the final mechanism." },
-      { title: "Debrief & Scoring", desc: "Teams are scored on time taken, number of hints used, and puzzles solved independently." },
+      {
+        title: "Qualifying Round",
+        desc: "Participants go through multiple turns where they select questions of different difficulty levels carrying different points. Teams must strategically choose questions to maximize their total score."
+      },
+      {
+        title: "Escape Room Challenge",
+        desc: "Top teams enter a technical escape room where they solve interconnected electrical and electronics challenges, identify clues and progress step-by-step to reach the final stage."
+      }
     ],
     rules: [
-      "Teams of 3 to 5 members.",
-      "Each team gets a maximum of 3 hints. Each hint used reduces the final score.",
-      "Physical damage to props or room elements results in penalty points.",
-      "Mobile phones must be surrendered before entering the room.",
-      "Teams that exceed 60 minutes are scored on puzzles completed.",
+      "Teams must consist of 2-4 members.",
+      "Only materials provided at the venue may be used.",
+      "Misconduct or unfair means will result in immediate disqualification.",
+      "Organizers’ decisions are final."
     ],
     faqs: [
-      { q: "Is the escape room physically demanding?", a: "No. All puzzles are logic and observation-based. No physical exertion required." },
-      { q: "What if someone is claustrophobic?", a: "The room is well-ventilated and the exit is never locked. Participants can leave at any time." },
-      { q: "How many teams run simultaneously?", a: "One team at a time. Slots are pre-assigned at registration." },
-    ],
+      { q: "What is the team size?", a: "Each team must have a minimum of 2 and maximum of 4 members." },
+      { q: "What happens if the final task is not completed?", a: "The team will be eliminated if the task is not finished within the given time." },
+      { q: "How are winners decided?", a: "Winners are determined based on time and accuracy in the final round." }
+    ]
   },
 
-  "sailboat": {
-    tag: "Engineering", date: "Feb 14", venue: "Civil Engineering Yard",
-    tagline: "Engineer it. Float it. Race it.",
+  "sail-yo-boat": {
+    tag: "ME",
+    date: "April 3-5",
+    venue: "Old LH",
+    tagline: "Design it. Build it. Sail it.",
     rounds: [
-      { title: "Design Submission", desc: "Teams submit a technical drawing and material list before the build phase begins. Judged on feasibility and innovation." },
-      { title: "Build Phase", desc: "2 hours to construct a functional model sailboat using only provided materials. No external components allowed." },
-      { title: "Float Test", desc: "Boats are placed in the test tank. Structural integrity and stability under load are evaluated." },
-      { title: "Race", desc: "Seaworthy boats compete in a wind-powered race across the tank. Fastest boat with no sinking wins." },
+      {
+        title: "Construction Round",
+        desc: "Teams design and build a wind-powered sailboat using only the materials provided during the event within the given time limit."
+      },
+      {
+        title: "Performance Testing",
+        desc: "The boats are tested in a straight water tank using wind from a fixed speed fan. Performance is judged based on speed, distance and stability."
+      }
     ],
     rules: [
-      "Teams of 2 to 4 members.",
-      "Only materials provided in the kit may be used. Supplementary materials result in disqualification.",
-      "Boats must be entirely student-built during the build phase.",
-      "Maximum boat length: 40 cm. Maximum width: 20 cm.",
-      "Electric motors or battery-powered components are not permitted.",
+      "Teams must consist of 3-4 members.",
+      "Boat construction time is limited to 60-90 minutes.",
+      "Only materials provided during the event may be used.",
+      "No electronics or external propulsion systems are allowed."
     ],
     faqs: [
-      { q: "What materials are provided in the kit?", a: "Balsa wood, foam sheets, adhesive tape, string, plastic sheeting, and basic tools. Full kit list is shared at registration." },
-      { q: "Do we need civil or mechanical engineering knowledge?", a: "Basic physics of buoyancy helps. No formal engineering background is required." },
-      { q: "What if the boat sinks during the float test?", a: "Teams may attempt one repair within a 5-minute window before being eliminated." },
-    ],
+      { q: "Is cross-branch participation allowed?", a: "Yes. Students from any branch can participate." },
+      { q: "Can we use electronic circuits?", a: "No. Electronics or external propulsion systems are not allowed." },
+      { q: "Can we build the boat before the event?", a: "No. Boats must be built entirely during the event." }
+    ]
   },
+
+  "truss-the-process": {
+    tag: "CE",
+    date: "April 3-5",
+    venue: "Old LH",
+    tagline: "Communicate. Construct. Conquer.",
+    rounds: [
+      {
+        title: "Layer Construction",
+        desc: "Teams construct a structure in three layers — base, middle and top. Supervisors guide builders using only verbal communication."
+      },
+      {
+        title: "Final Evaluation",
+        desc: "The final structure is compared against the reference design and evaluated based on accuracy, teamwork and decision-making."
+      }
+    ],
+    rules: [
+      "Teams must consist of 3-4 members including one supervisor.",
+      "Builders cannot see the design.",
+      "Supervisors cannot see the structure being built.",
+      "Only verbal communication is allowed.",
+      "No electronic devices or external help are permitted."
+    ],
+    faqs: [
+      { q: "Do participants need civil engineering knowledge?", a: "No. Basic teamwork and understanding are sufficient." },
+      { q: "Will materials be provided?", a: "Yes. Materials such as sticks, glue and base board will be provided." },
+      { q: "Is communication restricted?", a: "Yes. Only verbal communication is allowed during the event." }
+    ]
+  }
+
 };
 
 function getMeta(title: string): Meta {

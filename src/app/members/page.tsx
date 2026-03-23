@@ -43,7 +43,7 @@ const ALCHEMICAL_TITLE: Record<string, string> = {
 
 const ALL_MEMBERS: Member[] = [
   // ── Final Year ──
-  { year: 4, category: "Final Year", name: "Sourabh Awasthi",  post: "President",                      pokemon: "Arceus",    pokemonImage: POKEMON_SPRITES(493), memberImage: "/members/final/Sourabh.png",      title: ALCHEMICAL_TITLE["President"] },
+  { year: 4, category: "Final Year", name: "Sourabh Awasthy",  post: "President",                      pokemon: "Arceus",    pokemonImage: POKEMON_SPRITES(493), memberImage: "/members/final/Sourabh.png",      title: ALCHEMICAL_TITLE["President"] },
   { year: 4, category: "Final Year", name: "Gugli Thakur",     post: "Vice President",                 pokemon: "Gardevoir", pokemonImage: POKEMON_SPRITES(282), memberImage: "/members/final/gugli.png",        title: ALCHEMICAL_TITLE["Vice President"] },
   { year: 4, category: "Final Year", name: "Mehul Ambastha",   post: "Vice President",                 pokemon: "Alakazam",  pokemonImage: POKEMON_SPRITES(65),  memberImage: "/members/final/Mehul.png",        title: ALCHEMICAL_TITLE["Vice President"] },
   { year: 4, category: "Final Year", name: "Sakshi Gothwal",   post: "Secretary",                      pokemon: "Espeon",    pokemonImage: POKEMON_SPRITES(196), memberImage: "/members/final/sakshi.png",       title: ALCHEMICAL_TITLE["Secretary"] },
