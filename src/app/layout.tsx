@@ -14,8 +14,25 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Prody 2026 — The Alchemical Renaissance",
-  description: "Where ancient wisdom meets modern innovation. Prody 2026.",
+  title: "Prodyogiki '26 · ISTE NIT Hamirpur",
+  description: "The annual technical festival of NIT Hamirpur.",
+  keywords: ["prodyogiki", "prody", "ISTE", "NIT Hamirpur", "technical festival"],
+  openGraph: {
+    title: "Prodyogiki '26",
+    description: "The annual technical festival of NIT Hamirpur.",
+    url: "https://prodyogiki.nith.ac.in",
+    siteName: "Prodyogiki '26",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Prodyogiki '26",
+    description: "The annual technical festival of NIT Hamirpur.",
+  },
+  icons: {
+    icon: "/icon.webp",
+    apple: "/icon.webp",
+  },
 };
 
 export default function RootLayout({
