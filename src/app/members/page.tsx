@@ -43,7 +43,7 @@ const ALCHEMICAL_TITLE: Record<string, string> = {
 
 const ALL_MEMBERS: Member[] = [
   // ── Faculty Incharge ──
-  { year: 5, category: "FI", name: "Dr. Saurabh Kumar", post: "Faculty Incharge", pokemon: "Solgaleo", pokemonImage: POKEMON_SPRITES(791), memberImage: "/members/FI/drsaurabh.webp", title: "Associate Professor DoECE" },
+  { year: 5, category: "FI", name: "Abhijeet Bhattacharya", post: "Faculty Incharge", pokemon: "Solgaleo", pokemonImage: POKEMON_SPRITES(791), memberImage: "/members/FI/Abhijeet.webp", title: "Associate Professor DoECE" },
 
   // ── Final Year ──
   { year: 4, category: "Final Year", name: "Sourabh Awasthy",  post: "President",                      pokemon: "Arceus",    pokemonImage: POKEMON_SPRITES(493), memberImage: "/members/final/sourabh.webp",    title: ALCHEMICAL_TITLE["President"] },
@@ -80,7 +80,7 @@ const ALL_MEMBERS: Member[] = [
 
   // ── Executive ──
   { year: 2, category: "Executive", name: "Sanskar Srivastava", post: "Executive Member", pokemon: "Pikachu",        pokemonImage: POKEMON_SPRITES(25),    memberImage: "/members/second/sanskar.webp",         title: ALCHEMICAL_TITLE["Executive Member"] },
-  { year: 2, category: "Executive", name: "Ayush Agarwal",      post: "Executive Member", pokemon: "Ash's Greninja", pokemonImage: POKEMON_SPRITES(10117), memberImage: "/members/second/ayushagarwal.webp",   title: ALCHEMICAL_TITLE["Executive Member"] },
+  { year: 2, category: "Executive", name: "Ayush Agarwal",      post: "Executive Member", pokemon: "Ash's Greninja", pokemonImage: POKEMON_SPRITES(658), memberImage: "/members/second/ayushagarwal.webp",   title: ALCHEMICAL_TITLE["Executive Member"] },
   { year: 2, category: "Executive", name: "Sitanshu Nayan",     post: "Executive Member", pokemon: "Mewtwo",       pokemonImage: POKEMON_SPRITES(150),     memberImage: "/members/second/sitanshu.webp",       title: ALCHEMICAL_TITLE["Executive Member"] },
   { year: 2, category: "Executive", name: "Saksham Shandilya",  post: "Executive Member", pokemon: "Doduo",          pokemonImage: POKEMON_SPRITES(84),    memberImage: "/members/second/sakshamshandiliya.webp", title: ALCHEMICAL_TITLE["Executive Member"] },
   { year: 2, category: "Executive", name: "Priyanshi Joshi",    post: "Executive Member", pokemon: "Eevee",          pokemonImage: POKEMON_SPRITES(133),   memberImage: "/members/second/priyanshi.webp",      title: ALCHEMICAL_TITLE["Executive Member"] },
