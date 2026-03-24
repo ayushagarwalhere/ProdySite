@@ -30,8 +30,8 @@ export const metadata: Metadata = {
     description: "The annual technical festival of NIT Hamirpur.",
   },
   icons: {
-    icon: "/icon.webp",
-    apple: "/icon.webp",
+    icon: "/iste-logo.png",
+    apple: "/iste-logo.png",
   },
 };
 

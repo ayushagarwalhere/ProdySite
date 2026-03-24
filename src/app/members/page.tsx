@@ -18,6 +18,7 @@ type Member = {
 const POKEMON_SPRITES = (id: number) =>
   `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${id}.png`;
 
+
 const ALCHEMICAL_TITLE: Record<string, string> = {
   President: "Grand Alchemist",
   "Vice President": "Arcane Chancellor",
@@ -162,8 +163,18 @@ function MemberCard({ member, index, flipped, onFlip }: { member: Member; index:
         <div className="member-card-back">
           <div className="card-back-glow" />
           <div className="pokemon-wrap">
-            <Image src={member.pokemonImage} alt={member.pokemon} width={110} height={110}
-              style={{ width: 110, height: 110, objectFit: "contain", filter: "drop-shadow(0 0 12px rgba(231,186,128,0.6))" }} />
+            <img
+              src={member.pokemonImage}
+              alt={member.pokemon}
+              loading="lazy"
+              style={{
+                width: 110,
+                height: 110,
+                objectFit: "contain",
+                filter: "drop-shadow(0 0 12px rgba(231,186,128,0.6))",
+                display: "block",
+              }}
+            />
           </div>
           <p className="back-title">{member.title}</p>
           <p className="back-name">{member.name}</p>
