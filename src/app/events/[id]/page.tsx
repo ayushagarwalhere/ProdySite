@@ -41,25 +41,23 @@ type Meta  = {
 const EVENT_META: Record<string, Meta> = {
 
   "hackathon": {
-    tag: "CSE", date: "April 3-5", venue: "Old LH",
+    tag: "CSE",
+    date: "April 3-5",
+    venue: "Unstopp",
     tagline: "Code. Create. Conquer.",
+
     rounds: [
-      { title: "Problem Statement Reveal", desc: "Teams receive domain-specific problem statements at the opening ceremony. Study them carefully — your 24 hours start now." },
-      { title: "Prototype Presentation", desc: "8 minutes to demo your product followed by a 5-minute Q&A with judges from industry and academia." },
-      { title: "Grand Finale", desc: "Top 3 teams present on the main stage. Prizes and recruitment fast-tracks announced." },
+      {
+        title: "Problem Statement Reveal",
+        desc: "Teams will receive the problem statement at the opening ceremony. The hackathon begins right after."
+      },
+      {
+        title: "Round 2",
+        desc: "Details for Round 2 will be shared on the spot during the event."
+      }
     ],
-    rules: [
-      "Teams must consist of 2 to 4 members. Solo entries are not accepted.",
-      "All code must be written during the hackathon window. No pre-built projects.",
-      "Open-source libraries and public APIs are permitted. Plagiarism results in immediate disqualification.",
-      "Submissions must be pushed to the provided GitHub repository before the deadline.",
-      "Hardware damage is the financial responsibility of the team.",
-    ],
-    faqs: [
-      { q: "Can participants from different branches register together?", a: "Yes — cross-branch teams are actively encouraged." },
-      { q: "Is there a registration fee?", a: "No registration fee is applicable." },
-      { q: "What tech stack can we use?", a: "Any language, framework, or platform. The only constraint is that the code must be written during the event." },
-    ],
+    rules:[],
+    faqs: [],
   },
 
   "pyrabid": {
