@@ -13,20 +13,6 @@ type Event = {
   prizePool?: string;
 };
 
-// Front-end metadata per event slug
-const EVENT_META: Record<string, { tag: string; date: string }> = {
-  hackathon: { tag: "Technical", date: "Feb 14–15" },
-  "ancient-arch": { tag: "Cultural", date: "Feb 14" },
-  auction: { tag: "Finance", date: "Feb 15" },
-  chemystery: { tag: "Science", date: "Feb 14" },
-  "escape-room": { tag: "Puzzle", date: "Feb 15" },
-  sailboat: { tag: "Engineering", date: "Feb 14" },
-};
-
-function getMeta(title: string) {
-  const slug = title.toLowerCase().replace(/\s+/g, "-");
-  return EVENT_META[slug] ?? { tag: "Event", date: "Feb 2026" };
-}
 
 function getImage(title: string) {
   const slug = title.toLowerCase().replace(/\s+/g, " ");
@@ -273,7 +259,6 @@ export default function EventsPage() {
 
           {/* Events list */}
           {!loading && events.map((event, i) => {
-            const meta = getMeta(event.title);
             const isHovered = hoveredId === event.id;
             return (
               <div
@@ -296,9 +281,7 @@ export default function EventsPage() {
 
                 <h2 className="event-title">{event.title}</h2>
 
-                <span className="event-tag">{meta.tag}</span>
                 <span className="event-mode">{event.mode}</span>
-                <span className="event-date">[{meta.date}]</span>
 
                 {/* Arrow */}
                 <svg

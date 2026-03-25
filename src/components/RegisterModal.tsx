@@ -225,13 +225,23 @@ export function RegisterModal({
               <p style={{ fontFamily: "'Barlow Condensed',sans-serif", fontWeight: 700, fontSize: "1.1rem", color: "#f5ead8", margin: 0 }}>
                 {team.name}
               </p>
-              {!team.registered && (
-                <button style={S.codePill}
-                  onClick={() => navigator.clipboard.writeText(team.teamCode).then(() => flash("Copied!"))}
-                  title="Click to copy">
-                  {team.teamCode} ⎘
+              <div style={{ display: "flex", gap: "0.5rem" }}>
+                <button
+                  style={{ ...S.codePill, background: "rgba(180,124,60,0.18)", borderColor: "rgba(180,124,60,0.45)" }}
+                  onClick={() => window.open("", "_blank")}
+                >
+                  Join Community
                 </button>
-              )}
+                {!team.registered && (
+                  <button
+                    style={S.codePill}
+                    onClick={() => navigator.clipboard.writeText(team.teamCode).then(() => flash("Copied!"))}
+                    title="Click to copy"
+                  >
+                    {team.teamCode} ⎘
+                  </button>
+                )}
+                </div>
             </div>
 
             {/* members */}

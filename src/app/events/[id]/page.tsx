@@ -25,7 +25,6 @@ type Event = {
 type Round = { title: string; desc: string };
 type FAQ   = { q: string; a: string };
 type Meta  = {
-  tag: string;
   date: string;
   venue: string;
   tagline: string;
@@ -41,7 +40,6 @@ type Meta  = {
 const EVENT_META: Record<string, Meta> = {
 
   "hackathon": {
-    tag: "CSE",
     date: "April 3-5",
     venue: "Unstopp",
     tagline: "Code. Create. Conquer.",
@@ -61,7 +59,6 @@ const EVENT_META: Record<string, Meta> = {
   },
 
   "pyrabid": {
-    tag: "MNC",
     date: "April 3-5",
     venue: "Old LH",
     tagline: "Strategy. Risk. Power.",
@@ -90,7 +87,6 @@ const EVENT_META: Record<string, Meta> = {
   },
 
   "chemystery": {
-    tag: "CH",
     date: "April 3-5",
     venue: "Old LH",
     tagline: "Observe. Analyze. Solve the mystery.",
@@ -119,7 +115,6 @@ const EVENT_META: Record<string, Meta> = {
   },
 
   "ohmic-curse": {
-    tag: "EE",
     date: "April 3-5",
     venue: "Old LH",
     tagline: "Solve circuits. Escape the challenge.",
@@ -147,7 +142,6 @@ const EVENT_META: Record<string, Meta> = {
   },
 
   "sail-yo-boat": {
-    tag: "ME",
     date: "April 3-5",
     venue: "Old LH",
     tagline: "Design it. Build it. Sail it.",
@@ -175,7 +169,6 @@ const EVENT_META: Record<string, Meta> = {
   },
 
   "truss-the-process": {
-    tag: "CE",
     date: "April 3-5",
     venue: "Old LH",
     tagline: "Communicate. Construct. Conquer.",
@@ -211,7 +204,7 @@ function getMeta(title: string): Meta {
   const key = Object.keys(EVENT_META).find(k => title.toLowerCase().includes(k.replace(/-/g, " ")));
   if (key) return EVENT_META[key];
   return {
-    tag: "Event", date: "Feb 2026", venue: "Main Campus",
+    date: "April 2026", venue: "Old LH",
     tagline: "A Prodyogiki '26 event.",
     rounds: [], rules: [], faqs: [],
   };
@@ -345,9 +338,6 @@ export default function EventPage() {
           <div style={{ marginBottom: "2.5rem" }}>
             {/* tag + date row */}
             <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: "0.75rem", flexWrap: "wrap" }}>
-              <span style={{ fontFamily: "'DM Sans',sans-serif", fontSize: "0.7rem", letterSpacing: "0.18em", textTransform: "uppercase", color: "#c8924e", padding: "3px 10px", border: "1px solid rgba(180,124,60,0.4)", borderRadius: 20 }}>
-                {meta.tag}
-              </span>
               <span style={{ fontFamily: "'DM Sans',sans-serif", fontSize: "0.7rem", color: "rgba(200,146,78,0.55)", letterSpacing: "0.08em" }}>
                 {meta.date}
               </span>

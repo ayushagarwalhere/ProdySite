@@ -618,6 +618,7 @@ export default function Home() {
           </section> */}
           <section id="sponsors" className="section section--wide">
             <SectionHeading title="OUR SPONSORS" overline="Call for Sponsors" glyph="𓋴" />
+            <SectionHeading title="Interested in sponsoring Prodyogiki '26?" overline="Contact us at iste@nith.ac.in" glyph="𓂀" />
           </section>
           <div style={{ height: 40 }} />
           <Footer />

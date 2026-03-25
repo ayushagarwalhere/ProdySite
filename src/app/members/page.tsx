@@ -85,7 +85,7 @@ const ALL_MEMBERS: Member[] = [
   { year: 2, category: "Executive", name: "Sitanshu Nayan",     post: "Executive Member", pokemon: "Mewtwo",       pokemonImage: POKEMON_SPRITES(150),     memberImage: "/members/second/sitanshu.webp",       title: ALCHEMICAL_TITLE["Executive Member"] },
   { year: 2, category: "Executive", name: "Saksham Shandilya",  post: "Executive Member", pokemon: "Doduo",          pokemonImage: POKEMON_SPRITES(84),    memberImage: "/members/second/sakshamshandiliya.webp", title: ALCHEMICAL_TITLE["Executive Member"] },
   { year: 2, category: "Executive", name: "Priyanshi Joshi",    post: "Executive Member", pokemon: "Eevee",          pokemonImage: POKEMON_SPRITES(133),   memberImage: "/members/second/priyanshi.webp",      title: ALCHEMICAL_TITLE["Executive Member"] },
-  { year: 2, category: "Executive", name: "Anurag Singh",       post: "Executive Member", pokemon: "Zekrom",          pokemonImage: POKEMON_SPRITES(664),   memberImage: "/members/second/anurag.webp",         title: ALCHEMICAL_TITLE["Executive Member"] },
+  { year: 2, category: "Executive", name: "Anurag Singh",       post: "Executive Member", pokemon: "Zekrom",          pokemonImage: POKEMON_SPRITES(644),   memberImage: "/members/second/anurag.webp",         title: ALCHEMICAL_TITLE["Executive Member"] },
   { year: 2, category: "Executive", name: "Shrestha Gupta",     post: "Executive Member", pokemon: "Piplup",         pokemonImage: POKEMON_SPRITES(393),   memberImage: "/members/second/shrestha.webp",       title: ALCHEMICAL_TITLE["Executive Member"] },
   { year: 2, category: "Executive", name: "Biyanka Sharma",     post: "Executive Member", pokemon: "Butterfree",     pokemonImage: POKEMON_SPRITES(12),    memberImage: "/members/second/biyanka.webp",        title: ALCHEMICAL_TITLE["Executive Member"] },
   { year: 2, category: "Executive", name: "Ridhima Guleria",    post: "Executive Member", pokemon: "Ralts",          pokemonImage: POKEMON_SPRITES(280),   memberImage: "/members/second/ridhima.webp",        title: ALCHEMICAL_TITLE["Executive Member"] },
@@ -117,6 +117,8 @@ const ALL_MEMBERS: Member[] = [
   { year: 1, category: "Volunteer", name: "Sushant",          post: "Volunteer", pokemon: "Mimikyu",    pokemonImage: POKEMON_SPRITES(778), memberImage: "/members/first/sushant.webp",      title: ALCHEMICAL_TITLE["Volunteer"] },
   { year: 1, category: "Volunteer", name: "Vaishnavi",        post: "Volunteer", pokemon: "Snorlax",    pokemonImage: POKEMON_SPRITES(143), memberImage: "/members/first/vaishnavi.webp",    title: ALCHEMICAL_TITLE["Volunteer"] },
   { year: 1, category: "Volunteer", name: "Vishal Dadwal",    post: "Volunteer", pokemon: "Dragonite",  pokemonImage: POKEMON_SPRITES(149), memberImage: "/members/first/vishaldadwal.webp", title: ALCHEMICAL_TITLE["Volunteer"] },
+  { year: 1, category: "Volunteer", name: "Advay Sood",    post: "Volunteer", pokemon: "Sylveon",  pokemonImage: POKEMON_SPRITES(700), memberImage: "/members/first/advay.webp", title: ALCHEMICAL_TITLE["Volunteer"] },
+  { year: 1, category: "Volunteer", name: "Adarsh",    post: "Volunteer", pokemon: "Dragonite",  pokemonImage: POKEMON_SPRITES(149), memberImage: "/members/first/adarsh.webp", title: ALCHEMICAL_TITLE["Volunteer"] },
 ];
 
 const YEAR_TABS = [
