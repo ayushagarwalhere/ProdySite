@@ -499,7 +499,14 @@ export default function EventPage() {
             </p>
             <button
               disabled={!event.isLive}
-              onClick={() => event.isLive && setShowModal(true)}
+              onClick={() => {
+                if (!event.isLive) return;
+                if (event.title?.toLowerCase() === "hackathon") {
+                  window.open("https://unstop.com/hackathons/the-rosetta-code-hackathon-nit-hamirpur-1664852", "_blank", "noopener,noreferrer");
+                  return;
+                }
+                setShowModal(true);
+              }}
               style={{
                 padding: "0.9rem 2.5rem",
                 background: event.isLive ? "#b47c3c" : "rgba(180,124,60,0.15)",
