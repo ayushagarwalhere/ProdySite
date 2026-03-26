@@ -618,7 +618,14 @@ export default function Home() {
           </section> */}
           <section id="sponsors" className="section section--wide">
             <SectionHeading title="OUR SPONSORS" overline="Call for Sponsors" glyph="𓋴" />
-            <SectionHeading title="Interested in sponsoring Prodyogiki '26?" overline="Contact us at iste@nith.ac.in" glyph="𓂀" />
+            <div style={{ textAlign: "center", marginTop: "-24px" }}>
+              <p style={{ fontFamily: "'Cinzel Decorative', 'Cinzel', serif", fontSize: "clamp(0.85rem, 1.4vw, 1.1rem)", color: "#E7BA80", letterSpacing: "0.06em", fontWeight: 700, marginBottom: "8px" }}>
+                Interested in sponsoring Prodyogiki &apos;26?
+              </p>
+              <p style={{ fontFamily: "'Cinzel', serif", fontSize: "12px", color: "rgba(231,186,128,0.75)", letterSpacing: "0.2em", textTransform: "uppercase", fontWeight: 600 }}>
+                iste@nith.ac.in
+              </p>
+            </div>
           </section>
           <div style={{ height: 40 }} />
           <Footer />

@@ -228,7 +228,7 @@ export function RegisterModal({
               <div style={{ display: "flex", gap: "0.5rem" }}>
                 <button
                   style={{ ...S.codePill, background: "rgba(180,124,60,0.18)", borderColor: "rgba(180,124,60,0.45)" }}
-                  onClick={() => window.open("", "_blank")}
+                  onClick={() => window.open("https://chat.whatsapp.com/FmSoy4cHQ3UCLquAJeA9Ru", "_blank")}
                 >
                   Join Community
                 </button>

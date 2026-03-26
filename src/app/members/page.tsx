@@ -273,7 +273,8 @@ export default function MembersPage() {
 
         .section-label { text-align:center; font-family:'Barlow Condensed',sans-serif; font-size:0.7rem; font-weight:600; letter-spacing:0.35em; text-transform:uppercase; color:rgba(180,124,60,0.3); margin-bottom:1rem; position:relative; z-index:10; }
 
-        @media (max-width:768px) { .members-page{padding:80px 16px 100px} .members-scroll{padding:1rem 0.5rem;gap:1rem} .year-tab{padding:0.5rem 1rem;font-size:0.75rem} }
+        @media (max-width:768px) { .members-page{padding:80px 16px 100px} .members-scroll{padding:1rem 0.5rem;gap:1rem} .year-tab{padding:0.4rem 0.6rem;font-size:0.62rem;letter-spacing:0.1em} }
+        @media (max-width:400px) { .year-tab{padding:0.35rem 0.5rem;font-size:0.55rem;letter-spacing:0.06em} }
       `}</style>
 
       <div className="fire-cursor" style={{ left: `${mouse.x}px`, top: `${mouse.y}px` }}>

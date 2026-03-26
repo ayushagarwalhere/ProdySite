@@ -208,7 +208,8 @@ export default function Footer() {
           font-family: 'DM Sans', sans-serif;
           font-size: 0.82rem;
           letter-spacing: 0.08em;
-          color: rgba(200,146,78,0.55);
+          color: rgba(200,146,78,0.85);
+          font-weight: 600;
           text-decoration: none;
           transition: color 0.25s;
           position: relative;
@@ -229,7 +230,7 @@ export default function Footer() {
           border: 1px solid rgba(180,124,60,0.25);
           border-radius: 2px;
           display: flex; align-items: center; justify-content: center;
-          color: rgba(200,146,78,0.5);
+          color: rgba(200,146,78,0.85);
           background: transparent;
           cursor: pointer;
           transition: border-color 0.25s, color 0.25s, background 0.25s, transform 0.2s;
@@ -436,9 +437,9 @@ export default function Footer() {
                     fontSize: "clamp(0.55rem, 1.5vw, 0.7rem)",
                     letterSpacing: "0.4em",
                     textTransform: "uppercase",
-                    color: "rgba(200,146,78,0.45)",
+                    color: "rgba(200,146,78,0.8)",
+                    fontWeight: 600,
                     margin: "0.5rem 0 0",
-                    fontWeight: 400,
                   }}
                 >
                   The Alchemical Renaissance
@@ -495,7 +496,8 @@ export default function Footer() {
                   style={{
                     fontFamily: "'DM Sans', sans-serif",
                     fontSize: "0.72rem",
-                    color: "rgba(200,146,78,0.3)",
+                    color: "rgba(200,146,78,0.7)",
+                    fontWeight: 600,
                     letterSpacing: "0.1em",
                     margin: 0,
                   }}
@@ -511,20 +513,6 @@ export default function Footer() {
                     </Link>
                   ))}
                 </div>
-
-                <p
-                  className="footer-tagline"
-                  style={{
-                    fontFamily: "'Cinzel', serif",
-                    fontSize: "clamp(0.5rem, 1.2vw, 0.62rem)",
-                    color: "rgba(200,146,78,0.22)",
-                    letterSpacing: "0.2em",
-                    margin: 0,
-                    textTransform: "uppercase",
-                  }}
-                >
-                  Where ancient wisdom meets modern innovation
-                </p>
               </div>
             </div>
 
