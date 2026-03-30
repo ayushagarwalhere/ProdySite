@@ -308,7 +308,12 @@ export default function EventPage() {
   );
 
   const meta     = getMeta(event.title);
-  const teamSize = event.minTeamSize && event.maxTeamSize ? `${event.minTeamSize}–${event.maxTeamSize}` : "Open";
+  const teamSize =
+    event.minTeamSize && event.maxTeamSize
+      ? event.minTeamSize === event.maxTeamSize
+        ? `${event.minTeamSize}`
+        : `${event.minTeamSize}–${event.maxTeamSize}`
+      : "Open";
 
   return (
     <>
@@ -524,6 +529,516 @@ export default function EventPage() {
         />
       )}
       <Footer/>
+    </>
+  );
+}       <div
+          style={{
+            maxWidth: 860,
+            margin: "0 auto",
+            padding: "1.5rem 1.5rem 0",
+          }}
+        >
+          <button
+            onClick={() => router.push("/events")}
+            style={{
+              background: "transparent",
+              border: "none",
+              color: "rgba(200,146,78,0.5)",
+              cursor: "pointer",
+              fontFamily: "'DM Sans',sans-serif",
+              fontSize: "0.82rem",
+              padding: 0,
+              display: "flex",
+              alignItems: "center",
+              gap: 6,
+              transition: "color 0.2s",
+            }}
+            onMouseEnter={(e) => (e.currentTarget.style.color = "#c8924e")}
+            onMouseLeave={(e) =>
+              (e.currentTarget.style.color = "rgba(200,146,78,0.5)")
+            }
+          >
+            ← Events
+          </button>
+        </div>
+
+        <div
+          style={{
+            maxWidth: 860,
+            margin: "0 auto",
+            padding: "2rem 1.5rem 6rem",
+          }}
+        >
+          {/* ── HERO ── */}
+          <div style={{ marginBottom: "2.5rem" }}>
+            {/* tag + date row */}
+            <div
+              style={{
+                display: "flex",
+                alignItems: "center",
+                gap: 10,
+                marginBottom: "0.75rem",
+                flexWrap: "wrap",
+              }}
+            >
+              <span
+                style={{
+                  fontFamily: "'DM Sans',sans-serif",
+                  fontSize: "0.7rem",
+                  color: "rgba(200,146,78,0.55)",
+                  letterSpacing: "0.08em",
+                }}
+              >
+                {meta.date}
+              </span>
+              <span
+                style={{
+                  fontFamily: "'DM Sans',sans-serif",
+                  fontSize: "0.7rem",
+                  color: "rgba(200,146,78,0.45)",
+                  letterSpacing: "0.06em",
+                }}
+              >
+                · {meta.venue}
+              </span>
+            </div>
+
+            {/* title + live badge */}
+            <div
+              style={{
+                display: "flex",
+                alignItems: "flex-start",
+                justifyContent: "space-between",
+                gap: 16,
+                marginBottom: "0.6rem",
+              }}
+            >
+              <h1
+                style={{
+                  fontFamily: "'Barlow Condensed',sans-serif",
+                  fontWeight: 800,
+                  fontSize: "clamp(2.2rem,7vw,4rem)",
+                  textTransform: "uppercase",
+                  letterSpacing: "0.02em",
+                  color: "#f5ead8",
+                  margin: 0,
+                  lineHeight: 1,
+                }}
+              >
+                {event.title}
+              </h1>
+              {event.isLive && (
+                <span
+                  style={{
+                    flexShrink: 0,
+                    marginTop: 8,
+                    padding: "4px 10px",
+                    border: "1px solid rgba(180,124,60,0.45)",
+                    borderRadius: 4,
+                    fontFamily: "'Barlow Condensed',sans-serif",
+                    fontWeight: 700,
+                    fontSize: "0.7rem",
+                    letterSpacing: "0.18em",
+                    textTransform: "uppercase",
+                    color: "#e0a85a",
+                    whiteSpace: "nowrap",
+                    animation: "live-pulse 1.8s ease-in-out infinite",
+                  }}
+                >
+                  ● Live
+                </span>
+              )}
+            </div>
+
+            {/* tagline */}
+            <p
+              style={{
+                fontFamily: "'Cormorant Garamond',serif",
+                fontStyle: "italic",
+                fontSize: "clamp(1rem,2vw,1.25rem)",
+                color: "rgba(200,146,78,0.65)",
+                margin: "0 0 1.75rem",
+                fontWeight: 300,
+              }}
+            >
+              {meta.tagline}
+            </p>
+
+            {/* abstract button */}
+            {event.abstract && (
+              <a
+                href={event.abstract}
+                target="_blank"
+                rel="noopener noreferrer"
+                style={{
+                  display: "inline-flex",
+                  alignItems: "center",
+                  gap: 8,
+                  marginBottom: "1.75rem",
+                  padding: "0.6rem 1.25rem",
+                  border: "1px solid rgba(180,124,60,0.4)",
+                  borderRadius: 4,
+                  fontFamily: "'Barlow Condensed',sans-serif",
+                  fontWeight: 700,
+                  fontSize: "0.78rem",
+                  letterSpacing: "0.18em",
+                  textTransform: "uppercase",
+                  color: "#c8924e",
+                  textDecoration: "none",
+                  background: "rgba(180,124,60,0.06)",
+                  transition: "border-color 0.2s, background 0.2s",
+                }}
+                onMouseEnter={(e) => {
+                  (e.currentTarget as HTMLAnchorElement).style.borderColor =
+                    "rgba(180,124,60,0.7)";
+                  (e.currentTarget as HTMLAnchorElement).style.background =
+                    "rgba(180,124,60,0.12)";
+                }}
+                onMouseLeave={(e) => {
+                  (e.currentTarget as HTMLAnchorElement).style.borderColor =
+                    "rgba(180,124,60,0.4)";
+                  (e.currentTarget as HTMLAnchorElement).style.background =
+                    "rgba(180,124,60,0.06)";
+                }}
+              >
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none">
+                  <path
+                    d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"
+                    stroke="currentColor"
+                    strokeWidth="1.5"
+                    strokeLinejoin="round"
+                  />
+                  <polyline
+                    points="14 2 14 8 20 8"
+                    stroke="currentColor"
+                    strokeWidth="1.5"
+                    strokeLinejoin="round"
+                  />
+                  <line
+                    x1="16"
+                    y1="13"
+                    x2="8"
+                    y2="13"
+                    stroke="currentColor"
+                    strokeWidth="1.5"
+                    strokeLinecap="round"
+                  />
+                  <line
+                    x1="16"
+                    y1="17"
+                    x2="8"
+                    y2="17"
+                    stroke="currentColor"
+                    strokeWidth="1.5"
+                    strokeLinecap="round"
+                  />
+                  <line
+                    x1="10"
+                    y1="9"
+                    x2="8"
+                    y2="9"
+                    stroke="currentColor"
+                    strokeWidth="1.5"
+                    strokeLinecap="round"
+                  />
+                </svg>
+                View Abstract
+                <svg
+                  width="11"
+                  height="11"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  style={{ opacity: 0.6 }}
+                >
+                  <path
+                    d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"
+                    stroke="currentColor"
+                    strokeWidth="1.8"
+                    strokeLinecap="round"
+                  />
+                  <polyline
+                    points="15 3 21 3 21 9"
+                    stroke="currentColor"
+                    strokeWidth="1.8"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  />
+                  <line
+                    x1="10"
+                    y1="14"
+                    x2="21"
+                    y2="3"
+                    stroke="currentColor"
+                    strokeWidth="1.8"
+                    strokeLinecap="round"
+                  />
+                </svg>
+              </a>
+            )}
+
+            {/* divider */}
+            <div
+              style={{
+                height: 1,
+                background:
+                  "linear-gradient(to right, rgba(180,124,60,0.35), transparent)",
+              }}
+            />
+          </div>
+
+          {/* ── STATS ── */}
+          <div
+            style={{
+              display: "grid",
+              gridTemplateColumns: "repeat(auto-fit, minmax(120px, 1fr))",
+              gap: "0.75rem",
+              marginBottom: "2.5rem",
+            }}
+          >
+            {event.prizePool && (
+              <StatPill
+                label="Prize Pool"
+                value={`₹${event.prizePool.toLocaleString()}`}
+              />
+            )}
+            <StatPill label="Mode" value={event.mode} />
+            <StatPill label="Team Size" value={teamSize} />
+            <StatPill label="Date" value={meta.date} />
+            <StatPill label="Venue" value={meta.venue} />
+          </div>
+
+          {/* ── DESCRIPTION ── */}
+          {event.description && (
+            <div style={{ marginBottom: "2.5rem" }}>
+              <SectionHead title="About" />
+              <p
+                style={{
+                  fontFamily: "'DM Sans',sans-serif",
+                  fontSize: "0.95rem",
+                  color: "rgba(240,232,214,0.7)",
+                  lineHeight: 1.85,
+                  margin: 0,
+                }}
+              >
+                {event.description}
+              </p>
+            </div>
+          )}
+
+          {/* ── ROUNDS ── */}
+          {meta.rounds.length > 0 && (
+            <div style={{ marginBottom: "2.5rem" }}>
+              <SectionHead title="Rounds" />
+              <div
+                style={{
+                  display: "flex",
+                  flexDirection: "column",
+                  gap: "0.65rem",
+                }}
+              >
+                {meta.rounds.map((r, i) => (
+                  <div
+                    key={i}
+                    style={{
+                      display: "flex",
+                      gap: "1.25rem",
+                      padding: "1.1rem 1.25rem",
+                      border: "1px solid rgba(180,124,60,0.18)",
+                      borderRadius: 6,
+                      background: "rgba(180,124,60,0.04)",
+                      transition: "border-color 0.2s",
+                    }}
+                    onMouseEnter={(e) =>
+                      (e.currentTarget.style.borderColor =
+                        "rgba(180,124,60,0.4)")
+                    }
+                    onMouseLeave={(e) =>
+                      (e.currentTarget.style.borderColor =
+                        "rgba(180,124,60,0.18)")
+                    }
+                  >
+                    <span
+                      style={{
+                        fontFamily: "'Barlow Condensed',sans-serif",
+                        fontWeight: 800,
+                        fontSize: "1.8rem",
+                        color: "rgba(200,146,78,0.15)",
+                        lineHeight: 1,
+                        flexShrink: 0,
+                        minWidth: 36,
+                      }}
+                    >
+                      {String(i + 1).padStart(2, "0")}
+                    </span>
+                    <div>
+                      <p
+                        style={{
+                          fontFamily: "'Barlow Condensed',sans-serif",
+                          fontWeight: 700,
+                          fontSize: "1rem",
+                          letterSpacing: "0.06em",
+                          textTransform: "uppercase",
+                          color: "#f5ead8",
+                          margin: "0 0 0.4rem",
+                        }}
+                      >
+                        {r.title}
+                      </p>
+                      <p
+                        style={{
+                          fontFamily: "'DM Sans',sans-serif",
+                          fontSize: "0.875rem",
+                          color: "rgba(240,232,214,0.6)",
+                          lineHeight: 1.65,
+                          margin: 0,
+                        }}
+                      >
+                        {r.desc}
+                      </p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* ── RULES ── */}
+          {meta.rules.length > 0 && (
+            <div style={{ marginBottom: "2.5rem" }}>
+              <SectionHead title="Rules" />
+              <div
+                style={{
+                  display: "flex",
+                  flexDirection: "column",
+                  gap: "0.5rem",
+                }}
+              >
+                {meta.rules.map((rule, i) => (
+                  <div
+                    key={i}
+                    style={{
+                      display: "flex",
+                      gap: "1rem",
+                      alignItems: "flex-start",
+                    }}
+                  >
+                    <span
+                      style={{
+                        fontFamily: "'Barlow Condensed',sans-serif",
+                        fontWeight: 700,
+                        fontSize: "0.75rem",
+                        color: "#c8924e",
+                        flexShrink: 0,
+                        marginTop: 3,
+                      }}
+                    >
+                      {String(i + 1).padStart(2, "0")}
+                    </span>
+                    <p
+                      style={{
+                        fontFamily: "'DM Sans',sans-serif",
+                        fontSize: "0.875rem",
+                        color: "rgba(240,232,214,0.7)",
+                        lineHeight: 1.65,
+                        margin: 0,
+                      }}
+                    >
+                      {rule}
+                    </p>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* ── FAQs ── */}
+          {meta.faqs.length > 0 && (
+            <div style={{ marginBottom: "2.5rem" }}>
+              <SectionHead title="FAQs" />
+              <div
+                style={{
+                  display: "flex",
+                  flexDirection: "column",
+                  gap: "0.5rem",
+                }}
+              >
+                {meta.faqs.map((faq, i) => (
+                  <FAQItem key={i} faq={faq} />
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* ── CTA ── */}
+          <div
+            style={{
+              textAlign: "center",
+              paddingTop: "2rem",
+              borderTop: "1px solid rgba(180,124,60,0.12)",
+            }}
+          >
+            <p
+              style={{
+                fontFamily: "'Cormorant Garamond',serif",
+                fontStyle: "italic",
+                fontSize: "1.05rem",
+                color: "rgba(200,146,78,0.5)",
+                marginBottom: "1.25rem",
+              }}
+            >
+              {event.isLive
+                ? "Registration is currently open."
+                : "Registration is not yet open."}
+            </p>
+            <button
+              disabled={!event.isLive}
+              onClick={() => {
+                if (!event.isLive) return;
+                if (event.title?.toLowerCase() === "hackathon") {
+                  window.open(
+                    "https://unstop.com/hackathons/the-rosetta-code-hackathon-nit-hamirpur-1664852",
+                    "_blank",
+                    "noopener,noreferrer",
+                  );
+                  return;
+                }
+                setShowModal(true);
+              }}
+              style={{
+                padding: "0.9rem 2.5rem",
+                background: event.isLive ? "#b47c3c" : "rgba(180,124,60,0.15)",
+                border: event.isLive
+                  ? "none"
+                  : "1px solid rgba(180,124,60,0.2)",
+                borderRadius: 4,
+                cursor: event.isLive ? "pointer" : "not-allowed",
+                fontFamily: "'Barlow Condensed',sans-serif",
+                fontWeight: 700,
+                fontSize: "0.9rem",
+                letterSpacing: "0.18em",
+                textTransform: "uppercase",
+                color: event.isLive ? "#0a0703" : "rgba(180,124,60,0.35)",
+                transition: "background 0.2s",
+              }}
+            >
+              {event.isLive ? "Register Now" : "Coming Soon"}
+            </button>
+          </div>
+        </div>
+      </div>
+
+      {showModal && (
+        <RegisterModal
+          eventId={event.id}
+          eventTitle={event.title}
+          minSize={event.minTeamSize}
+          maxSize={event.maxTeamSize}
+          mode={event.mode}
+          onClose={() => setShowModal(false)}
+          onSuccess={() => setShowModal(false)}
+        />
+      )}
+      <Footer />
     </>
   );
 }
