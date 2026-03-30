@@ -617,14 +617,85 @@ export default function Home() {
             />
           </section> */}
           <section id="sponsors" className="section section--wide">
-            <SectionHeading title="OUR SPONSORS" overline="Call for Sponsors" glyph="𓋴" />
+            <SectionHeading
+              title="OUR SPONSORS"
+              overline="Call for Sponsors"
+              glyph="𓋴"
+            />
             <div style={{ textAlign: "center", marginTop: "-24px" }}>
-              <p style={{ fontFamily: "'Cinzel Decorative', 'Cinzel', serif", fontSize: "clamp(0.85rem, 1.4vw, 1.1rem)", color: "#E7BA80", letterSpacing: "0.06em", fontWeight: 700, marginBottom: "8px" }}>
+              <p
+                style={{
+                  fontFamily: "'Cinzel Decorative', 'Cinzel', serif",
+                  fontSize: "clamp(0.85rem, 1.4vw, 1.1rem)",
+                  color: "#E7BA80",
+                  letterSpacing: "0.06em",
+                  fontWeight: 700,
+                  marginBottom: "8px",
+                }}
+              >
                 Interested in sponsoring Prodyogiki &apos;26?
               </p>
-              <p style={{ fontFamily: "'Cinzel', serif", fontSize: "12px", color: "rgba(231,186,128,0.75)", letterSpacing: "0.2em", textTransform: "uppercase", fontWeight: 600 }}>
+              <p
+                style={{
+                  fontFamily: "'Cinzel', serif",
+                  fontSize: "12px",
+                  color: "rgba(231,186,128,0.75)",
+                  letterSpacing: "0.2em",
+                  textTransform: "uppercase",
+                  fontWeight: 600,
+                }}
+              >
                 iste@nith.ac.in
               </p>
+            </div>
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "center",
+                marginTop: "28px",
+              }}
+            >
+              <div
+                style={{
+                  minWidth: "180px",
+                  padding: "18px 20px",
+                  border: "1px solid rgba(231,186,128,.28)",
+                  borderRadius: "6px",
+                  background: "rgba(15,8,0,.72)",
+                  textAlign: "center",
+                }}
+              >
+                <img
+                  src="/sponsors/logo1.webp"
+                  alt="UNSTOP logo"
+                  style={{
+                    width: "120px",
+                    maxWidth: "100%",
+                    height: "auto",
+                    objectFit: "contain",
+                    opacity: 0.95,
+                  }}
+                  onError={(e) => {
+                    const img = e.currentTarget;
+                    if (!img.src.includes("/sponsors/")) {
+                      img.src = "/sponsors/logo1.webp";
+                    }
+                  }}
+                />
+                <p
+                  style={{
+                    marginTop: "10px",
+                    fontFamily: "'Cinzel', serif",
+                    fontSize: "12px",
+                    letterSpacing: "0.2em",
+                    textTransform: "uppercase",
+                    color: "#E7BA80",
+                    fontWeight: 700,
+                  }}
+                >
+                  UNSTOP
+                </p>
+              </div>
             </div>
           </section>
           <div style={{ height: 40 }} />
